@@ -1,0 +1,187 @@
+# notes on convolution-based NTTs
+
+Scribbling notes of several cool tricks I learnt from looking into number theoretic transform (NTT)
+and its application in lattice cryptography.
+
+The NTT is a special case of the discrete Fourier transform (DFT) over finite fields.
+
+This post will not cover how to do the actual NTT, but rather cover why NTTs work, which seem to be more
+inaccessible information. There are many resources for the former. Vitalik's
+[blog post][vitalik fast fourier transforms] on Fast Fourier Transforms (FFT) is one such resource.
+
+## Applications
+
+NTT is often mentioned in STARK literature as being used to convert polynomials between coefficient and evaluation form.
+The whole idea is that naively converting between these forms usually take $`O(n^2)`, but with NTT,
+the time complexity can be brought down to $`O(n \space \text{log} \space n)`.
+
+In lattice cryptography, the NTT is used to speed up polynomial multiplication over polynomial rings,
+with similar runtime complexities like above.
+
+## Polynomial multiplication
+
+Let _*A*_ and _*B*_ be polynomials of degree $`n - 1`, Then we can multiply them to get _*C*_, where
+
+$$`C = A * B = \sum_{k=0}^{2n-2}{c_k x^k} \in \mathbb{Z}_q[x]`
+
+and
+
+$$`c_k = \sum_{i=0}^{k}{a[i] b[k - i]} \space \text{mod} \space q, k = 0, 1, ..., 2n - 2`
+
+This is equivalent to a _*discrete linear convolution*_ (aka naive schoolbook multiplication)
+between the two polynomials' coefficients.
+
+There are two problems with doing it this way:
+
+1. it takes time complexity $`O(n^2)`, and
+2. This results in a polynomial `C` of degree $`2n - 2`.
+
+## Cyclic convolution-based polynomial multiplication
+
+Within lattice cryptography, polynomial operations are often done over a quotient ring, which is denoted by $`R / I`
+where $`R` is a polynomial ring and a two-sided ideal $`I` in $`R`. You may think of operations being
+done modulo some polynomial (ideals are out of scope for this post).
+
+This is known as a *cyclic convolution-based polynomial multiplication*. This name
+comes from it being a special case of a *periodic convolution*. You may guess from its name that computation 'wraps around'
+to be kept within a certain bound or interval.
+
+In most literature, the term _*cyclic convolution*_ refers to multiplication done over the ring $`\mathbb{Z}_q[x]/(x^n - 1)`,
+while the term _*negacyclic convolution*_ refers to multiplication done over the ring $`\mathbb{Z}_q[x]/(x^n + 1)`.
+
+Alternatively, some [papers][ntt: a survey] suggest using terms like _*positive wrapped convolution*_ vs
+_*negative wrapped convolution*_ respectively for clarity, which I will adopt for the rest of the post.
+
+## Positive and negative wrapped convolution
+
+Let *A* and *B* be polynomials of degree $`n - 1`.
+In both _*positive wrapped convolution*_ (_PWC_) and _*negative wrapped convolution*_ (_NWC_), the result we are interested in is
+
+$$`c = a \cdot b`
+
+where
+
+$$`c = \sum_{k=0}^{n-1}{c_k x^k}`
+
+The difference is in what polynomial we're doing a modulo reduction over and how $`c_k` is defined.
+
+For PWC, the quotient ring we use is $`\mathbb{Z}_q[x]/(x^n - 1)` where $`q \in \mathbb{Z}` and $`c_k` is defined as
+
+$$`c_k = \sum_{i=0}^{k}{a_i b_{k - i}} + \sum_{i=k+1}^{n-1}{a_i b_{k+n-i}} \space \text{mod} \space q`
+
+Conversely, the quotient ring for NWC is $`\mathbb{Z}_q[x]/(x^n + 1)`, and $`c_k` can be defined as
+
+$$`c_k = \sum_{i=0}^{k}{a_i b_{k - i}} - \sum_{i=k+1}^{n-1}{a_i b_{k+n-i}} \space \text{mod} \space q`
+
+Note the difference in signs.
+
+With these, the output is a polynomial $`C` of degree $`n - 1` and this addresses point 2 above.
+
+### How do we make use of these?
+
+It turns out that under the [convolution theory][convolution theory], we can transform 2 sequences of values into their NTT forms,
+multiply them pointwise and then transform the result back into the standard form, and that is equivalent to doing
+polynomial multiplication on the original 2 sequences of values. In other words,
+
+$$`c = INTT(NTT(a) \cdot NTT(b))`
+
+NTT is an $`O(n \space \text{log} \space n)` operation, which addresses point 1.
+
+## NTT and iNTT
+
+The NTT of a sequence of values (in this case, a vector of polynomial coefficients), is defined as
+$`\hat{a} = NTT(a)`, where
+
+$$`\hat{a_j} = \sum_{i=0}^{n-1}{\omega^{ij} a_i} \space \text{mod} \space q, i = 0, 1, 2, ..., n - 1`
+
+Conversely, the iNTT of a sequence of values is defined as
+
+$$`a_i = n^{-1} \sum_{j=0}^{n-1}{\omega^{-ij} \hat{a_j}} \space \text{mod} \space q, j = 0, 1, 2, ..., n - 1`
+
+The difference here is that the $`\omega` is replaced by its inverse in $`\mathbb{Z}_q` and we scale the result by a factor of $`n^{-1}` at the end.
+
+> _Note: This NTT/iNTT is the positive wrapped convolution-based NTT/iNTT.
+The negative wrapped convolution-based NTT/iNTT includes another term $`\psi`, but the FFT trick that we explain later will simplify
+this expression, so we skip explaining it here._
+
+$`\omega` here is the primitive $`n`-th root of unity in $`Z_q` iff
+
+$$`\omega^n \equiv 1 \space \text{mod} \space q`
+
+and
+
+$$`\omega^k \not\equiv 1 \space \text{mod} \space q`
+
+for $`k \lt n`. So we would need the roots generated by the primitive _n_-th root of unity $`\omega_n`.
+
+### Roots of unity
+
+A *root of unity* is any complex number that yields 1 when raised to some positive integer $`n`, otherwise known as the _*n-th root of unity*_. We are interested in roots of unity because they form the roots of cyclotomic polynomials which factorize the polynomial $`x^n - 1`, which is one of the key polynomials that we are interested in lattice cryptography.
+
+And because the _n-th root of unity_ yields 1, you can think of the roots of unity as points in a unit circle in a complex plane (that is, if the set of real numbers appear on a 1-dimensional line, the complex plane 'extends' the real numbers by adding a 2nd dimension (visually, a y-axis). The roots of unity are then points on this 2 dimensional plane forming the unit circle since the distance from the origin to any root of unity is 1. Visually, we can imagine a circle with 3 points on it spaced out equally, starting from 1.
+
+Since we know that complex numbers can be expressed in the form $`re^{i\theta}`. For the unit circle, $`r = 1`, and since the 3 points are spaced out equally, $`\theta= 2\pi / 3`, and the next point is simply $`\theta^2 = 4\pi / 3`, and these points are $`\omega` and $`\omega^2` respectively.
+
+Now imagine we have a degree $`n - 1` polynomial - we simply extend this simple example of a degree $`3` with 3 points to $`n - 1` points.
+
+## why does this work (mathematically)?
+
+The magic behind how NTTs/iNTTs work lie in the [FFT trick][bernstein], 
+explained from the algebraical perspective using the Chinese Remainder Theorem (or CRT) in ring form.
+
+### For positive wrapped convolutions
+
+Formally, we have an isomorphism, or a mapping $`\phi`, 
+for polynomial rings in the form $`\mathbb{Z}_q/(x^{2m} - \omega^2)` where $`m \gt 0` and invertible $`\omega \in \mathbb{Z}_q`:
+
+$$`\phi : \mathbb{Z}_q/(x^{2m} - \omega^2) \cong \mathbb{Z}_q/(x^{m} - \omega) \times \mathbb{Z}_q/(x^{m} + \omega)`
+
+Which, when mapped to a polynomial with coefficients `a_i`:
+
+$$`\phi (\sum_{i=0}^{2m-1}{a_i x^i}) = (\sum_{i=0}^{m-1}{(a_i + \omega \cdot a_{i+m})x^i}, \sum_{i=0}^{m-1}{(a_i - \omega \cdot a_{i+m})x^i})`
+
+And for its inverse:
+
+$$`\phi^{-1} (\sum_{i=0}^{m-1}{a_i^{'} x^i}, \sum_{i=0}^{m-1}{a_i^{''} x^i}) = \sum_{i=0}^{m-1}{\frac{1}{2}(a_i^{'} + a_i^{''})x^i} + \sum_{i=0}^{m-1}{\frac{\omega^{-1}}{2}(a_i^{'} + a_i^{''})x^{i+m}}`
+
+To see why the above mapping makes sense: when
+we compute $`a \space \text{mod} \space (x^m - \omega)`, we use the identity $`x^m \equiv \omega` since $`x^m - \omega = 0` in this ring.
+So, terms with $`x^{m+i}` reduce to $`\omega x^i`. Thus, we end up with, for the $`x_i` term in the first ring,
+
+$$`\sum_{i=0}^{m-1}{(a_i + \omega \cdot a_{i+m})x^i}`
+
+The same logic works for computations modulo $`(x^m + \omega)`. In which case, each $`i`-th coefficient can be computed via the sum of two parts:
+
+$$`a_i^{'} = a_i + \omega \cdot a_{i+m}`
+$$`a_i^{''} = a_i - \omega \cdot a_{i+m}`
+
+Which is exactly the Cooley-Tukey butterfly (CT butterfly). As for the inverse, the $`i`-th and the $`i+ \frac{n}{2}`-th coefficient of _*a*_ can be derived from the $`i`-th coefficient of _*a'*_ and _*a''*_:
+
+$$`a_i = (a_i^{'} + a_i^{''})/2`
+$$`a_{i+m} = \omega^{-1}(a_i^{'} - a_i^{''})/2`
+
+Which is the Gentleman-Sande butterfly (GS butterfly).
+
+### For negative wrapped convolutions
+
+Note that the above details how CRT works for positive wrapped convolutions but not negative wrapped convolutions,
+which does computations over the ring $`\mathbb{Z}_q[x]/(x^n + 1)` instead.
+
+We need to make 2 adjustments to make negative wrapped convolutions work:
+
+1. set $`q` to be a prime number satisfying $`q \equiv \space (\text{mod} \space 2n)` such that
+the primitive $`2n`-th root of unity $`\psi_{2n}` exists, and
+
+2. Take $`\omega_n = \psi_{2n}^{2} \space \text{mod} \space q`.
+
+These changes are needed because we need $`\psi_{2n}^n = -1 \space \text{mod} \space q` in order to re-express $`x^n + 1` as
+$`x^n - \psi_{2n}^n`, and from there we can proceed with the same trick above.
+
+### Bit reversals?
+
+The beauty of combining the CT butterfly with the GS butterfly is that we get rid of the need for bit reversal, since the standard CT butterfly takes input in the natural order to produce an output in bit-reversed order, which the GS butterfly takes as input to produce an output in the natural order! Naively, we can think of the GS butterfly as 'undoing' the CT butterfly operation.
+
+[vitalik fast fourier transforms]: https://vitalik.eth.limo/general/2019/05/12/fft.html
+[ntt: a survey]: https://arxiv.org/pdf/2211.13546
+[bernstein]: https://cr.yp.to/papers/m3-20010811-retypeset-20220327.pdf
+[convolution theory]: https://en.wikipedia.org/wiki/Convolution_theorem
