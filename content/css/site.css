@@ -1,0 +1,122 @@
+html {
+  font-family: "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.3em;
+}
+
+a {
+  text-decoration-color: #2156a5;
+  color: black;
+}
+
+ol{
+  margin-left: 1em;
+}
+
+a:hover,
+a:focus {
+  color: #2156a5;
+}
+
+h2,
+h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  margin-bottom: 1rem;
+}
+
+h1,
+h2,
+h3 {
+  font-size: 1.5rem;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 400;
+  color: #000;
+  text-rendering: optimizeLegibility;
+  line-height: 1.3em;
+}
+
+p,
+table,
+figure,
+aside,
+dl,
+hr {
+  margin-bottom: 1.2rem;
+  line-height: 1.6;
+}
+
+body {
+  max-width: 80ch;
+  padding: 2ch;
+  margin-right: auto;
+}
+
+
+table {
+  width: 100%;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.post-list > li {
+  display: flex;
+  line-height: 1.6;
+  flex-flow: row;
+  justify-content: space-between;
+}
+
+.post-list > li > a {
+  text-decoration: none;
+}
+
+.roman {
+  list-style-type: lower-roman;
+}
+
+code {
+  font-family: "JetBrains Mono", monospace;
+  font-variant-ligatures: none;
+  font-size: 0.8em;
+  color: rgba(0, 0, 0, 0.9);
+  margin: 0 0.25em;
+}
+
+pre {
+  margin: 0.75em 1.25em;
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  overflow-y: clip;
+  counter-reset: line;
+}
+
+td > a {
+  text-decoration: none;
+  color: #000;
+}
+
+blockquote {
+  margin: 1em 1.5em;
+  padding-left: 1em;
+  border-left: 3px solid #2156a5;
+  font-style: italic;
+}
+
+tr {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  line-height: 1.8;
+}
+
+td:nth-child(2) {
+  font-style: italic;
+}

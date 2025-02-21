@@ -1,0 +1,40 @@
+# solving ZK Hack V puzzle 3
+
+I solved my first online ZK Hack puzzle this last season. I didn't win best writeup, but
+my writeup did get featured on the [puzzle page](https://zkhack.dev/zkhackV/puzzleV3.html), so that's something at least!
+
+Instead of going over my solution in this post, I'll briefly talk about my experience with Noir and its tooling.
+If you're interested in my writeup, you can find it [here](https://gist.github.com/spiral-ladder/eb544879e47d3b678cbaf766bf94186e).
+
+## Noir: first impressions 
+
+My first impression of Noir from the short puzzle alone is that it's clean. I haven't had much experience with writing
+Circom but reading it is a pain.
+
+Error messages in Noir are also far more useful compared to in Circom -- if being Rust-based has had any positive effect, it would
+be the helpfulness of the compiler and the tooling. Speaking of tooling, nargo is great!
+
+## The not-so-good
+
+Now, the not so good. These are probably just nitpicks at this point because I haven't had enough experience with the 
+language to give a fair criticism, so take these comments with a grain of salt.
+
+I think the way inputs get fed into the Noir program doesn't seem right. Firstly, it's not super clear that inputs
+are implicitly fed from `Prover.toml`, and secondly (this is more of a nitpick), TOML is a terrible format for such
+a purpose.
+
+I think JSON would be more suitable here for a clearer hierarchy of inputs with nesting -
+ no more awkward ["table of tables"](https://toml.io/en/v1.0.0#array-of-tables). Especially for the purpose
+of just passing in input to the program, TOML is overkill and is suited for more verbose purposes eg.
+configuration like in `Cargo.toml`. But I guess at least YAML wasn't chosen here.
+
+Another 'feature' I'm cautious about is the fact that it is a Rust-based DSL. Rust looks like Rust because of its
+design choices. I don't think languages should emulate Rust just for the sake of 'familiar syntax', to capture
+Rust developers in the space. I don't think this is the sole reason for doing a Rust-based DSL, but it's definitely one
+of the reasons that people often cite as a positive. I'd argue that Rust syntax is overly verbose and ugly.
+It only looks that way because of the amount of work that is frontloaded to the compiler.
+Especially for circuit development, (I believe) there is no need to be 'Rust-like' at all, unless you're reinventing
+rustc, except this time for circuit compilation.
+
+That said I don't have too much else to say atm. I will have to write more Noir before I figure if I
+like it enough or not.
