@@ -1,0 +1,249 @@
+ 
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ziggifying Kilo</title>
+  <meta name="description" content="">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://spiral-ladder.github.io/tech/2023/04/13/ziggifying-kilo-dj.html">
+  <link rel="alternate" type="application/rss+xml" title="bh" href="https://spiral-ladder.github.io/feed.xml">
+  <style>
+  @font-face {
+    font-family: 'Open Sans'; src: url('/css/OpenSans-300-Normal.woff2') format('woff2');
+    font-weight: 300; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Italic.woff2') format('woff2');
+    font-weight: 400; font-style: italic;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Italic.woff2') format('woff2');
+    font-weight: 700; font-style: italic;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; margin-block-start: 0; margin-block-end: 0; }
+
+  body {
+    max-width: 80ch;
+    padding: 2ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  header { margin-bottom: 2rem; }
+  header > nav { display: flex; column-gap: 2ch; align-items: baseline; flex-wrap: wrap; }
+  header a { font-style: normal; color: rgba(0, 0, 0, .7); text-decoration: none; }
+  header a:hover { font-style: normal; color: rgba(0, 0, 0, 1); text-decoration: none; }
+  header .title { font-size: 1.25em; flex-grow: 2; }
+
+  footer { margin-top: 2rem; }
+  footer > p { display: flex; column-gap: 2ch; justify-content: center; flex-wrap: wrap; }
+  footer a { color: rgba(0, 0, 0, .8); text-decoration: none; white-space: nowrap; }
+  footer i { vertical-align: middle; color: rgba(0, 0, 0, .8) }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/site.css">
+  
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a class="title" href="/">bing</a>
+      <a href="/about.html">About</a>
+      <a href="/favourites.html">Favourites</a>
+    </nav>
+  </header>
+
+  <main>
+  <article >
+<section id="Ziggifying-Kilo">
+
+<div class="title"><h1>Ziggifying Kilo </h1><time class="meta" datetime="2023-04-13">Apr 13, 2023</time></div>
+<p>Recently, I ported antirez's <a href="https://github.com/antirez/kilo">Kilo
+editor</a> to Zig as a way to learn Zig
+with a mini project. It's called <em>gram</em> (<em>because kilogram, duh</em>) and I
+tried to keep it as faithful as possible to the original:</p>
+<ul>
+<li>
+<p><em>Under 1000 LOC</em>. <code>cloc</code> on <code>main.zig</code> alone yields only <em>735</em> lines
+of Zig</p>
+</li>
+<li>
+<p><em>Has almost the same features</em> (except non-prints support)</p>
+</li>
+<li>
+<p>Written as similarly as I could to the original but with Zig fixes to
+the C-<em>isms</em>.</p>
+</li>
+</ul>
+<p>There are already some comparisons of Rust vs Zig in the wild (_I quite
+enjoyed <a href="https://zackoverflow.dev/writing/unsafe-rust-vs-zig">When Zig is safer and faster than
+Rust</a> by
+<a href="https://twitter.com/zack_overflow">@zack_overflow</a>_) - this post will
+be on Zig vs C from the eyes of someone rediscovering low-level
+programming beyond classes he took at college.</p>
+<section id="the-road-to-zig-10">
+
+<div class="title"><h2>The Road to Zig 1.0 </h2></div>
+<p>In <a href="https://www.youtube.com/watch?v=Gv2I7qTux7g">The Road to Zig 1.0</a>,
+Andrew Kelley, the creator of Zig, describes Zig as "C but with the
+problems fixed".</p>
+<p>He lists 3 major problems with C:</p>
+<ol>
+<li>
+<p><code>#include</code> - causes slow compilations and prevents optimizations</p>
+</li>
+<li>
+<p>other preprocessor macros like <code>#define</code> - makes it harder to read
+and debug</p>
+</li>
+<li>
+<p>undefined behaviour footguns everywhere</p>
+</li>
+</ol>
+<p>The first point is irrelevant since I'm writing a tiny text editor, but
+while porting over kilo to <em>gram</em>, I often encountered the above
+problems while reading the kilo source code, and to my pleasant surprise
+the Zig version felt a lot cleaner to read by the end. I'll evaluate my
+experience based on how well I think Zig fixes problems 2) and 3).</p>
+</section>
+<section id="preprocessors-begone">
+
+<div class="title"><h2>Preprocessors begone! </h2></div>
+<p>The entire <em>gram</em> editor is written in a single <code>main.zig</code> file and
+<code>std</code> is the only dependency.</p>
+<p>No <code>#include</code> and <code>#define</code> shenanigans - in Zig, everything is just a
+<code>const</code>:</p>
+<pre><code class="language-zig">// C: #define KILO_QUIT_TIMES 3
+const GRAM_QUIT_TIMES = 3;
+</code></pre>
+<p>While macros are simply functions:</p>
+<pre><code class="language-zig">// In C:
+// #define FIND_RESTORE_HL do { \
+//     if (saved_hl) { \
+//         memcpy(E.row[saved_hl_line].hl,saved_hl, E.row[saved_hl_line].rsize); \
+//         free(saved_hl); \
+//         saved_hl = NULL; \
+//     } \
+// } while (0)
+
+// In Zig:
+fn findRestoreHighlight(
+    self: *Self,
+    saved_hl: *?[]Highlight,
+    saved_hl_ix: ?usize,
+) void {
+    if (saved_hl.*) |hl| {
+        mem.copy(Highlight, self.rows.items[saved_hl_ix.?].hl, hl);
+        saved_hl.* = null;
+    }
+}
+</code></pre>
+<p>In <em>gram</em>, highlight related definitions are simply a Zig <code>enum</code> instead
+of a bunch of <code>#define</code> directives, which allows the usage of the handy
+<code>@enumToInt</code> to derive syntax color instead:</p>
+<pre><code class="language-zig">const Highlight = enum(u8) {
+    number = 31,
+    match = 34,
+    string = 35,
+    comment = 36,
+    normal = 37,
+};
+
+        ...
+        var color = @enumToInt(hl);
+        ...
+</code></pre>
+<p>The above are just some of the many examples where Zig has made the code
+far more human-readable without sacrificing the conciseness of C.</p>
+</section>
+<section id="ub-footguns">
+
+<div class="title"><h2>UB footguns? </h2></div>
+<blockquote>
+<p>The simple, lazy way to write code must perform robust error handling.</p>
+</blockquote>
+<p>UB is bad, but unnecessary UB is worse - this is something that I think
+Zig remedies with the way you are forced to write programs.</p>
+<p>Consider the <a href="https://github.com/bingcicle/gram/blob/0b79b81b539bcf349012f2ea1ff862854b707dd7/src/main.zig#L543">rewritten save
+functionality</a>
+in <em>gram</em>:</p>
+<pre><code class="language-zig">fn save(self: *Self) !void {
+    const buf = try self.rowsToString();
+    defer self.allocator.free(buf);
+
+    const file = try fs.cwd().createFile(
+        self.file_path,
+        .{
+            .read = true,
+        },
+    );
+    defer file.close();
+
+    file.writeAll(buf) catch |err| {
+        return err;
+    };
+
+    try self.setStatusMessage("{d} bytes written on disk", .{buf.len});
+    self.dirty = false;
+    return;
+}
+</code></pre>
+<p>In the original kilo's save functionality alone, there already exists a
+bunch of indirection with a <code>writeerr</code> goto which is referenced a total
+of 3 times to handle the same error, and the failure case where an error
+message is written to the status message is also handled in the same
+function.</p>
+<p>Of course in such a trivial example, the logic is still relatively easy
+to reason about, but when the codebase naturally becomes larger in a
+project, this indirection is simply an unnecessary part of the language
+that results in shooting yourself in the foot.</p>
+<p>Contrast this with <em>gram</em> above, where it's a pretty clear linear flow
+with coupled resource creation/cleanup and error handling. Setting the
+status message within this function only happens if this succeeds,
+otherwise we simply catch and return the error in order to set the
+status message higher up.</p>
+<p>The best way to illustrate Zig's effect on my way of thinking is that
+it <em>quietly and gently nudges you to think about where data lives in
+terms of allocation, cleanup and error handling</em>, without shoving it in
+your face. It's natural to think that allocation comes with a <code>defer</code>
+or an <code>errdefer</code>, and the <code>std</code> exposes sane defaults for commmon
+operations like creating a file as seen above - no need to call <code>open()</code>
+with a bunch of flags!</p>
+<p>The simplicity and linearity of Zig seemed like a con to me at first
+coming from a Rust mindset, but the mental model that Zig forces me into
+is refreshing and so far I'm enjoying the ride.</p>
+<p>Feel free to reach out on <a href="https://twitter.com/bingcicle">my twitter</a> to
+give me feedback :)</p>
+</section>
+</section>
+</article>
+  </main>
+
+  <footer>
+  </footer>
+</body>
+
+</html>

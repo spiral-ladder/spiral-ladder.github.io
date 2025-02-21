@@ -1,0 +1,126 @@
+ 
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>solving ZK Hack V puzzle 3</title>
+  <meta name="description" content="">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://spiral-ladder.github.io/tech/2024/12/27/solving-zkhack-v-puzzle-3-dj.html">
+  <link rel="alternate" type="application/rss+xml" title="bh" href="https://spiral-ladder.github.io/feed.xml">
+  <style>
+  @font-face {
+    font-family: 'Open Sans'; src: url('/css/OpenSans-300-Normal.woff2') format('woff2');
+    font-weight: 300; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Italic.woff2') format('woff2');
+    font-weight: 400; font-style: italic;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Italic.woff2') format('woff2');
+    font-weight: 700; font-style: italic;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; margin-block-start: 0; margin-block-end: 0; }
+
+  body {
+    max-width: 80ch;
+    padding: 2ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  header { margin-bottom: 2rem; }
+  header > nav { display: flex; column-gap: 2ch; align-items: baseline; flex-wrap: wrap; }
+  header a { font-style: normal; color: rgba(0, 0, 0, .7); text-decoration: none; }
+  header a:hover { font-style: normal; color: rgba(0, 0, 0, 1); text-decoration: none; }
+  header .title { font-size: 1.25em; flex-grow: 2; }
+
+  footer { margin-top: 2rem; }
+  footer > p { display: flex; column-gap: 2ch; justify-content: center; flex-wrap: wrap; }
+  footer a { color: rgba(0, 0, 0, .8); text-decoration: none; white-space: nowrap; }
+  footer i { vertical-align: middle; color: rgba(0, 0, 0, .8) }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/site.css">
+  
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a class="title" href="/">bing</a>
+      <a href="/about.html">About</a>
+      <a href="/favourites.html">Favourites</a>
+    </nav>
+  </header>
+
+  <main>
+  <article >
+<section id="solving-ZK-Hack-V-puzzle-3">
+
+<div class="title"><h1>solving ZK Hack V puzzle 3 </h1><time class="meta" datetime="2024-12-27">Dec 27, 2024</time></div>
+<p>I solved my first online ZK Hack puzzle this last season. I didn’t win best writeup, but
+my writeup did get featured on the <a href="https://zkhack.dev/zkhackV/puzzleV3.html">puzzle page</a>, so that’s something at least!</p>
+<p>Instead of going over my solution in this post, I’ll briefly talk about my experience with Noir and its tooling.
+If you’re interested in my writeup, you can find it <a href="https://gist.github.com/spiral-ladder/eb544879e47d3b678cbaf766bf94186e">here</a>.</p>
+<section id="Noir:-first-impressions">
+
+<div class="title"><h2>Noir: first impressions </h2></div>
+<p>My first impression of Noir from the short puzzle alone is that it’s clean. I haven’t had much experience with writing
+Circom but reading it is a pain.</p>
+<p>Error messages in Noir are also far more useful compared to in Circom – if being Rust-based has had any positive effect, it would
+be the helpfulness of the compiler and the tooling. Speaking of tooling, nargo is great!</p>
+</section>
+<section id="The-not-so-good">
+
+<div class="title"><h2>The not-so-good </h2></div>
+<p>Now, the not so good. These are probably just nitpicks at this point because I haven’t had enough experience with the 
+language to give a fair criticism, so take these comments with a grain of salt.</p>
+<p>I think the way inputs get fed into the Noir program doesn’t seem right. Firstly, it’s not super clear that inputs
+are implicitly fed from <code>Prover.toml</code>, and secondly (this is more of a nitpick), TOML is a terrible format for such
+a purpose.</p>
+<p>I think JSON would be more suitable here for a clearer hierarchy of inputs with nesting -
+no more awkward <a href="https://toml.io/en/v1.0.0#array-of-tables">“table of tables”</a>. Especially for the purpose
+of just passing in input to the program, TOML is overkill and is suited for more verbose purposes eg.
+configuration like in <code>Cargo.toml</code>. But I guess at least YAML wasn’t chosen here.</p>
+<p>Another ‘feature’ I’m cautious about is the fact that it is a Rust-based DSL. Rust looks like Rust because of its
+design choices. I don’t think languages should emulate Rust just for the sake of ‘familiar syntax’, to capture
+Rust developers in the space. I don’t think this is the sole reason for doing a Rust-based DSL, but it’s definitely one
+of the reasons that people often cite as a positive. I’d argue that Rust syntax is overly verbose and ugly.
+It only looks that way because of the amount of work that is frontloaded to the compiler.
+Especially for circuit development, (I believe) there is no need to be ‘Rust-like’ at all, unless you’re reinventing
+rustc, except this time for circuit compilation.</p>
+<p>That said I don’t have too much else to say atm. I will have to write more Noir before I figure if I
+like it enough or not.</p>
+</section>
+</section>
+</article>
+  </main>
+
+  <footer>
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,163 @@
+ 
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zero Knowledge about ZK</title>
+  <meta name="description" content="">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://spiral-ladder.github.io/tech/2023/07/24/zero-knowledge-dj.html">
+  <link rel="alternate" type="application/rss+xml" title="bh" href="https://spiral-ladder.github.io/feed.xml">
+  <style>
+  @font-face {
+    font-family: 'Open Sans'; src: url('/css/OpenSans-300-Normal.woff2') format('woff2');
+    font-weight: 300; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Italic.woff2') format('woff2');
+    font-weight: 400; font-style: italic;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Italic.woff2') format('woff2');
+    font-weight: 700; font-style: italic;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; margin-block-start: 0; margin-block-end: 0; }
+
+  body {
+    max-width: 80ch;
+    padding: 2ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  header { margin-bottom: 2rem; }
+  header > nav { display: flex; column-gap: 2ch; align-items: baseline; flex-wrap: wrap; }
+  header a { font-style: normal; color: rgba(0, 0, 0, .7); text-decoration: none; }
+  header a:hover { font-style: normal; color: rgba(0, 0, 0, 1); text-decoration: none; }
+  header .title { font-size: 1.25em; flex-grow: 2; }
+
+  footer { margin-top: 2rem; }
+  footer > p { display: flex; column-gap: 2ch; justify-content: center; flex-wrap: wrap; }
+  footer a { color: rgba(0, 0, 0, .8); text-decoration: none; white-space: nowrap; }
+  footer i { vertical-align: middle; color: rgba(0, 0, 0, .8) }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/site.css">
+  
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a class="title" href="/">bing</a>
+      <a href="/about.html">About</a>
+      <a href="/favourites.html">Favourites</a>
+    </nav>
+  </header>
+
+  <main>
+  <article >
+<section id="Zero-Knowledge-about-ZK">
+
+<div class="title"><h1>Zero Knowledge about ZK </h1><time class="meta" datetime="2023-07-24">Jul 24, 2023</time></div>
+<p>In the recent months, I've been diving into ZK and cryptography. I will
+be using this space to write personal notes on protocols and algorithms
+I learn about, as a way to reinforce my own knowledge.</p>
+<p>This will serve as my introductory post.</p>
+<section id="what-is-a-zero-knowledge-proof">
+
+<div class="title"><h2>What is a Zero Knowledge proof? </h2></div>
+<p>Simply put, it is a receipt that proves that you (prover) know a certain
+statement, and this receipt is usually given to another person
+(verifier) to accept or reject.</p>
+<p>Different people use different examples to illustrate this, but I
+personally found <a href="https://twitter.com/cryptograthor">@cryptographor</a>'s
+example the best: <a href="https://youtu.be/rkFrGz-JGzo?t=163">the color blindness
+test</a>.</p>
+</section>
+<section id="color-blindness-test">
+
+<div class="title"><h2>Color blindness test </h2></div>
+<p>Imagine that Alice is color blind and Bob wants to prove to Alice that
+he can see color. Now imagine that Alice has a red ball and a blue ball.
+Since she is color blind, she is not convinced that the balls have
+color, and Bob wants to convince her of this fact.</p>
+<p>A simple test that Bob can do to prove that he can see color would be to
+tell Alice to hold each ball in her hands behind her back and then
+either swap or not swap the balls in her hands before revealing them to
+Bob. Bob then needs to tell Alice whether he thinks Alice swapped the
+balls or not.</p>
+<p>In the first iteration, Alice might think that Bob got lucky, since
+there was a 50% chance that Bob guessed correctly, but after enough
+iterations of the protocol above, Alice can be convinced that Bob is
+telling the truth if he is consistently correct over all the iterations.</p>
+</section>
+<section id="properties-of-zk">
+
+<div class="title"><h2>Properties of ZK </h2></div>
+<p>The above example also illustrates the 3 properties of ZK:
+<strong>completeness</strong>, <strong>soundness</strong>, <strong>zero-knowledge</strong>:</p>
+<ul>
+<li>
+<strong>Completeness</strong> Alice is convinced by an honest prover that color
+exists and that Bob can tell the difference
+</li>
+<li>
+<strong>Soundness</strong> If Bob is lying about the existence of color, it should be
+near impossible to convince Alice of that falsehood.
+</li>
+<li>
+<strong>Zero-Knowledge</strong>: Alice learns nothing other than the statement is
+true (color exists).
+</li>
+</ul>
+</section>
+<section id="modelling-zk-statements">
+
+<div class="title"><h2>Modelling ZK statements </h2></div>
+<p>Programs do not understand English statements like the above, so we want
+to convert our English statement to some sort of verifiable statement.
+This is usually done in the form of some mathematical computation, which
+comes in the form of <strong>circuits</strong>.</p>
+<p>Circuits allow us to express boolean (<code>AND</code>, <code>OR</code>) and arithmetic (<code>+</code>,
+<code>*</code>) logic. We can then model our problem as a circuit of boolean and
+arithmetic gates which in turn allow us to express the <strong>constraints</strong> of
+the program, which are pre-set restrictions placed on the circuit. The
+circuit also usually takes in witness values from the prover as private
+input.</p>
+<p>Once the circuit is formed and the input is provided, the circuit can be
+evaluated and a proof can be obtained. The verifier can be convinced
+that the proof is valid if all constraints within the circuit are
+satisfied - in plain English, this means that the prover has shown the
+verifier that he knows a given statement.</p>
+</section>
+</section>
+</article>
+  </main>
+
+  <footer>
+  </footer>
+</body>
+
+</html>
