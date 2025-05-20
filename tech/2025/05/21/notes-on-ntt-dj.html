@@ -1,0 +1,244 @@
+ 
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>notes on convolution-based NTTs</title>
+  <meta name="description" content="">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://spiral-ladder.github.io/tech/2025/05/21/notes-on-ntt-dj.html">
+  <link rel="alternate" type="application/rss+xml" title="bh" href="https://spiral-ladder.github.io/feed.xml">
+  <style>
+  @font-face {
+    font-family: 'Open Sans'; src: url('/css/OpenSans-300-Normal.woff2') format('woff2');
+    font-weight: 300; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Italic.woff2') format('woff2');
+    font-weight: 400; font-style: italic;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Italic.woff2') format('woff2');
+    font-weight: 700; font-style: italic;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; margin-block-start: 0; margin-block-end: 0; }
+
+  body {
+    max-width: 80ch;
+    padding: 2ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  header { margin-bottom: 2rem; }
+  header > nav { display: flex; column-gap: 2ch; align-items: baseline; flex-wrap: wrap; }
+  header a { font-style: normal; color: rgba(0, 0, 0, .7); text-decoration: none; }
+  header a:hover { font-style: normal; color: rgba(0, 0, 0, 1); text-decoration: none; }
+  header .title { font-size: 1.25em; flex-grow: 2; }
+
+  footer { margin-top: 2rem; }
+  footer > p { display: flex; column-gap: 2ch; justify-content: center; flex-wrap: wrap; }
+  footer a { color: rgba(0, 0, 0, .8); text-decoration: none; white-space: nowrap; }
+  footer i { vertical-align: middle; color: rgba(0, 0, 0, .8) }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/site.css">
+  
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a class="title" href="/">bing</a>
+      <a href="/about.html">About</a>
+      <a href="/favourites.html">Favourites</a>
+    </nav>
+  </header>
+
+  <main>
+  <article >
+<section id="notes-on-convolution-based-NTTs">
+
+<div class="title"><h1>notes on convolution-based NTTs </h1><time class="meta" datetime="2025-05-21">May 21, 2025</time></div>
+<p>Scribbling notes of several cool tricks I learnt from looking into number theoretic transform (NTT)
+and its application in lattice cryptography.</p>
+<p>The NTT is a special case of the discrete Fourier transform (DFT) over finite fields.</p>
+<p>This post will not cover how to do the actual NTT, but rather cover why NTTs work, which seem to be more
+inaccessible information. There are many resources for the former. Vitalik’s
+<a href="https://vitalik.eth.limo/general/2019/05/12/fft.html">blog post</a> on Fast Fourier Transforms (FFT) is one such resource.</p>
+<section id="Applications">
+
+<div class="title"><h2>Applications </h2></div>
+<p>NTT is often mentioned in STARK literature as being used to convert polynomials between coefficient and evaluation form.
+The whole idea is that naively converting between these forms usually take <span class="math inline">\(O(n^2)\)</span>, but with NTT,
+the time complexity can be brought down to <span class="math inline">\(O(n \space \text{log} \space n)\)</span>.</p>
+<p>In lattice cryptography, the NTT is used to speed up polynomial multiplication over polynomial rings,
+with similar runtime complexities like above.</p>
+</section>
+<section id="Polynomial-multiplication">
+
+<div class="title"><h2>Polynomial multiplication </h2></div>
+<p>Let <em><strong>A</strong></em> and <em><strong>B</strong></em> be polynomials of degree <span class="math inline">\(n - 1\)</span>, Then we can multiply them to get <em><strong>C</strong></em>, where</p>
+<p><span class="math display">\[C = A * B = \sum_{k=0}^{2n-2}{c_k x^k} \in \mathbb{Z}_q[x]\]</span></p>
+<p>and</p>
+<p><span class="math display">\[c_k = \sum_{i=0}^{k}{a[i] b[k - i]} \space \text{mod} \space q, k = 0, 1, ..., 2n - 2\]</span></p>
+<p>This is equivalent to a <em><strong>discrete linear convolution</strong></em> (aka naive schoolbook multiplication)
+between the two polynomials’ coefficients.</p>
+<p>There are two problems with doing it this way:</p>
+<ol>
+<li>
+it takes time complexity <span class="math inline">\(O(n^2)\)</span>, and
+</li>
+<li>
+This results in a polynomial <code>C</code> of degree <span class="math inline">\(2n - 2\)</span>.
+</li>
+</ol>
+</section>
+<section id="Cyclic-convolution-based-polynomial-multiplication">
+
+<div class="title"><h2>Cyclic convolution-based polynomial multiplication </h2></div>
+<p>Within lattice cryptography, polynomial operations are often done over a quotient ring, which is denoted by <span class="math inline">\(R / I\)</span>
+where <span class="math inline">\(R\)</span> is a polynomial ring and a two-sided ideal <span class="math inline">\(I\)</span> in <span class="math inline">\(R\)</span>. You may think of operations being
+done modulo some polynomial (ideals are out of scope for this post).</p>
+<p>This is known as a <strong>cyclic convolution-based polynomial multiplication</strong>. This name
+comes from it being a special case of a <strong>periodic convolution</strong>. You may guess from its name that computation ‘wraps around’
+to be kept within a certain bound or interval.</p>
+<p>In most literature, the term <em><strong>cyclic convolution</strong></em> refers to multiplication done over the ring <span class="math inline">\(\mathbb{Z}_q[x]/(x^n - 1)\)</span>,
+while the term <em><strong>negacyclic convolution</strong></em> refers to multiplication done over the ring <span class="math inline">\(\mathbb{Z}_q[x]/(x^n + 1)\)</span>.</p>
+<p>Alternatively, some <a href="https://arxiv.org/pdf/2211.13546">papers</a> suggest using terms like <em><strong>positive wrapped convolution</strong></em> vs
+<em><strong>negative wrapped convolution</strong></em> respectively for clarity, which I will adopt for the rest of the post.</p>
+</section>
+<section id="Positive-and-negative-wrapped-convolution">
+
+<div class="title"><h2>Positive and negative wrapped convolution </h2></div>
+<p>Let <strong>A</strong> and <strong>B</strong> be polynomials of degree <span class="math inline">\(n - 1\)</span>.
+In both <em><strong>positive wrapped convolution</strong></em> (<em>PWC</em>) and <em><strong>negative wrapped convolution</strong></em> (<em>NWC</em>), the result we are interested in is</p>
+<p><span class="math display">\[c = a \cdot b\]</span></p>
+<p>where</p>
+<p><span class="math display">\[c = \sum_{k=0}^{n-1}{c_k x^k}\]</span></p>
+<p>The difference is in what polynomial we’re doing a modulo reduction over and how <span class="math inline">\(c_k\)</span> is defined.</p>
+<p>For PWC, the quotient ring we use is <span class="math inline">\(\mathbb{Z}_q[x]/(x^n - 1)\)</span> where <span class="math inline">\(q \in \mathbb{Z}\)</span> and <span class="math inline">\(c_k\)</span> is defined as</p>
+<p><span class="math display">\[c_k = \sum_{i=0}^{k}{a_i b_{k - i}} + \sum_{i=k+1}^{n-1}{a_i b_{k+n-i}} \space \text{mod} \space q\]</span></p>
+<p>Conversely, the quotient ring for NWC is <span class="math inline">\(\mathbb{Z}_q[x]/(x^n + 1)\)</span>, and <span class="math inline">\(c_k\)</span> can be defined as</p>
+<p><span class="math display">\[c_k = \sum_{i=0}^{k}{a_i b_{k - i}} - \sum_{i=k+1}^{n-1}{a_i b_{k+n-i}} \space \text{mod} \space q\]</span></p>
+<p>Note the difference in signs.</p>
+<p>With these, the output is a polynomial <span class="math inline">\(C\)</span> of degree <span class="math inline">\(n - 1\)</span> and this addresses point 2 above.</p>
+<section id="How-do-we-make-use-of-these">
+
+<div class="title"><h3>How do we make use of these? </h3></div>
+<p>It turns out that under the <a href="https://en.wikipedia.org/wiki/Convolution_theorem">convolution theory</a>, we can transform 2 sequences of values into their NTT forms,
+multiply them pointwise and then transform the result back into the standard form, and that is equivalent to doing
+polynomial multiplication on the original 2 sequences of values. In other words,</p>
+<p><span class="math display">\[c = INTT(NTT(a) \cdot NTT(b))\]</span></p>
+<p>NTT is an <span class="math inline">\(O(n \space \text{log} \space n)\)</span> operation, which addresses point 1.</p>
+</section>
+</section>
+<section id="NTT-and-iNTT">
+
+<div class="title"><h2>NTT and iNTT </h2></div>
+<p>The NTT of a sequence of values (in this case, a vector of polynomial coefficients), is defined as
+<span class="math inline">\(\hat{a} = NTT(a)\)</span>, where</p>
+<p><span class="math display">\[\hat{a_j} = \sum_{i=0}^{n-1}{\omega^{ij} a_i} \space \text{mod} \space q, i = 0, 1, 2, ..., n - 1\]</span></p>
+<p>Conversely, the iNTT of a sequence of values is defined as</p>
+<p><span class="math display">\[a_i = n^{-1} \sum_{j=0}^{n-1}{\omega^{-ij} \hat{a_j}} \space \text{mod} \space q, j = 0, 1, 2, ..., n - 1\]</span></p>
+<p>The difference here is that the <span class="math inline">\(\omega\)</span> is replaced by its inverse in <span class="math inline">\(\mathbb{Z}_q\)</span> and we scale the result by a factor of <span class="math inline">\(n^{-1}\)</span> at the end.</p>
+<blockquote>
+<p><em>Note: This NTT/iNTT is the positive wrapped convolution-based NTT/iNTT.
+The negative wrapped convolution-based NTT/iNTT includes another term <span class="math inline">\(\psi\)</span>, but the FFT trick that we explain later will simplify
+this expression, so we skip explaining it here.</em></p>
+</blockquote>
+<p><span class="math inline">\(\omega\)</span> here is the primitive <span class="math inline">\(n\)</span>-th root of unity in <span class="math inline">\(Z_q\)</span> iff</p>
+<p><span class="math display">\[\omega^n \equiv 1 \space \text{mod} \space q\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\omega^k \not\equiv 1 \space \text{mod} \space q\]</span></p>
+<p>for <span class="math inline">\(k \lt n\)</span>. So we would need the roots generated by the primitive <em>n</em>-th root of unity <span class="math inline">\(\omega_n\)</span>.</p>
+<section id="Roots-of-unity">
+
+<div class="title"><h3>Roots of unity </h3></div>
+<p>A <strong>root of unity</strong> is any complex number that yields 1 when raised to some positive integer <span class="math inline">\(n\)</span>, otherwise known as the <em><strong>n-th root of unity</strong></em>. We are interested in roots of unity because they form the roots of cyclotomic polynomials which factorize the polynomial <span class="math inline">\(x^n - 1\)</span>, which is one of the key polynomials that we are interested in lattice cryptography.</p>
+<p>And because the <em>n-th root of unity</em> yields 1, you can think of the roots of unity as points in a unit circle in a complex plane (that is, if the set of real numbers appear on a 1-dimensional line, the complex plane ‘extends’ the real numbers by adding a 2nd dimension (visually, a y-axis). The roots of unity are then points on this 2 dimensional plane forming the unit circle since the distance from the origin to any root of unity is 1. Visually, we can imagine a circle with 3 points on it spaced out equally, starting from 1.</p>
+<p>Since we know that complex numbers can be expressed in the form <span class="math inline">\(re^{i\theta}\)</span>. For the unit circle, <span class="math inline">\(r = 1\)</span>, and since the 3 points are spaced out equally, <span class="math inline">\(\theta= 2\pi / 3\)</span>, and the next point is simply <span class="math inline">\(\theta^2 = 4\pi / 3\)</span>, and these points are <span class="math inline">\(\omega\)</span> and <span class="math inline">\(\omega^2\)</span> respectively.</p>
+<p>Now imagine we have a degree <span class="math inline">\(n - 1\)</span> polynomial - we simply extend this simple example of a degree <span class="math inline">\(3\)</span> with 3 points to <span class="math inline">\(n - 1\)</span> points.</p>
+</section>
+</section>
+<section id="why-does-this-work-mathematically">
+
+<div class="title"><h2>why does this work (mathematically)? </h2></div>
+<p>The magic behind how NTTs/iNTTs work lie in the <a href="https://cr.yp.to/papers/m3-20010811-retypeset-20220327.pdf">FFT trick</a>, 
+explained from the algebraical perspective using the Chinese Remainder Theorem (or CRT) in ring form.</p>
+<section id="For-positive-wrapped-convolutions">
+
+<div class="title"><h3>For positive wrapped convolutions </h3></div>
+<p>Formally, we have an isomorphism, or a mapping <span class="math inline">\(\phi\)</span>, 
+for polynomial rings in the form <span class="math inline">\(\mathbb{Z}_q/(x^{2m} - \omega^2)\)</span> where <span class="math inline">\(m \gt 0\)</span> and invertible <span class="math inline">\(\omega \in \mathbb{Z}_q\)</span>:</p>
+<p><span class="math display">\[\phi : \mathbb{Z}_q/(x^{2m} - \omega^2) \cong \mathbb{Z}_q/(x^{m} - \omega) \times \mathbb{Z}_q/(x^{m} + \omega)\]</span></p>
+<p>Which, when mapped to a polynomial with coefficients <code>a_i</code>:</p>
+<p><span class="math display">\[\phi (\sum_{i=0}^{2m-1}{a_i x^i}) = (\sum_{i=0}^{m-1}{(a_i + \omega \cdot a_{i+m})x^i}, \sum_{i=0}^{m-1}{(a_i - \omega \cdot a_{i+m})x^i})\]</span></p>
+<p>And for its inverse:</p>
+<p><span class="math display">\[\phi^{-1} (\sum_{i=0}^{m-1}{a_i^{'} x^i}, \sum_{i=0}^{m-1}{a_i^{''} x^i}) = \sum_{i=0}^{m-1}{\frac{1}{2}(a_i^{'} + a_i^{''})x^i} + \sum_{i=0}^{m-1}{\frac{\omega^{-1}}{2}(a_i^{'} + a_i^{''})x^{i+m}}\]</span></p>
+<p>To see why the above mapping makes sense: when
+we compute <span class="math inline">\(a \space \text{mod} \space (x^m - \omega)\)</span>, we use the identity <span class="math inline">\(x^m \equiv \omega\)</span> since <span class="math inline">\(x^m - \omega = 0\)</span> in this ring.
+So, terms with <span class="math inline">\(x^{m+i}\)</span> reduce to <span class="math inline">\(\omega x^i\)</span>. Thus, we end up with, for the <span class="math inline">\(x_i\)</span> term in the first ring,</p>
+<p><span class="math display">\[\sum_{i=0}^{m-1}{(a_i + \omega \cdot a_{i+m})x^i}\]</span></p>
+<p>The same logic works for computations modulo <span class="math inline">\((x^m + \omega)\)</span>. In which case, each <span class="math inline">\(i\)</span>-th coefficient can be computed via the sum of two parts:</p>
+<p><span class="math display">\[a_i^{'} = a_i + \omega \cdot a_{i+m}\]</span>
+<span class="math display">\[a_i^{''} = a_i - \omega \cdot a_{i+m}\]</span></p>
+<p>Which is exactly the Cooley-Tukey butterfly (CT butterfly). As for the inverse, the <span class="math inline">\(i\)</span>-th and the <span class="math inline">\(i+ \frac{n}{2}\)</span>-th coefficient of <em><strong>a</strong></em> can be derived from the <span class="math inline">\(i\)</span>-th coefficient of <em><strong>a’</strong></em> and <em><strong>a’’</strong></em>:</p>
+<p><span class="math display">\[a_i = (a_i^{'} + a_i^{''})/2\]</span>
+<span class="math display">\[a_{i+m} = \omega^{-1}(a_i^{'} - a_i^{''})/2\]</span></p>
+<p>Which is the Gentleman-Sande butterfly (GS butterfly).</p>
+</section>
+<section id="For-negative-wrapped-convolutions">
+
+<div class="title"><h3>For negative wrapped convolutions </h3></div>
+<p>Note that the above details how CRT works for positive wrapped convolutions but not negative wrapped convolutions,
+which does computations over the ring <span class="math inline">\(\mathbb{Z}_q[x]/(x^n + 1)\)</span> instead.</p>
+<p>We need to make 2 adjustments to make negative wrapped convolutions work:</p>
+<ol>
+<li>
+<p>set <span class="math inline">\(q\)</span> to be a prime number satisfying <span class="math inline">\(q \equiv \space (\text{mod} \space 2n)\)</span> such that
+the primitive <span class="math inline">\(2n\)</span>-th root of unity <span class="math inline">\(\psi_{2n}\)</span> exists, and</p>
+</li>
+<li>
+<p>Take <span class="math inline">\(\omega_n = \psi_{2n}^{2} \space \text{mod} \space q\)</span>.</p>
+</li>
+</ol>
+<p>These changes are needed because we need <span class="math inline">\(\psi_{2n}^n = -1 \space \text{mod} \space q\)</span> in order to re-express <span class="math inline">\(x^n + 1\)</span> as
+<span class="math inline">\(x^n - \psi_{2n}^n\)</span>, and from there we can proceed with the same trick above.</p>
+</section>
+<section id="Bit-reversals">
+
+<div class="title"><h3>Bit reversals? </h3></div>
+<p>The beauty of combining the CT butterfly with the GS butterfly is that we get rid of the need for bit reversal, since the standard CT butterfly takes input in the natural order to produce an output in bit-reversed order, which the GS butterfly takes as input to produce an output in the natural order! Naively, we can think of the GS butterfly as ‘undoing’ the CT butterfly operation.</p>
+</section>
+</section>
+</section>
+</article>
+  </main>
+
+  <footer>
+  </footer>
+</body>
+
+</html>
