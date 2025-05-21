@@ -103,7 +103,9 @@ async function collect_posts(category: string): Promise<Post[]> {
 
       const file = Bun.file(path);
       const [y, m, d, ...rest] = f.split(/[-.]/);
+      rest.pop();
       const slug = rest.join("-");
+
 
      // const [, y, m, d, slug] = path.match(
      //   /^(\d\d\d\d)-(\d\d)-(\d\d)-(.*)\.dj$/,
