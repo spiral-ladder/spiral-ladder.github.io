@@ -119,8 +119,8 @@ This results in a polynomial <code>C</code> of degree <span class="math inline">
 
 <div class="title"><h2>Cyclic convolution-based polynomial multiplication </h2></div>
 <p>Within lattice cryptography, polynomial operations are often done over a quotient ring, which is denoted by <span class="math inline">\(R / I\)</span>
-where <span class="math inline">\(R\)</span> is a polynomial ring and a two-sided ideal <span class="math inline">\(I\)</span> in <span class="math inline">\(R\)</span>. You may think of operations being
-done modulo some polynomial (ideals are out of scope for this post).</p>
+where <span class="math inline">\(R\)</span> is a polynomial ring and a two-sided ideal <span class="math inline">\(I\)</span> in <span class="math inline">\(R\)</span>. Ideals are out of scope for this blog post, but you may think of it as a special subset of the group <span class="math inline">\(R\)</span>.
+You may think of operations being done modulo some polynomial (ideals are out of scope for this post).</p>
 <p>This is known as a <strong>cyclic convolution-based polynomial multiplication</strong>. This name
 comes from it being a special case of a <strong>periodic convolution</strong>. You may guess from its name that computation ‘wraps around’
 to be kept within a certain bound or interval.</p>
@@ -179,7 +179,7 @@ this expression, so we skip explaining it here.</em></p>
 <p>A <strong>root of unity</strong> is any complex number that yields 1 when raised to some positive integer <span class="math inline">\(n\)</span>, otherwise known as the <em><strong>n-th root of unity</strong></em>. We are interested in roots of unity because they form the roots of cyclotomic polynomials which factorize the polynomial <span class="math inline">\(x^n - 1\)</span>, which is one of the key polynomials that we are interested in lattice cryptography.</p>
 <p>And because the <em>n-th root of unity</em> yields 1, you can think of the roots of unity as points in a unit circle in a complex plane (that is, if the set of real numbers appear on a 1-dimensional line, the complex plane ‘extends’ the real numbers by adding a 2nd dimension (visually, a y-axis). The roots of unity are then points on this 2 dimensional plane forming the unit circle since the distance from the origin to any root of unity is 1. Visually, we can imagine a circle with 3 points on it spaced out equally, starting from 1:</p>
 <p><img alt="cuberootsofunity" src="/assets/rootsofunity3rd.svg"></p>
-<p>Since we know that complex numbers can be expressed in the form <span class="math inline">\(re^{i\theta}\)</span>. For the unit circle, <span class="math inline">\(r = 1\)</span>, and since the 3 points are spaced out equally, <span class="math inline">\(\theta= 2\pi / 3\)</span>, and the next point is simply <span class="math inline">\(\theta^2 = 4\pi / 3\)</span>, and these points are <span class="math inline">\(\omega\)</span> and <span class="math inline">\(\omega^2\)</span> respectively.</p>
+<p>Since we know that complex numbers can be expressed in the form <span class="math inline">\(re^{i\theta}\)</span>. For the unit circle, <span class="math inline">\(r = 1\)</span>, and since the 3 points are spaced out equally, <span class="math inline">\(\theta= 2\pi / 3\)</span>, and the next point is simply <span class="math inline">\(\theta^2 = 4\pi / 3\)</span> (or <span class="math inline">\(-2\pi / 3\)</span>), and these points are <span class="math inline">\(\omega\)</span> and <span class="math inline">\(\omega^2\)</span> respectively.</p>
 <p>Now imagine we have a degree <span class="math inline">\(n - 1\)</span> polynomial - we simply extend this simple example of a degree <span class="math inline">\(3\)</span> with 3 points to <span class="math inline">\(n - 1\)</span> points.</p>
 </section>
 </section>
@@ -191,6 +191,9 @@ explained from the algebraical perspective using the Chinese Remainder Theorem (
 <section id="For-positive-wrapped-convolutions">
 
 <div class="title"><h3>For positive wrapped convolutions </h3></div>
+<p>We briefly mentioned ideals above - the CRT states that <span class="math inline">\(R/IJ\)</span> is isomorphic to <span class="math inline">\((R/I) \times (R/J)\)</span> if 
+<span class="math inline">\(I\)</span> and <span class="math inline">\(J\)</span> are coprime, i.e. that exists <span class="math inline">\(u \in I\)</span> and <span class="math inline">\(v \in J\)</span> such that <span class="math inline">\(u + v = 1\)</span>. However,
+we can also work with ideals that are not coprime, i.e. the roots of unity we just talked about.</p>
 <p>Formally, we have an isomorphism, or a mapping <span class="math inline">\(\phi\)</span>, 
 for polynomial rings in the form <span class="math inline">\(\mathbb{Z}_q/(x^{2m} - \omega^2)\)</span> where <span class="math inline">\(m \gt 0\)</span> and invertible <span class="math inline">\(\omega \in \mathbb{Z}_q\)</span>:</p>
 <p><span class="math display">\[\phi : \mathbb{Z}_q/(x^{2m} - \omega^2) \cong \mathbb{Z}_q/(x^{m} - \omega) \times \mathbb{Z}_q/(x^{m} + \omega)\]</span></p>
