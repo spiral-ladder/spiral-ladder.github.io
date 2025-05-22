@@ -11,6 +11,7 @@ async function build() {
 
     const paths = [
       "css/*",
+      "assets/*",
     ];
     for (const path of paths) {
      await update_path(path);
@@ -47,7 +48,7 @@ async function update_path(path: string) {
 
     const dir_entries = await readdirSync(`./content/${dir}`, { recursive: true, withFileTypes: true, });
     for await (const entry_name of dir_entries.filter(dir_entry => dir_entry.isFile()).map(dir_entry => dir_entry.name)) {
-        futs.push(update_path(`${dir}/${entry_name}`));
+        futs.push(update_path(`${dir}${entry_name}`));
     }
     await Promise.all(futs);
   } else {

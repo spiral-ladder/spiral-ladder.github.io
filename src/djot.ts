@@ -34,9 +34,30 @@ export function render(doc: Doc, ctx: RenderCtx): HtmlString {
         }>${children} </${tag}>${date}</div>\n`;
       }
     },
+     image: (node: Image, r: HTMLRenderer): string => {
+      if (has_class(node, "video")) {
+        if (!node.destination) throw "missing destination";
+        if (has_class(node, "loop")) {
+          return `<video src="${node.destination}" autoplay muted=true loop=true></video>`;
+        } else {
+          return `<video src="${node.destination}" controls muted=true></video>`;
+        }
+      }
+      return r.renderAstNodeDefault(node);
+    },
   };
   const result = djot.renderHTML(doc,  { overrides });
   return new HtmlString(result);
+}
+
+
+function attr(node: HasAttributes, name: string): string | undefined {
+  return node.attributes ? node.attributes[name] : undefined;
+}
+
+function has_class(node: AstNode, cls: string): boolean {
+  const classes = attr(node, "class") ?? "";
+  return classes.split(" ").includes(cls);
 }
 
 const get_string_content = function (node: AstNode): string {
