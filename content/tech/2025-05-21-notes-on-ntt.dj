@@ -39,8 +39,8 @@ There are two problems with doing it this way:
 ## Cyclic convolution-based polynomial multiplication
 
 Within lattice cryptography, polynomial operations are often done over a quotient ring, which is denoted by $`R / I`
-where $`R` is a polynomial ring and a two-sided ideal $`I` in $`R`. You may think of operations being
-done modulo some polynomial (ideals are out of scope for this post).
+where $`R` is a polynomial ring and a two-sided ideal $`I` in $`R`. Ideals are out of scope for this blog post, but you may think of it as a special subset of the group $`R`.
+You may think of operations being done modulo some polynomial (ideals are out of scope for this post).
 
 This is known as a *cyclic convolution-based polynomial multiplication*. This name
 comes from it being a special case of a *periodic convolution*. You may guess from its name that computation 'wraps around'
@@ -122,7 +122,7 @@ And because the _n-th root of unity_ yields 1, you can think of the roots of uni
 
 ![cuberootsofunity](/assets/rootsofunity3rd.svg)
 
-Since we know that complex numbers can be expressed in the form $`re^{i\theta}`. For the unit circle, $`r = 1`, and since the 3 points are spaced out equally, $`\theta= 2\pi / 3`, and the next point is simply $`\theta^2 = 4\pi / 3`, and these points are $`\omega` and $`\omega^2` respectively.
+Since we know that complex numbers can be expressed in the form $`re^{i\theta}`. For the unit circle, $`r = 1`, and since the 3 points are spaced out equally, $`\theta= 2\pi / 3`, and the next point is simply $`\theta^2 = 4\pi / 3` (or $`-2\pi / 3`), and these points are $`\omega` and $`\omega^2` respectively.
 
 Now imagine we have a degree $`n - 1` polynomial - we simply extend this simple example of a degree $`3` with 3 points to $`n - 1` points.
 
@@ -132,6 +132,10 @@ The magic behind how NTTs/iNTTs work lie in the [FFT trick][bernstein],
 explained from the algebraical perspective using the Chinese Remainder Theorem (or CRT) in ring form.
 
 ### For positive wrapped convolutions
+
+We briefly mentioned ideals above - the CRT states that $`R/IJ` is isomorphic to $`(R/I) \times (R/J)` if 
+$`I` and $`J` are coprime, i.e. that exists $`u \in I` and $`v \in J` such that $`u + v = 1`. However,
+we can also work with ideals that are not coprime, i.e. the roots of unity we just talked about.
 
 Formally, we have an isomorphism, or a mapping $`\phi`, 
 for polynomial rings in the form $`\mathbb{Z}_q/(x^{2m} - \omega^2)` where $`m \gt 0` and invertible $`\omega \in \mathbb{Z}_q`:
