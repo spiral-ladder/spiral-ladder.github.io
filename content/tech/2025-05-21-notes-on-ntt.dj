@@ -120,7 +120,7 @@ A *root of unity* is any complex number that yields 1 when raised to some positi
 
 And because the _n-th root of unity_ yields 1, you can think of the roots of unity as points in a unit circle in a complex plane (that is, if the set of real numbers appear on a 1-dimensional line, the complex plane 'extends' the real numbers by adding a 2nd dimension (visually, a y-axis). The roots of unity are then points on this 2 dimensional plane forming the unit circle since the distance from the origin to any root of unity is 1. Visually, we can imagine a circle with 3 points on it spaced out equally, starting from 1:
 
-![cuberootsofunity](/assets/cuberootsofunity.png)
+![cuberootsofunity](/assets/rootsofunity3rd.svg)
 
 Since we know that complex numbers can be expressed in the form $`re^{i\theta}`. For the unit circle, $`r = 1`, and since the 3 points are spaced out equally, $`\theta= 2\pi / 3`, and the next point is simply $`\theta^2 = 4\pi / 3`, and these points are $`\omega` and $`\omega^2` respectively.
 
