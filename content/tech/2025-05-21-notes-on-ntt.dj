@@ -175,7 +175,7 @@ which does computations over the ring $`\mathbb{Z}_q[x]/(x^n + 1)` instead.
 
 We need to make 2 adjustments to make negative wrapped convolutions work:
 
-1. set $`q` to be a prime number satisfying $`q \equiv \space (\text{mod} \space 2n)` such that
+1. set $`q` to be a prime number satisfying $`q \equiv \space 1 (\text{mod} \space 2n)` such that
 the primitive $`2n`-th root of unity $`\psi_{2n}` exists, and
 
 2. Take $`\omega_n = \psi_{2n}^{2} \space \text{mod} \space q`.
