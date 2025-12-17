@@ -55,10 +55,12 @@ body {
   margin-right: auto;
 }
 
-table, img {
-  height: auto;
-  display: block;
-  width: 100%;
+img {
+  max-width: 100%;
+}
+
+table {
+  max-width: 100%;
 }
 
 ul {
