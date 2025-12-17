@@ -55,7 +55,11 @@ body {
   margin-right: auto;
 }
 
-table, img {
+img {
+  max-width: 100%;
+}
+
+table {
   max-width: 100%;
 }
 
