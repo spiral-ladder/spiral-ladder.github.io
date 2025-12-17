@@ -55,8 +55,9 @@ body {
   margin-right: auto;
 }
 
-
-table {
+table, img {
+  height: auto;
+  display: block;
   width: 100%;
 }
 
