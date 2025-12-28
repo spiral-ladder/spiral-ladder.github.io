@@ -1,0 +1,236 @@
+ 
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>what I've been using in 2025</title>
+  <meta name="description" content="">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://spiral-ladder.github.io/tech/2025/12/27/what-ive-used-2025.html">
+  <link rel="alternate" type="application/rss+xml" title="bh" href="https://spiral-ladder.github.io/feed.xml">
+  <style>
+  @font-face {
+    font-family: 'Open Sans'; src: url('/css/OpenSans-300-Normal.woff2') format('woff2');
+    font-weight: 300; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Italic.woff2') format('woff2');
+    font-weight: 400; font-style: italic;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Italic.woff2') format('woff2');
+    font-weight: 700; font-style: italic;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; margin-block-start: 0; margin-block-end: 0; }
+
+  body {
+    max-width: 80ch;
+    padding: 2ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  header { margin-bottom: 2rem; }
+  header > nav { display: flex; column-gap: 2ch; align-items: baseline; flex-wrap: wrap; }
+  header a { font-style: normal; color: rgba(0, 0, 0, .7); text-decoration: none; }
+  header a:hover { font-style: normal; color: rgba(0, 0, 0, 1); text-decoration: none; }
+  header .title { font-size: 1.25em; flex-grow: 2; }
+
+  footer { margin-top: 2rem; }
+  footer > p { display: flex; column-gap: 2ch; justify-content: center; flex-wrap: wrap; }
+  footer a { color: rgba(0, 0, 0, .8); text-decoration: none; white-space: nowrap; }
+  footer i { vertical-align: middle; color: rgba(0, 0, 0, .8) }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/site.css">
+  
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a class="title" href="/">bing</a>
+      <a href="/about.html">About</a>
+      <a href="/favourites.html">Favourites</a>
+    </nav>
+  </header>
+
+  <main>
+  <article >
+<section id="what-I've-been-using-in-2025">
+
+<div class="title"><h1>what I’ve been using in 2025 </h1><time class="meta" datetime="2025-12-27">Dec 27, 2025</time></div>
+<p>Here are some notable things that I’ve been using in 2025:</p>
+<ul>
+<li>
+Mail: Fastmail
+</li>
+<li>
+Notes: Apple Notes
+</li>
+<li>
+Photos: Halide
+</li>
+<li>
+Browser: Brave
+</li>
+<li>
+Password Management: KeepassXC, iCloud KeyChain
+</li>
+<li>
+Terminal: Ghostty
+</li>
+<li>
+VCS: Jujutsu (mostly)
+</li>
+<li>
+Packages: Nix (sometimes)
+</li>
+<li>
+Writing: Djot
+</li>
+</ul>
+<section id="Jujutsu">
+
+<div class="title"><h2>Jujutsu </h2></div>
+<p><a href="https://www.jj-vcs.dev/latest/">Jujutsu</a> has been my favourite new discovery this year. I’ve been test driving it for a few months for
+all my projects (both personal and work) in place of Git. It is a version control system with some saner defaults.</p>
+<p>I don’t intend for this section to be a jj tutorial - for that you can refer to <a href="https://steveklabnik.github.io/jujutsu-tutorial/">Steve Klabnik’s blog post</a>.
+I’m just going to talk about some of my favourite features.</p>
+<p>I like that there isn’t really a concept of a ‘branch’ in jj. Everything is based on <a href="https://docs.jj-vcs.dev/latest/glossary/#revision">revisions</a>. To ‘branch’, all we need to do is <code>jj new</code>:</p>
+<pre><code class="language-console">$ jj new
+Working copy now at: swnvquqy 99fd588e (empty) (no description set)
+Parent commit      : mntozvyz 239f6041 update README
+</code></pre>
+<p>Now any changes done to the working copy is automatically added to the changeset, which means you don’t have to do <code>git add</code>:</p>
+<pre><code class="language-console">$ jj diff
+Modified regular file README.md:
+   1    1: This is my readme
+        2:
+        3: This is very awesome!
+$ jj status
+Working copy changes:
+M README.md
+Working copy : swnvquqy d1e85f72 (no description set)
+Parent commit: mntozvyz 239f6041 update README
+</code></pre>
+<p>Suppose you want to make some other changes on the README while still keeping the current changes. We just need to do <code>jj new &lt;revset&gt;</code> (in
+this case, <code>jj new mntozvyz</code>). A revset is a <a href="https://docs.jj-vcs.dev/latest/revsets/">set of revisions</a>. Then, the tree looks something like this:</p>
+<pre><code class="language-console">➜ jj log
+@  lnpumvro spiralladder@fastmail.com 2025-12-28 10:47:40 ad61f8f1
+│  (empty) (no description set)
+│ ○  swnvquqy spiralladder@fastmail.com 2025-12-28 10:45:59 d1e85f72
+├─╯  (no description set)
+○  mntozvyz spiralladder@fastmail.com 2025-12-28 10:45:30 239f6041
+│  update README
+○  skwkvyys spiralladder@fastmail.com 2025-12-28 10:44:29 6bdd5fec
+│  add README
+◆  zzzzzzzz root() 00000000
+</code></pre>
+<p>Now our working copy has no changes, but our previous changes were ‘stashed’ at <code>swnvquqy</code>.</p>
+<p>Notice how there’s also a message saying <code>no description set</code> under those revisions we just created. A description is just a commit message; jj does not
+force you to commit to writing a description at the point where you make changes. Instead, you can go back and write a description when you want to actually
+push upstream:</p>
+<pre><code class="language-console">$ jj edit sw
+Working copy now at: swnvquqy d1e85f72 (no description set)
+Parent commit      : mntozvyz 239f6041 update README
+Added 0 files, modified 1 files, removed 0 files
+$ jj describe -m "Update README with more cool stuff"
+Working copy now at: swnvquqy 70a89c0f Update README with more cool stuff
+Parent commit      : mntozvyz 239f6041 update README
+</code></pre>
+<p>There are many more cool features that makes <code>jj</code> so much more intuitive and a pleasure to use and I’m still not an advanced user by any means, but
+the experience has been great so far.</p>
+</section>
+<section id="Nix">
+
+<div class="title"><h2>Nix </h2></div>
+<p>I’ve been on and off experimenting with <a href="https://nix-darwin.org/">nix-darwin</a> and <a href="https://nixos.wiki/wiki/flakes">flakes</a> to manage my packages the Nix way but I regret to say I haven’t fully switched over to relying on Nix. I just haven’t fully committed to commit to the ecosystem especially with the amount of <a href="https://x.com/jonringer117/status/1979025233794470265">drama</a> surrounding the community, and I doubt I will.</p>
+<p>I still use Nix where there’s minimum friction with maximal benefit though! My current Zig dev setup, for example, is a 9-line shell script that uses a flake:</p>
+<pre><code class="language-sh">#!/bin/sh
+
+ZIG_VERSION=$1
+if [ -z "$1" ]; then
+  ZIG_VERSION="0.15.2"
+fi
+
+CMD=github:mitchellh/zig-overlay#\"$ZIG_VERSION\"
+nix shell $CMD
+</code></pre>
+<p>With this I can easily switch between different versions of zig for different projects.</p>
+</section>
+<section id="Ghostty">
+
+<div class="title"><h2>Ghostty </h2></div>
+<p>I’ve been a happy <a href="https://ghostty.org/">Ghostty</a> user since beta. I love how it is designed to run out of the box on default settings.</p>
+<p>Below is my entire configuration. I haven’t bothered playing around with it too much because I like how it looks at the moment and probably won’t change it for a while. And yes, I’m using a light theme, because light themes are superior to dark themes :)</p>
+<pre><code>theme = zenbones
+term = xterm-ghostty
+macos-titlebar-style = tabs
+font-family = IosevkaTermSlab Nerd Font Mono
+
+palette = 0=#5c5f77                                                                         
+palette = 1=#d20f39                                                                         
+palette = 2=#40a02b
+palette = 3=#df8e1d
+palette = 4=#1e66f5
+palette = 5=#ea76cb
+palette = 6=#179299
+palette = 7=#acb0be                                                                        
+palette = 8=#6c6f85
+palette = 9=#d20f39
+palette = 10=#40a02b
+palette = 11=#df8e1d
+palette = 12=#1e66f5
+palette = 13=#ea76cb                                                                        
+palette = 14=#179299                                                                  
+palette = 15=#bcc0cc
+
+keybind = super+t=goto_split:next
+keybind = shift+enter=text:\n
+</code></pre>
+</section>
+<section id="Djot">
+
+<div class="title"><h2>Djot </h2></div>
+<p>I’ve been blogging this year in <a href="https://github.com/jgm/djot"><code>djot</code></a> after reading John MacFarlane’s <a href="https://johnmacfarlane.net/beyond-markdown.html">Beyond Markdown</a> blog post. This blog was written in djot! Djot exists as a re-imagining of a light markup syntax stripped away from CommnMark’s spec, which, even with it reaching version 1.0, is (arguably) bloated with several ambiguous rules, making it difficult to parse. The arguments are laid out very well in the blog post linked above.</p>
+<p>As a writer though, there isn’t a big difference between writing in markdown and in djot. I just like cool things.</p>
+</section>
+<section id="Halide">
+
+<div class="title"><h2>Halide </h2></div>
+<p>I’ve been shooting some photos with <a href="https://halide.cam/">Halide</a> for a month or two. With Process Zero, you get film-like shots with minimal processing and no AI, which creates a more old school, natural feel to photos:</p>
+<p><img alt="halide1" src="/assets/halide1.png">
+<img alt="halide2" src="/assets/halide2.png"></p>
+<p>I have just been mainly using the automatic focus because I’m lazy but I would eventually like to start experimenting with manual shots soon.</p>
+</section>
+</section>
+</article>
+  </main>
+
+  <footer>
+  </footer>
+</body>
+
+</html>
