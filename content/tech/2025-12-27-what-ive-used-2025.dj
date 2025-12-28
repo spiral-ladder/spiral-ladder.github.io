@@ -133,7 +133,7 @@ keybind = shift+enter=text:\n
 
 ## Djot
 
-I've been blogging this year in [`djot`](https://github.com/jgm/djot) after reading John MacFarlane's [Beyond Markdown](https://johnmacfarlane.net/beyond-markdown.html) blog post. This blog was written in djot! Djot exists as a re-imagining of a light markup syntax stripped away from CommnMark's spec, which, even with it reaching version 1.0, is (arguably) bloated with several ambiguous rules, making it difficult to parse. The arguments are laid out very well in the blog post linked above.
+I've been blogging this year in [`djot`](https://github.com/jgm/djot) after reading John MacFarlane's [Beyond Markdown](https://johnmacfarlane.net/beyond-markdown.html) blog post. In fact, [this blog](https://github.com/spiral-ladder/spiral-ladder.github.io/blob/main/content/tech/2025-12-27-what-ive-used-2025.dj) was written in djot! Djot exists as a re-imagining of a light markup syntax stripped away from CommnMark's spec, which, even with it reaching version 1.0, is (arguably) bloated with several ambiguous rules, making it difficult to parse. The arguments are laid out very well in the blog post linked above.
 
 As a writer though, there isn't a big difference between writing in markdown and in djot. I just like cool things.
 
