@@ -4,12 +4,12 @@
 <head>
   <meta charset='utf-8'>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>bing</title>
-  <meta name="description" content="spiral ladder">
+  <title>Utils considered harmful</title>
+  <meta name="description" content="">
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <link rel="icon" href="/favicon.png" type="image/png">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="canonical" href="https://spiral-ladder.github.io">
+  <link rel="canonical" href="https://spiral-ladder.github.io/tech/2026/01/31/utils-considered-harmful.html">
   <link rel="alternate" type="application/rss+xml" title="bh" href="https://spiral-ladder.github.io/feed.xml">
   <style>
   @font-face {
@@ -77,48 +77,25 @@
   </header>
 
   <main>
-  
+  <article >
+<section id="Utils-considered-harmful">
 
-<h2>tech</h2>
-<ul class="post-list">
-  <li>
-    <a href="/tech/2026/01/31/utils-considered-harmful.html">Utils considered harmful</a> <time class="meta" datetime="2026-01-31">Jan 31, 2026</time>
-  </li>
-  <li>
-    <a href="/tech/2025/12/27/what-ive-used-2025.html">what I've been using in 2025</a> <time class="meta" datetime="2025-12-27">Dec 27, 2025</time>
-  </li>
-  <li>
-    <a href="/tech/2025/05/21/notes-on-ntt.html">notes on convolution-based NTTs</a> <time class="meta" datetime="2025-05-21">May 21, 2025</time>
-  </li>
-  <li>
-    <a href="/tech/2024/12/27/solving-zkhack-v-puzzle-3.html">solving ZK Hack V puzzle 3</a> <time class="meta" datetime="2024-12-27">Dec 27, 2024</time>
-  </li>
-  <li>
-    <a href="/tech/2024/06/16/shamir-secret-sharing.html">Shamir's Secret Sharing</a> <time class="meta" datetime="2024-06-16">Jun 16, 2024</time>
-  </li>
-  <li>
-    <a href="/tech/2024/01/07/grug-brained-guide-to-kzg-polynomial-commitments.html">Grug Brained Guide to KZG Polynomial Commitments</a> <time class="meta" datetime="2024-01-07">Jan 7, 2024</time>
-  </li>
-  <li>
-    <a href="/tech/2023/09/16/curious-case-of-inclusive-ranges.html">The Curious Case Of Inclusive Ranges</a> <time class="meta" datetime="2023-09-16">Sep 16, 2023</time>
-  </li>
-  <li>
-    <a href="/tech/2023/07/24/zero-knowledge.html">Zero Knowledge about ZK</a> <time class="meta" datetime="2023-07-24">Jul 24, 2023</time>
-  </li>
-  <li>
-    <a href="/tech/2023/04/13/ziggifying-kilo.html">Ziggifying Kilo</a> <time class="meta" datetime="2023-04-13">Apr 13, 2023</time>
-  </li></ul>
-
-<h2>ramblings</h2>
-<ul class="post-list">
-  <li>
-    <a href="/ramblings/2025/12/17/on-burnout-and-inertia.html">on burnout and inertia</a> <time class="meta" datetime="2025-12-17">Dec 17, 2025</time>
-  </li>
-  <li>
-    <a href="/ramblings/2024/12/31/things-unlearned.html">things unlearned</a> <time class="meta" datetime="2024-12-31">Dec 31, 2024</time>
-  </li></ul>
-
-
+<div class="title"><h1>Utils considered harmful </h1><time class="meta" datetime="2026-01-31">Jan 31, 2026</time></div>
+<p><strong>Having a utils directory anywhere in your codebase is an anti-pattern</strong>. A function is a utility that turns some input into an output. 
+A rust macro is a utility that generates some rust code at compile-time. A struct is a utility that groups data together, and so on.</p>
+<p>There are also <a href="https://www.jeromethibaud.com/en/blog/utils-considered-harmful/">other</a> <a href="https://mattilehtinen.com/articles/dunghill-anti-pattern-why-utility-classes-and-modules-smell/">blog</a> <a href="https://medium.com/@samurai.stateless.coder/the-utils-trap-why-i-stopped-using-utility-classes-and-what-i-do-instead-5d1f461c723a">posts</a> (Each word is a link to a different blog) which share this same view.</p>
+<p>Usually,  having a utils directory or file means it ends up being a dumping ground for code that we were too lazy to think of a good name for.
+To not have this problem, we can simply not have a utils directory/file.</p>
+<p>I’d argue the only case for having some sort of file/directory named utils is when there is a prefix explaining what sort of utils they act on, eg. <code>math_utils.zig</code> would be an acceptable name. But I’m a purist in the sense that I think having nothing named utils is best.</p>
+<p>Instead of naming something utils, prefer instead a domain-first approach.
+If a collection of functions operate on a specific data structure, consider naming the file after that structure.
+Example: A <code>BeaconState</code> in an Ethereum consensus client contains an array of <code>Validator</code>s. 
+Any functions that act upon this <code>Validator</code> structure can be named <code>validators.zig</code>.</p>
+<p>Discoverability from a file explorer level is underrated; files put together imply a closer relationship than files put in a separate directory.
+Files put on the same level imply that they share the same hierarchy in the project - they may be related but neither files ‘own’ each other.</p>
+<p>Your responsibility as a code owner is to minimize cognitive load of the reader of the codebase. Thoughtful naming and organisation of your project works towards this goal by telling your readers as much as possible without having to go into the contents of a file or a directory.</p>
+</section>
+</article>
   </main>
 
   <footer>
