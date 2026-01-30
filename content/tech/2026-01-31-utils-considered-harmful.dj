@@ -1,0 +1,21 @@
+# Utils considered harmful
+
+*Having a utils directory anywhere in your codebase is an anti-pattern*. A function is a utility that turns some input into an output. 
+A rust macro is a utility that generates some rust code at compile-time. A struct is a utility that groups data together, and so on.
+
+There are also [other](https://www.jeromethibaud.com/en/blog/utils-considered-harmful/) [blog](https://mattilehtinen.com/articles/dunghill-anti-pattern-why-utility-classes-and-modules-smell/) [posts](https://medium.com/@samurai.stateless.coder/the-utils-trap-why-i-stopped-using-utility-classes-and-what-i-do-instead-5d1f461c723a) (Each word is a link to a different blog) which share this same view.
+
+Usually,  having a utils directory or file means it ends up being a dumping ground for code that we were too lazy to think of a good name for.
+To not have this problem, we can simply not have a utils directory/file.
+
+I’d argue the only case for having some sort of file/directory named utils is when there is a prefix explaining what sort of utils they act on, eg. `math_utils.zig` would be an acceptable name. But I’m a purist in the sense that I think having nothing named utils is best.
+
+Instead of naming something utils, prefer instead a domain-first approach.
+If a collection of functions operate on a specific data structure, consider naming the file after that structure.
+Example: A `BeaconState` in an Ethereum consensus client contains an array of `Validator`s. 
+Any functions that act upon this `Validator` structure can be named `validators.zig`.
+
+Discoverability from a file explorer level is underrated; files put together imply a closer relationship than files put in a separate directory.
+Files put on the same level imply that they share the same hierarchy in the project - they may be related but neither files ‘own’ each other.
+
+Your responsibility as a code owner is to minimize cognitive load of the reader of the codebase. Thoughtful naming and organisation of your project works towards this goal by telling your readers as much as possible without having to go into the contents of a file or a directory.
