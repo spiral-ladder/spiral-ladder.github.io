@@ -1,0 +1,1422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bing</title>
+    <link>https://spiral-ladder.github.io</link>
+    <description>spiral ladder</description>
+    <atom:link href="https://spiral-ladder.github.io/feed.xml" rel="self" type="application/rss+xml"/>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 24 Mar 2026 15:05:25 GMT</lastBuildDate>
+    <item>
+      <title>Utils considered harmful</title>
+      <link>https://spiral-ladder.github.io/tech/2026/01/31/utils-considered-harmful.html</link>
+      <guid>https://spiral-ladder.github.io/tech/2026/01/31/utils-considered-harmful.html</guid>
+      <pubDate>Sat, 31 Jan 2026 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;Utils-considered-harmful&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;Utils considered harmful &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2026-01-31&quot;&gt;Jan 31, 2026&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;&lt;strong&gt;Having a utils directory anywhere in your codebase is an anti-pattern&lt;/strong&gt;. A function is a utility that turns some input into an output. 
+A rust macro is a utility that generates some rust code at compile-time. A struct is a utility that groups data together, and so on.&lt;/p&gt;
+&lt;p&gt;There are also &lt;a href=&quot;https://www.jeromethibaud.com/en/blog/utils-considered-harmful/&quot;&gt;other&lt;/a&gt; &lt;a href=&quot;https://mattilehtinen.com/articles/dunghill-anti-pattern-why-utility-classes-and-modules-smell/&quot;&gt;blog&lt;/a&gt; &lt;a href=&quot;https://medium.com/@samurai.stateless.coder/the-utils-trap-why-i-stopped-using-utility-classes-and-what-i-do-instead-5d1f461c723a&quot;&gt;posts&lt;/a&gt; (Each word is a link to a different blog) which share this same view.&lt;/p&gt;
+&lt;p&gt;Usually,  having a utils directory or file means it ends up being a dumping ground for code that we were too lazy to think of a good name for.
+To not have this problem, we can simply not have a utils directory/file.&lt;/p&gt;
+&lt;p&gt;I’d argue the only case for having some sort of file/directory named utils is when there is a prefix explaining what sort of utils they act on, eg. &lt;code&gt;math_utils.zig&lt;/code&gt; would be an acceptable name. But I’m a purist in the sense that I think having nothing named utils is best.&lt;/p&gt;
+&lt;p&gt;Instead of naming something utils, prefer instead a domain-first approach.
+If a collection of functions operate on a specific data structure, consider naming the file after that structure.
+Example: A &lt;code&gt;BeaconState&lt;/code&gt; in an Ethereum consensus client contains an array of &lt;code&gt;Validator&lt;/code&gt;s. 
+Any functions that act upon this &lt;code&gt;Validator&lt;/code&gt; structure can be named &lt;code&gt;validators.zig&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Discoverability from a file explorer level is underrated; files put together imply a closer relationship than files put in a separate directory.
+Files put on the same level imply that they share the same hierarchy in the project - they may be related but neither files ‘own’ each other.&lt;/p&gt;
+&lt;p&gt;Your responsibility as a code owner is to minimize cognitive load of the reader of the codebase. Thoughtful naming and organisation of your project works towards this goal by telling your readers as much as possible without having to go into the contents of a file or a directory.&lt;/p&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>what I&apos;ve been using in 2025</title>
+      <link>https://spiral-ladder.github.io/tech/2025/12/27/what-ive-used-2025.html</link>
+      <guid>https://spiral-ladder.github.io/tech/2025/12/27/what-ive-used-2025.html</guid>
+      <pubDate>Sat, 27 Dec 2025 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;what-I&apos;ve-been-using-in-2025&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;what I’ve been using in 2025 &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2025-12-27&quot;&gt;Dec 27, 2025&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;Here are some notable things that I’ve been using in 2025:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+Mail: Fastmail
+&lt;/li&gt;
+&lt;li&gt;
+Notes: Apple Notes
+&lt;/li&gt;
+&lt;li&gt;
+Photos: Halide
+&lt;/li&gt;
+&lt;li&gt;
+Browser: Brave
+&lt;/li&gt;
+&lt;li&gt;
+Password Management: KeepassXC, iCloud KeyChain
+&lt;/li&gt;
+&lt;li&gt;
+Terminal: Ghostty
+&lt;/li&gt;
+&lt;li&gt;
+VCS: Jujutsu (mostly)
+&lt;/li&gt;
+&lt;li&gt;
+Packages: Nix (sometimes)
+&lt;/li&gt;
+&lt;li&gt;
+Writing: Djot
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;section id=&quot;Jujutsu&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Jujutsu &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.jj-vcs.dev/latest/&quot;&gt;Jujutsu&lt;/a&gt; has been my favourite new discovery this year. I’ve been test driving it for a few months for
+all my projects (both personal and work) in place of Git. It is a version control system with some saner defaults.&lt;/p&gt;
+&lt;p&gt;I don’t intend for this section to be a jj tutorial - for that you can refer to &lt;a href=&quot;https://steveklabnik.github.io/jujutsu-tutorial/&quot;&gt;Steve Klabnik’s blog post&lt;/a&gt;.
+I’m just going to talk about some of my favourite features.&lt;/p&gt;
+&lt;p&gt;I like that there isn’t really a concept of a ‘branch’ in jj. Everything is based on &lt;a href=&quot;https://docs.jj-vcs.dev/latest/glossary/#revision&quot;&gt;revisions&lt;/a&gt;. To ‘branch’, all we need to do is &lt;code&gt;jj new&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-console&quot;&gt;$ jj new
+Working copy now at: swnvquqy 99fd588e (empty) (no description set)
+Parent commit      : mntozvyz 239f6041 update README
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now any changes done to the working copy is automatically added to the changeset, which means you don’t have to do &lt;code&gt;git add&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-console&quot;&gt;$ jj diff
+Modified regular file README.md:
+   1    1: This is my readme
+        2:
+        3: This is very awesome!
+$ jj status
+Working copy changes:
+M README.md
+Working copy : swnvquqy d1e85f72 (no description set)
+Parent commit: mntozvyz 239f6041 update README
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Suppose you want to make some other changes on the README while still keeping the current changes. We just need to do &lt;code&gt;jj new &amp;lt;revset&amp;gt;&lt;/code&gt; (in
+this case, &lt;code&gt;jj new mntozvyz&lt;/code&gt;). A revset is a &lt;a href=&quot;https://docs.jj-vcs.dev/latest/revsets/&quot;&gt;set of revisions&lt;/a&gt;. Then, the tree looks something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-console&quot;&gt;➜ jj log
+@  lnpumvro spiralladder@fastmail.com 2025-12-28 10:47:40 ad61f8f1
+│  (empty) (no description set)
+│ ○  swnvquqy spiralladder@fastmail.com 2025-12-28 10:45:59 d1e85f72
+├─╯  (no description set)
+○  mntozvyz spiralladder@fastmail.com 2025-12-28 10:45:30 239f6041
+│  update README
+○  skwkvyys spiralladder@fastmail.com 2025-12-28 10:44:29 6bdd5fec
+│  add README
+◆  zzzzzzzz root() 00000000
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now our working copy has no changes, but our previous changes were ‘stashed’ at &lt;code&gt;swnvquqy&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Notice how there’s also a message saying &lt;code&gt;no description set&lt;/code&gt; under those revisions we just created. A description is just a commit message; jj does not
+force you to commit to writing a description at the point where you make changes. Instead, you can go back and write a description when you want to actually
+push upstream:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-console&quot;&gt;$ jj edit sw
+Working copy now at: swnvquqy d1e85f72 (no description set)
+Parent commit      : mntozvyz 239f6041 update README
+Added 0 files, modified 1 files, removed 0 files
+$ jj describe -m &quot;Update README with more cool stuff&quot;
+Working copy now at: swnvquqy 70a89c0f Update README with more cool stuff
+Parent commit      : mntozvyz 239f6041 update README
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are many more cool features that makes &lt;code&gt;jj&lt;/code&gt; so much more intuitive and a pleasure to use and I’m still not an advanced user by any means, but
+the experience has been great so far.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;Nix&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Nix &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;I’ve been on and off experimenting with &lt;a href=&quot;https://nix-darwin.org/&quot;&gt;nix-darwin&lt;/a&gt; and &lt;a href=&quot;https://nixos.wiki/wiki/flakes&quot;&gt;flakes&lt;/a&gt; to manage my packages the Nix way but I regret to say I haven’t fully switched over to relying on Nix. I just haven’t fully committed to commit to the ecosystem especially with the amount of &lt;a href=&quot;https://x.com/jonringer117/status/1979025233794470265&quot;&gt;drama&lt;/a&gt; surrounding the community, and I doubt I will.&lt;/p&gt;
+&lt;p&gt;I still use Nix where there’s minimum friction with maximal benefit though! My current Zig dev setup, for example, is a 9-line shell script that uses a flake:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-sh&quot;&gt;#!/bin/sh
+
+ZIG_VERSION=$1
+if [ -z &quot;$1&quot; ]; then
+  ZIG_VERSION=&quot;0.15.2&quot;
+fi
+
+CMD=github:mitchellh/zig-overlay#\&quot;$ZIG_VERSION\&quot;
+nix shell $CMD
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;With this I can easily switch between different versions of zig for different projects.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;Ghostty&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Ghostty &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;I’ve been a happy &lt;a href=&quot;https://ghostty.org/&quot;&gt;Ghostty&lt;/a&gt; user since beta. I love how it is designed to run out of the box on default settings.&lt;/p&gt;
+&lt;p&gt;Below is my entire configuration. I haven’t bothered playing around with it too much because I like how it looks at the moment and probably won’t change it for a while. And yes, I’m using a light theme, because light themes are superior to dark themes :)&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;theme = zenbones
+term = xterm-ghostty
+macos-titlebar-style = tabs
+font-family = IosevkaTermSlab Nerd Font Mono
+
+palette = 0=#5c5f77                                                                         
+palette = 1=#d20f39                                                                         
+palette = 2=#40a02b
+palette = 3=#df8e1d
+palette = 4=#1e66f5
+palette = 5=#ea76cb
+palette = 6=#179299
+palette = 7=#acb0be                                                                        
+palette = 8=#6c6f85
+palette = 9=#d20f39
+palette = 10=#40a02b
+palette = 11=#df8e1d
+palette = 12=#1e66f5
+palette = 13=#ea76cb                                                                        
+palette = 14=#179299                                                                  
+palette = 15=#bcc0cc
+
+keybind = super+t=goto_split:next
+keybind = shift+enter=text:\n
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/section&gt;
+&lt;section id=&quot;Djot&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Djot &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;I’ve been blogging this year in &lt;a href=&quot;https://github.com/jgm/djot&quot;&gt;&lt;code&gt;djot&lt;/code&gt;&lt;/a&gt; after reading John MacFarlane’s &lt;a href=&quot;https://johnmacfarlane.net/beyond-markdown.html&quot;&gt;Beyond Markdown&lt;/a&gt; blog post. In fact, &lt;a href=&quot;https://github.com/spiral-ladder/spiral-ladder.github.io/blob/main/content/tech/2025-12-27-what-ive-used-2025.dj&quot;&gt;this blog&lt;/a&gt; was written in djot! Djot exists as a re-imagining of a light markup syntax stripped away from CommnMark’s spec, which, even with it reaching version 1.0, is (arguably) bloated with several ambiguous rules, making it difficult to parse. The arguments are laid out very well in the blog post linked above.&lt;/p&gt;
+&lt;p&gt;As a writer though, there isn’t a big difference between writing in markdown and in djot. I just like cool things.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;Halide&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Halide &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;I’ve been shooting some photos with &lt;a href=&quot;https://halide.cam/&quot;&gt;Halide&lt;/a&gt; for a month or two. With Process Zero, you get film-like shots with minimal processing and no AI, which creates a more old school, natural feel to photos:&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;halide1&quot; src=&quot;/assets/halide1.png&quot;&gt;
+&lt;img alt=&quot;halide2&quot; src=&quot;/assets/halide2.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I have just been mainly using the automatic focus because I’m lazy but I would eventually like to start experimenting with manual shots soon.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>on burnout and inertia</title>
+      <link>https://spiral-ladder.github.io/ramblings/2025/12/17/on-burnout-and-inertia.html</link>
+      <guid>https://spiral-ladder.github.io/ramblings/2025/12/17/on-burnout-and-inertia.html</guid>
+      <pubDate>Wed, 17 Dec 2025 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;on-burnout-and-inertia&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;on burnout and inertia &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2025-12-17&quot;&gt;Dec 17, 2025&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;Initially I intended to write about these two topics in isolation but after some thought I realised that they’re even more connected than I first thought.&lt;/p&gt;
+&lt;p&gt;I’ve had conversations with people I know over this year that were either unknowingly exhibiting signs of a burnout, or were in denial about being burnt out.
+It’s easy to notice as an outsider looking in but it can be really hard to identify when you’re the one in it.
+I’d say I’ve been through 2 periods of burnout - both times I suffered for months before reaching a breaking point and eventually doing something about it.&lt;/p&gt;
+&lt;p&gt;I argue that burnout is often attributed to its symptoms rather than the root cause - things like insurmountable workload, poor working relationships, etc.
+The root cause of burnout is &lt;strong&gt;the feeling that you are wasting your time&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;What led me to this conclusion is that, ironically, the cure for me has never been to code less, but to code more. Not on what I was already working on, but on problems I found to be far more interesting. I found myself often procrastinating on ‘work work’, but not on these other problems. It’s this nagging feeling within you that you should be spending your time elsewhere. For something that most people do for the bulk of our time, feeling challenged and excited about work is tremendously important. Each time I no longer feel that way, it has been a sign to leave the current situation.&lt;/p&gt;
+&lt;p&gt;Which leads to the second part of this post on &lt;em&gt;inertia&lt;/em&gt;. Being unhappy with your current circumstances and knowing in your gut that you need change &lt;a href=&quot;https://x.com/AviFelman/status/1998919889671585898&quot;&gt;does not necessarily mean you will take yourself out of your situation&lt;/a&gt;. Many people stay in unhappy relationships, jobs and marriages exactly because the discomfort of change is greater than the discomfort of being in the situation. Even when your intuition tells you that you should get out of your current situation, your brain makes excuses to logic yourself out of making a change.&lt;/p&gt;
+&lt;p&gt;The solution to this inertia and therefore, burnout, is usually to follow your intuition, no matter how uncomfortable the decision is. Leave the job, break up, move out of the country, whatever it is - take the leap of faith, because not taking risks is the biggest risk you can take.&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;takerisks&quot; src=&quot;/assets/risks.jpeg&quot;&gt;&lt;/p&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>notes on convolution-based NTTs</title>
+      <link>https://spiral-ladder.github.io/tech/2025/05/21/notes-on-ntt.html</link>
+      <guid>https://spiral-ladder.github.io/tech/2025/05/21/notes-on-ntt.html</guid>
+      <pubDate>Wed, 21 May 2025 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;notes-on-convolution-based-NTTs&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;notes on convolution-based NTTs &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2025-05-21&quot;&gt;May 21, 2025&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;Scribbling notes of several cool tricks I learnt from looking into number theoretic transform (NTT)
+and its application in lattice cryptography.&lt;/p&gt;
+&lt;p&gt;The NTT is a special case of the discrete Fourier transform (DFT) over finite fields.&lt;/p&gt;
+&lt;p&gt;This post will not cover how to do the actual NTT, but rather cover why NTTs work, which seem to be more
+inaccessible information. There are many resources for the former. Vitalik’s
+&lt;a href=&quot;https://vitalik.eth.limo/general/2019/05/12/fft.html&quot;&gt;blog post&lt;/a&gt; on Fast Fourier Transforms (FFT) is one such resource.&lt;/p&gt;
+&lt;section id=&quot;Applications&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Applications &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;NTT is often mentioned in STARK literature as being used to convert polynomials between coefficient and evaluation form.
+The whole idea is that naively converting between these forms usually take &lt;span class=&quot;math inline&quot;&gt;\(O(n^2)\)&lt;/span&gt;, but with NTT,
+the time complexity can be brought down to &lt;span class=&quot;math inline&quot;&gt;\(O(n \space \text{log} \space n)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;In lattice cryptography, the NTT is used to speed up polynomial multiplication over polynomial rings,
+with similar runtime complexities like above.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;Polynomial-multiplication&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Polynomial multiplication &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Let &lt;em&gt;&lt;strong&gt;A&lt;/strong&gt;&lt;/em&gt; and &lt;em&gt;&lt;strong&gt;B&lt;/strong&gt;&lt;/em&gt; be polynomials of degree &lt;span class=&quot;math inline&quot;&gt;\(n - 1\)&lt;/span&gt;, Then we can multiply them to get &lt;em&gt;&lt;strong&gt;C&lt;/strong&gt;&lt;/em&gt;, where&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[C = A * B = \sum_{k=0}^{2n-2}{c_k x^k} \in \mathbb{Z}_q[x]\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;and&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[c_k = \sum_{i=0}^{k}{a[i] b[k - i]} \space \text{mod} \space q, k = 0, 1, ..., 2n - 2\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;This is equivalent to a &lt;em&gt;&lt;strong&gt;discrete linear convolution&lt;/strong&gt;&lt;/em&gt; (aka naive schoolbook multiplication)
+between the two polynomials’ coefficients.&lt;/p&gt;
+&lt;p&gt;There are two problems with doing it this way:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+it takes time complexity &lt;span class=&quot;math inline&quot;&gt;\(O(n^2)\)&lt;/span&gt;, and
+&lt;/li&gt;
+&lt;li&gt;
+This results in a polynomial &lt;code&gt;C&lt;/code&gt; of degree &lt;span class=&quot;math inline&quot;&gt;\(2n - 2\)&lt;/span&gt;.
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+&lt;section id=&quot;Cyclic-convolution-based-polynomial-multiplication&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Cyclic convolution-based polynomial multiplication &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Within lattice cryptography, polynomial operations are often done over a quotient ring, which is denoted by &lt;span class=&quot;math inline&quot;&gt;\(R / I\)&lt;/span&gt;
+where &lt;span class=&quot;math inline&quot;&gt;\(R\)&lt;/span&gt; is a polynomial ring and a two-sided ideal &lt;span class=&quot;math inline&quot;&gt;\(I\)&lt;/span&gt; in &lt;span class=&quot;math inline&quot;&gt;\(R\)&lt;/span&gt;. Ideals are out of scope for this blog post, but you may think of it as a special subset of the group &lt;span class=&quot;math inline&quot;&gt;\(R\)&lt;/span&gt;.
+You may think of operations being done modulo some polynomial (ideals are out of scope for this post).&lt;/p&gt;
+&lt;p&gt;This is known as a &lt;strong&gt;cyclic convolution-based polynomial multiplication&lt;/strong&gt;. This name
+comes from it being a special case of a &lt;strong&gt;periodic convolution&lt;/strong&gt;. You may guess from its name that computation ‘wraps around’
+to be kept within a certain bound or interval.&lt;/p&gt;
+&lt;p&gt;In most literature, the term &lt;em&gt;&lt;strong&gt;cyclic convolution&lt;/strong&gt;&lt;/em&gt; refers to multiplication done over the ring &lt;span class=&quot;math inline&quot;&gt;\(\mathbb{Z}_q[x]/(x^n - 1)\)&lt;/span&gt;,
+while the term &lt;em&gt;&lt;strong&gt;negacyclic convolution&lt;/strong&gt;&lt;/em&gt; refers to multiplication done over the ring &lt;span class=&quot;math inline&quot;&gt;\(\mathbb{Z}_q[x]/(x^n + 1)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Alternatively, some &lt;a href=&quot;https://arxiv.org/pdf/2211.13546&quot;&gt;papers&lt;/a&gt; suggest using terms like &lt;em&gt;&lt;strong&gt;positive wrapped convolution&lt;/strong&gt;&lt;/em&gt; vs
+&lt;em&gt;&lt;strong&gt;negative wrapped convolution&lt;/strong&gt;&lt;/em&gt; respectively for clarity, which I will adopt for the rest of the post.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;Positive-and-negative-wrapped-convolution&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Positive and negative wrapped convolution &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Let &lt;strong&gt;A&lt;/strong&gt; and &lt;strong&gt;B&lt;/strong&gt; be polynomials of degree &lt;span class=&quot;math inline&quot;&gt;\(n - 1\)&lt;/span&gt;.
+In both &lt;em&gt;&lt;strong&gt;positive wrapped convolution&lt;/strong&gt;&lt;/em&gt; (&lt;em&gt;PWC&lt;/em&gt;) and &lt;em&gt;&lt;strong&gt;negative wrapped convolution&lt;/strong&gt;&lt;/em&gt; (&lt;em&gt;NWC&lt;/em&gt;), the result we are interested in is&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[c = a \cdot b\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;where&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[c = \sum_{k=0}^{n-1}{c_k x^k}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The difference is in what polynomial we’re doing a modulo reduction over and how &lt;span class=&quot;math inline&quot;&gt;\(c_k\)&lt;/span&gt; is defined.&lt;/p&gt;
+&lt;p&gt;For PWC, the quotient ring we use is &lt;span class=&quot;math inline&quot;&gt;\(\mathbb{Z}_q[x]/(x^n - 1)\)&lt;/span&gt; where &lt;span class=&quot;math inline&quot;&gt;\(q \in \mathbb{Z}\)&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\(c_k\)&lt;/span&gt; is defined as&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[c_k = \sum_{i=0}^{k}{a_i b_{k - i}} + \sum_{i=k+1}^{n-1}{a_i b_{k+n-i}} \space \text{mod} \space q\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Conversely, the quotient ring for NWC is &lt;span class=&quot;math inline&quot;&gt;\(\mathbb{Z}_q[x]/(x^n + 1)\)&lt;/span&gt;, and &lt;span class=&quot;math inline&quot;&gt;\(c_k\)&lt;/span&gt; can be defined as&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[c_k = \sum_{i=0}^{k}{a_i b_{k - i}} - \sum_{i=k+1}^{n-1}{a_i b_{k+n-i}} \space \text{mod} \space q\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Note the difference in signs.&lt;/p&gt;
+&lt;p&gt;With these, the output is a polynomial &lt;span class=&quot;math inline&quot;&gt;\(C\)&lt;/span&gt; of degree &lt;span class=&quot;math inline&quot;&gt;\(n - 1\)&lt;/span&gt; and this addresses point 2 above.&lt;/p&gt;
+&lt;section id=&quot;How-do-we-make-use-of-these&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h3&gt;How do we make use of these? &lt;/h3&gt;&lt;/div&gt;
+&lt;p&gt;It turns out that under the &lt;a href=&quot;https://en.wikipedia.org/wiki/Convolution_theorem&quot;&gt;convolution theory&lt;/a&gt;, we can transform 2 sequences of values into their NTT forms,
+multiply them pointwise and then transform the result back into the standard form, and that is equivalent to doing
+polynomial multiplication on the original 2 sequences of values. In other words,&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[c = INTT(NTT(a) \cdot NTT(b))\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;NTT is an &lt;span class=&quot;math inline&quot;&gt;\(O(n \space \text{log} \space n)\)&lt;/span&gt; operation, which addresses point 1.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id=&quot;NTT-and-iNTT&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;NTT and iNTT &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;The NTT of a sequence of values (in this case, a vector of polynomial coefficients), is defined as
+&lt;span class=&quot;math inline&quot;&gt;\(\hat{a} = NTT(a)\)&lt;/span&gt;, where&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\hat{a_j} = \sum_{i=0}^{n-1}{\omega^{ij} a_i} \space \text{mod} \space q, i = 0, 1, 2, ..., n - 1\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Conversely, the iNTT of a sequence of values is defined as&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[a_i = n^{-1} \sum_{j=0}^{n-1}{\omega^{-ij} \hat{a_j}} \space \text{mod} \space q, j = 0, 1, 2, ..., n - 1\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The difference here is that the &lt;span class=&quot;math inline&quot;&gt;\(\omega\)&lt;/span&gt; is replaced by its inverse in &lt;span class=&quot;math inline&quot;&gt;\(\mathbb{Z}_q\)&lt;/span&gt; and we scale the result by a factor of &lt;span class=&quot;math inline&quot;&gt;\(n^{-1}\)&lt;/span&gt; at the end.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;Note: This NTT/iNTT is the positive wrapped convolution-based NTT/iNTT.
+The negative wrapped convolution-based NTT/iNTT includes another term &lt;span class=&quot;math inline&quot;&gt;\(\psi\)&lt;/span&gt;, but the FFT trick that we explain later will simplify
+this expression, so we skip explaining it here.&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;span class=&quot;math inline&quot;&gt;\(\omega\)&lt;/span&gt; here is the primitive &lt;span class=&quot;math inline&quot;&gt;\(n\)&lt;/span&gt;-th root of unity in &lt;span class=&quot;math inline&quot;&gt;\(Z_q\)&lt;/span&gt; iff&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\omega^n \equiv 1 \space \text{mod} \space q\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;and&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\omega^k \not\equiv 1 \space \text{mod} \space q\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;for &lt;span class=&quot;math inline&quot;&gt;\(k \lt n\)&lt;/span&gt;. So we would need the roots generated by the primitive &lt;em&gt;n&lt;/em&gt;-th root of unity &lt;span class=&quot;math inline&quot;&gt;\(\omega_n\)&lt;/span&gt;.&lt;/p&gt;
+&lt;section id=&quot;Roots-of-unity&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h3&gt;Roots of unity &lt;/h3&gt;&lt;/div&gt;
+&lt;p&gt;A &lt;strong&gt;root of unity&lt;/strong&gt; is any complex number that yields 1 when raised to some positive integer &lt;span class=&quot;math inline&quot;&gt;\(n\)&lt;/span&gt;, otherwise known as the &lt;em&gt;&lt;strong&gt;n-th root of unity&lt;/strong&gt;&lt;/em&gt;. We are interested in roots of unity because they form the roots of cyclotomic polynomials which factorize the polynomial &lt;span class=&quot;math inline&quot;&gt;\(x^n - 1\)&lt;/span&gt;, which is one of the key polynomials that we are interested in lattice cryptography.&lt;/p&gt;
+&lt;p&gt;And because the &lt;em&gt;n-th root of unity&lt;/em&gt; yields 1, you can think of the roots of unity as points in a unit circle in a complex plane (that is, if the set of real numbers appear on a 1-dimensional line, the complex plane ‘extends’ the real numbers by adding a 2nd dimension (visually, a y-axis). The roots of unity are then points on this 2 dimensional plane forming the unit circle since the distance from the origin to any root of unity is 1. Visually, we can imagine a circle with 3 points on it spaced out equally, starting from 1:&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;cuberootsofunity&quot; src=&quot;/assets/rootsofunity3rd.svg&quot;&gt;&lt;/p&gt;
+&lt;p&gt;Since we know that complex numbers can be expressed in the form &lt;span class=&quot;math inline&quot;&gt;\(re^{i\theta}\)&lt;/span&gt;. For the unit circle, &lt;span class=&quot;math inline&quot;&gt;\(r = 1\)&lt;/span&gt;, and since the 3 points are spaced out equally, &lt;span class=&quot;math inline&quot;&gt;\(\theta= 2\pi / 3\)&lt;/span&gt;, and the next point is simply &lt;span class=&quot;math inline&quot;&gt;\(\theta^2 = 4\pi / 3\)&lt;/span&gt; (or &lt;span class=&quot;math inline&quot;&gt;\(-2\pi / 3\)&lt;/span&gt;), and these points are &lt;span class=&quot;math inline&quot;&gt;\(\omega\)&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\(\omega^2\)&lt;/span&gt; respectively.&lt;/p&gt;
+&lt;p&gt;Now imagine we have a degree &lt;span class=&quot;math inline&quot;&gt;\(n - 1\)&lt;/span&gt; polynomial - we simply extend this simple example of a degree &lt;span class=&quot;math inline&quot;&gt;\(3\)&lt;/span&gt; with 3 points to &lt;span class=&quot;math inline&quot;&gt;\(n - 1\)&lt;/span&gt; points.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;section id=&quot;why-does-this-work-mathematically&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;why does this work (mathematically)? &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;The magic behind how NTTs/iNTTs work lie in the &lt;a href=&quot;https://cr.yp.to/papers/m3-20010811-retypeset-20220327.pdf&quot;&gt;FFT trick&lt;/a&gt;, 
+explained from the algebraical perspective using the Chinese Remainder Theorem (or CRT) in ring form.&lt;/p&gt;
+&lt;section id=&quot;For-positive-wrapped-convolutions&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h3&gt;For positive wrapped convolutions &lt;/h3&gt;&lt;/div&gt;
+&lt;p&gt;We briefly mentioned ideals above - the CRT states that &lt;span class=&quot;math inline&quot;&gt;\(R/IJ\)&lt;/span&gt; is isomorphic to &lt;span class=&quot;math inline&quot;&gt;\((R/I) \times (R/J)\)&lt;/span&gt; if 
+&lt;span class=&quot;math inline&quot;&gt;\(I\)&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\(J\)&lt;/span&gt; are coprime, i.e. that exists &lt;span class=&quot;math inline&quot;&gt;\(u \in I\)&lt;/span&gt; and &lt;span class=&quot;math inline&quot;&gt;\(v \in J\)&lt;/span&gt; such that &lt;span class=&quot;math inline&quot;&gt;\(u + v = 1\)&lt;/span&gt;. However,
+we can also work with ideals that are not coprime, i.e. the roots of unity we just talked about.&lt;/p&gt;
+&lt;p&gt;Formally, we have an isomorphism, or a mapping &lt;span class=&quot;math inline&quot;&gt;\(\phi\)&lt;/span&gt;, 
+for polynomial rings in the form &lt;span class=&quot;math inline&quot;&gt;\(\mathbb{Z}_q/(x^{2m} - \omega^2)\)&lt;/span&gt; where &lt;span class=&quot;math inline&quot;&gt;\(m \gt 0\)&lt;/span&gt; and invertible &lt;span class=&quot;math inline&quot;&gt;\(\omega \in \mathbb{Z}_q\)&lt;/span&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\phi : \mathbb{Z}_q/(x^{2m} - \omega^2) \cong \mathbb{Z}_q/(x^{m} - \omega) \times \mathbb{Z}_q/(x^{m} + \omega)\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Which, when mapped to a polynomial with coefficients &lt;code&gt;a_i&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\phi (\sum_{i=0}^{2m-1}{a_i x^i}) = (\sum_{i=0}^{m-1}{(a_i + \omega \cdot a_{i+m})x^i}, \sum_{i=0}^{m-1}{(a_i - \omega \cdot a_{i+m})x^i})\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;And for its inverse:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\phi^{-1} (\sum_{i=0}^{m-1}{a_i^{&apos;} x^i}, \sum_{i=0}^{m-1}{a_i^{&apos;&apos;} x^i}) = \sum_{i=0}^{m-1}{\frac{1}{2}(a_i^{&apos;} + a_i^{&apos;&apos;})x^i} + \sum_{i=0}^{m-1}{\frac{\omega^{-1}}{2}(a_i^{&apos;} + a_i^{&apos;&apos;})x^{i+m}}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;To see why the above mapping makes sense: when
+we compute &lt;span class=&quot;math inline&quot;&gt;\(a \space \text{mod} \space (x^m - \omega)\)&lt;/span&gt;, we use the identity &lt;span class=&quot;math inline&quot;&gt;\(x^m \equiv \omega\)&lt;/span&gt; since &lt;span class=&quot;math inline&quot;&gt;\(x^m - \omega = 0\)&lt;/span&gt; in this ring.
+So, terms with &lt;span class=&quot;math inline&quot;&gt;\(x^{m+i}\)&lt;/span&gt; reduce to &lt;span class=&quot;math inline&quot;&gt;\(\omega x^i\)&lt;/span&gt;. Thus, we end up with, for the &lt;span class=&quot;math inline&quot;&gt;\(x_i\)&lt;/span&gt; term in the first ring,&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[\sum_{i=0}^{m-1}{(a_i + \omega \cdot a_{i+m})x^i}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The same logic works for computations modulo &lt;span class=&quot;math inline&quot;&gt;\((x^m + \omega)\)&lt;/span&gt;. In which case, each &lt;span class=&quot;math inline&quot;&gt;\(i\)&lt;/span&gt;-th coefficient can be computed via the sum of two parts:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[a_i^{&apos;} = a_i + \omega \cdot a_{i+m}\]&lt;/span&gt;
+&lt;span class=&quot;math display&quot;&gt;\[a_i^{&apos;&apos;} = a_i - \omega \cdot a_{i+m}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Which is exactly the Cooley-Tukey butterfly (CT butterfly). As for the inverse, the &lt;span class=&quot;math inline&quot;&gt;\(i\)&lt;/span&gt;-th and the &lt;span class=&quot;math inline&quot;&gt;\(i+ \frac{n}{2}\)&lt;/span&gt;-th coefficient of &lt;em&gt;&lt;strong&gt;a&lt;/strong&gt;&lt;/em&gt; can be derived from the &lt;span class=&quot;math inline&quot;&gt;\(i\)&lt;/span&gt;-th coefficient of &lt;em&gt;&lt;strong&gt;a’&lt;/strong&gt;&lt;/em&gt; and &lt;em&gt;&lt;strong&gt;a’’&lt;/strong&gt;&lt;/em&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[a_i = (a_i^{&apos;} + a_i^{&apos;&apos;})/2\]&lt;/span&gt;
+&lt;span class=&quot;math display&quot;&gt;\[a_{i+m} = \omega^{-1}(a_i^{&apos;} - a_i^{&apos;&apos;})/2\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Which is the Gentleman-Sande butterfly (GS butterfly).&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;For-negative-wrapped-convolutions&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h3&gt;For negative wrapped convolutions &lt;/h3&gt;&lt;/div&gt;
+&lt;p&gt;Note that the above details how CRT works for positive wrapped convolutions but not negative wrapped convolutions,
+which does computations over the ring &lt;span class=&quot;math inline&quot;&gt;\(\mathbb{Z}_q[x]/(x^n + 1)\)&lt;/span&gt; instead.&lt;/p&gt;
+&lt;p&gt;We need to make 2 adjustments to make negative wrapped convolutions work:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;set &lt;span class=&quot;math inline&quot;&gt;\(q\)&lt;/span&gt; to be a prime number satisfying &lt;span class=&quot;math inline&quot;&gt;\(q \equiv \space 1 (\text{mod} \space 2n)\)&lt;/span&gt; such that
+the primitive &lt;span class=&quot;math inline&quot;&gt;\(2n\)&lt;/span&gt;-th root of unity &lt;span class=&quot;math inline&quot;&gt;\(\psi_{2n}\)&lt;/span&gt; exists, and&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Take &lt;span class=&quot;math inline&quot;&gt;\(\omega_n = \psi_{2n}^{2} \space \text{mod} \space q\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;These changes are needed because we need &lt;span class=&quot;math inline&quot;&gt;\(\psi_{2n}^n = -1 \space \text{mod} \space q\)&lt;/span&gt; in order to re-express &lt;span class=&quot;math inline&quot;&gt;\(x^n + 1\)&lt;/span&gt; as
+&lt;span class=&quot;math inline&quot;&gt;\(x^n - \psi_{2n}^n\)&lt;/span&gt;, and from there we can proceed with the same trick above.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;Bit-reversals&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h3&gt;Bit reversals? &lt;/h3&gt;&lt;/div&gt;
+&lt;p&gt;The beauty of combining the CT butterfly with the GS butterfly is that we get rid of the need for bit reversal, since the standard CT butterfly takes input in the natural order to produce an output in bit-reversed order, which the GS butterfly takes as input to produce an output in the natural order! Naively, we can think of the GS butterfly as ‘undoing’ the CT butterfly operation.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>things unlearned</title>
+      <link>https://spiral-ladder.github.io/ramblings/2024/12/31/things-unlearned.html</link>
+      <guid>https://spiral-ladder.github.io/ramblings/2024/12/31/things-unlearned.html</guid>
+      <pubDate>Tue, 31 Dec 2024 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;things-unlearned&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;things unlearned &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2024-12-31&quot;&gt;Dec 31, 2024&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;This &lt;a href=&quot;https://www.scattered-thoughts.net/writing/things-unlearned/&quot;&gt;blog post&lt;/a&gt;
+is one of my all time favourites. Jamie asks this question: what are some things that you used to strongly
+believe but have now changed your mind about?&lt;/p&gt;
+&lt;p&gt;In the post he answers this question himself, and this post
+is my version.&lt;/p&gt;
+&lt;section id=&quot;optimism-beats-cynicism-always&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h3&gt;optimism beats cynicism, always &lt;/h3&gt;&lt;/div&gt;
+&lt;p&gt;I’ve swung between being an optimist and a cynic multiple times now, and 
+at this point in time I would happily declare myself to be a relentless optimist.&lt;/p&gt;
+&lt;p&gt;Being a cynic can feel pretty damn good. “I’m so smart! I see the world
+from an objective standpoint, everything’s out to get me and the world is going
+to hell.” This mindset can make you appear based and intelligent in front of people. The problem with thinking this way is that it sets up
+your mind to always think in black and white - things either go terribly wrong (as you expected), or
+things go well, which pleasantly surprises you. There’s a very fine line between keeping
+your expectations low, and being a cynic. I used to think I was doing the former – the issue is
+as a cynic you would never admit, or even know, that you are one.&lt;/p&gt;
+&lt;p&gt;There’s a lot more nuance to life than cynics (like the past me) would have you believe.
+People are hardly “out to get you” as much as they are just looking out for their
+self-interests, like any other normal human beings. Your business partnerships might’ve not worked out
+but they probably just didn’t have resources to commit. Your startup may have failed but you most
+probably would’ve picked up some very valuable skills along the way. The point is, operating
+from the mindset of “everything bad” sets you up for failure from the start, because
+that is simply not how people operate, and it is also not the most
+optimal approach to handling relationships and possible setbacks in life.&lt;/p&gt;
+&lt;p&gt;I now tend to believe that most people worth connecting with are inclined to act in good faith
+more often than not. The smart and kind optimists understand that &lt;a href=&quot;https://www.goodreads.com/book/show/189989.Finite_and_Infinite_Games&quot;&gt;life is just a game we play
+for the sake of continuing the play&lt;/a&gt;; cynics see life as a winner-takes-all game that they want
+to win. This is the very premise behind the well-known prisoner’s dilemma, nicely illustrated in this
+&lt;a href=&quot;https://youtu.be/mScpHTIi-kM&quot;&gt;video&lt;/a&gt; by Veritasium.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;you-can-just-do-things&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h3&gt;you can just do things &lt;/h3&gt;&lt;/div&gt;
+&lt;p&gt;This has been a bit of a meme on twitter, but this quote really is true.
+A common belief amongst new programmers seem to be that there exists a
+‘skill tree’ to learn some technology, i.e. to learn a certain X technology,
+you need to learn Y and Z prerequisites first. I’ve seen this belief in action anecdotally,
+Since several people have asked me questions along this line.&lt;/p&gt;
+&lt;p&gt;Starting with the prerequisites is problematic for a few reasons. For one, it’s easy to
+fall into the ‘infinite tutorial’ trap, where you are hopping from tutorial to
+tutorial, consuming countless of blog posts, videos and articles without reaching
+the primary goal that you set out for. It’s also horrible psychologically speaking, since subscribing
+to this belief often results in two states of mind: either hopelessness due to the belief 
+that the prerequisite knowledge needed is too insurmountable, or a false sense of
+accomplishment because you feel like you did a lot without having actually done anything
+at all.&lt;/p&gt;
+&lt;p&gt;What has worked for me is to start with the technology I want to learn and
+figuring out what prerequisites I need, rather than starting with the prerequisites.&lt;/p&gt;
+&lt;p&gt;When I first learnt STARKs, I jumped straight into the STARK 101 tutorial and figured
+out the prerequisites along the way (modular arithmetic, erasure coding, FFTs and other
+good STARK stuff). Since then I’ve been learning most new technology this way, by
+jumping into the deep end (learnt Zig by writing a text editor, learnt zkVMs by getting
+a job in it)&lt;/p&gt;
+&lt;p&gt;A caveat: just because you can “just do things”, doesn’t mean you should all the time.
+Don’t fall prey to chasing the shiny new things.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;let-your-curiosity-guide-you&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h3&gt;let your curiosity guide you &lt;/h3&gt;&lt;/div&gt;
+&lt;p&gt;There were a few times in life where I was obviously no longer attracted to what I was
+working on at the time but stayed in denial while being very unhappy. I’m the kind of
+person where I would willingly put many hours every day into something that captures
+my attention entirely, but I would be easily depressed and unmotivated if I was
+forced to work on something that I find meaningless.&lt;/p&gt;
+&lt;p&gt;Following my curiosity has always worked in my favour from all my past experiences.
+It was what got me into crypto engineering and now zk.&lt;/p&gt;
+&lt;p&gt;This can obviously be a boon or a bane depending on how you see it: it can be a boon
+because you can work tirelessly on things that you find exciting, and that passion
+and energy can be contagious. At the same time, it can easily be a bane
+since it probably makes you very unhireable (lol)&lt;/p&gt;
+&lt;p&gt;I’m personally still trying to strike out a balance myself.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>solving ZK Hack V puzzle 3</title>
+      <link>https://spiral-ladder.github.io/tech/2024/12/27/solving-zkhack-v-puzzle-3.html</link>
+      <guid>https://spiral-ladder.github.io/tech/2024/12/27/solving-zkhack-v-puzzle-3.html</guid>
+      <pubDate>Fri, 27 Dec 2024 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;solving-ZK-Hack-V-puzzle-3&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;solving ZK Hack V puzzle 3 &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2024-12-27&quot;&gt;Dec 27, 2024&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;I solved my first online ZK Hack puzzle this last season. I didn’t win best writeup, but
+my writeup did get featured on the &lt;a href=&quot;https://zkhack.dev/zkhackV/puzzleV3.html&quot;&gt;puzzle page&lt;/a&gt;, so that’s something at least!&lt;/p&gt;
+&lt;p&gt;Instead of going over my solution in this post, I’ll briefly talk about my experience with Noir and its tooling.
+If you’re interested in my writeup, you can find it &lt;a href=&quot;https://gist.github.com/spiral-ladder/eb544879e47d3b678cbaf766bf94186e&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;section id=&quot;Noir:-first-impressions&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Noir: first impressions &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;My first impression of Noir from the short puzzle alone is that it’s clean. I haven’t had much experience with writing
+Circom but reading it is a pain.&lt;/p&gt;
+&lt;p&gt;Error messages in Noir are also far more useful compared to in Circom – if being Rust-based has had any positive effect, it would
+be the helpfulness of the compiler and the tooling. Speaking of tooling, nargo is great!&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;The-not-so-good&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;The not-so-good &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Now, the not so good. These are probably just nitpicks at this point because I haven’t had enough experience with the 
+language to give a fair criticism, so take these comments with a grain of salt.&lt;/p&gt;
+&lt;p&gt;I think the way inputs get fed into the Noir program doesn’t seem right. Firstly, it’s not super clear that inputs
+are implicitly fed from &lt;code&gt;Prover.toml&lt;/code&gt;, and secondly (this is more of a nitpick), TOML is a terrible format for such
+a purpose.&lt;/p&gt;
+&lt;p&gt;I think JSON would be more suitable here for a clearer hierarchy of inputs with nesting -
+no more awkward &lt;a href=&quot;https://toml.io/en/v1.0.0#array-of-tables&quot;&gt;“table of tables”&lt;/a&gt;. Especially for the purpose
+of just passing in input to the program, TOML is overkill and is suited for more verbose purposes eg.
+configuration like in &lt;code&gt;Cargo.toml&lt;/code&gt;. But I guess at least YAML wasn’t chosen here.&lt;/p&gt;
+&lt;p&gt;Another ‘feature’ I’m cautious about is the fact that it is a Rust-based DSL. Rust looks like Rust because of its
+design choices. I don’t think languages should emulate Rust just for the sake of ‘familiar syntax’, to capture
+Rust developers in the space. I don’t think this is the sole reason for doing a Rust-based DSL, but it’s definitely one
+of the reasons that people often cite as a positive. I’d argue that Rust syntax is overly verbose and ugly.
+It only looks that way because of the amount of work that is frontloaded to the compiler.
+Especially for circuit development, (I believe) there is no need to be ‘Rust-like’ at all, unless you’re reinventing
+rustc, except this time for circuit compilation.&lt;/p&gt;
+&lt;p&gt;That said I don’t have too much else to say atm. I will have to write more Noir before I figure if I
+like it enough or not.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>Shamir&apos;s Secret Sharing</title>
+      <link>https://spiral-ladder.github.io/tech/2024/06/16/shamir-secret-sharing.html</link>
+      <guid>https://spiral-ladder.github.io/tech/2024/06/16/shamir-secret-sharing.html</guid>
+      <pubDate>Sun, 16 Jun 2024 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;Shamir&apos;s-Secret-Sharing&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;Shamir&apos;s Secret Sharing &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2024-06-16&quot;&gt;Jun 16, 2024&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;Curiosity led me to study about &lt;a href=&quot;https://en.wikipedia.org/wiki/Secure_multi-party_computation&quot;&gt;Multi-Party
+Computation&lt;/a&gt;
+(or MPC), so I implemented a &lt;a href=&quot;https://github.com/spiral-ladder/shamir-zig&quot;&gt;simple Shamir&apos;s Secret Sharing scheme in
+Zig&lt;/a&gt;.&lt;/p&gt;
+&lt;section id=&quot;overview&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Overview &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Given a secret &lt;code&gt;s&lt;/code&gt;, we can share this secret &lt;code&gt;s&lt;/code&gt; amongst &lt;code&gt;n&lt;/code&gt; parties
+such that the secret &lt;code&gt;s&lt;/code&gt; can be easily reconstructed by any &lt;code&gt;t&lt;/code&gt; + 1
+parties, where &lt;code&gt;t &amp;lt;= n&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The only restriction on &lt;span class=&quot;math inline&quot;&gt;\(\mathbb{F}\)&lt;/span&gt; is that &lt;span class=&quot;math inline&quot;&gt;\(\mathbb{F} &amp;gt; n\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Other restrictions are that &lt;code&gt;t&lt;/code&gt; must be less than or equal to &lt;code&gt;n&lt;/code&gt;, and
+&lt;code&gt;t&lt;/code&gt; must be more than 1.&lt;/p&gt;
+&lt;p&gt;Here is an overview of the algorithms to share and reconstruct the
+secret:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ShareSecret&lt;/strong&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Choose a random polynomial &lt;span class=&quot;math inline&quot;&gt;\(f_s(X) \in \mathbb{F}[X]\)&lt;/span&gt; of degree at
+most &lt;span class=&quot;math inline&quot;&gt;\(t\)&lt;/span&gt; such that &lt;span class=&quot;math inline&quot;&gt;\(f_s(0) = s\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Send privately to player &lt;span class=&quot;math inline&quot;&gt;\(P_j\)&lt;/span&gt; the share &lt;span class=&quot;math inline&quot;&gt;\(s_j = f_s(j)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;ReconstructSecret&lt;/strong&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Given &lt;code&gt;t + 1&lt;/code&gt; shares of a degree &lt;code&gt;t&lt;/code&gt; polynomial, reconstruct a
+function that hits all these points such that &lt;span class=&quot;math inline&quot;&gt;\(f_s(0) = s\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Evaluate the function at 0.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;In most tutorials, they seem to jump straight into &lt;a href=&quot;https://en.wikipedia.org/wiki/Lagrange_polynomial&quot;&gt;Lagrange
+interpolation&lt;/a&gt;,
+but things only made sense when I looked at it from the
+reconstruction step first, with this
+&lt;a href=&quot;https://www.youtube.com/watch?v=kkMps3X_tEE&quot;&gt;video&lt;/a&gt;. I&apos;ll briefly
+summarize what I learnt in text below.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;reconstructing-the-secret&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Reconstructing the secret &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Working backwards, Assume that we receive 4 shares of a degree-3
+polynomial in &lt;strong&gt;ReconstructSecret&lt;/strong&gt; function:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[
+f(5) = 3,
+f(7) = 2,
+f(12) = 6,
+f(30) = 15
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Recall from above that we want to reconstruct a function &lt;span class=&quot;math inline&quot;&gt;\(f\)&lt;/span&gt; that hits
+all these points. We know that there&apos;s only &lt;strong&gt;one&lt;/strong&gt; polynomial of degree
+3 that visits all 4 points, so if we can reconstruct &lt;span class=&quot;math inline&quot;&gt;\(f\)&lt;/span&gt; from the
+shares, then &lt;span class=&quot;math inline&quot;&gt;\(f(0)\)&lt;/span&gt; must be the &lt;strong&gt;secret&lt;/strong&gt;!&lt;/p&gt;
+&lt;p&gt;So, let&apos;s prove that we can do just that.&lt;/p&gt;
+&lt;p&gt;We can&apos;t work out much with the current way the above shares (or
+evaluations) are expressed. Let&apos;s try to rewrite the above evaluations
+in terms of a small function, &lt;span class=&quot;math inline&quot;&gt;\(\delta\)&lt;/span&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[
+f = \delta_5(x) + \delta_7(x) + \delta_{12}(x) + \delta_{30}(x)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;where&lt;/p&gt;
+&lt;p&gt;
+&lt;center&gt;
+   &lt;span class=&quot;math inline&quot;&gt;\(\delta_5(x)\)&lt;/span&gt; 
+   = if 
+   &lt;span class=&quot;math inline&quot;&gt;\(x == 5\)&lt;/span&gt;
+    then 
+   &lt;span class=&quot;math inline&quot;&gt;\(3\)&lt;/span&gt;
+   else 
+   &lt;span class=&quot;math inline&quot;&gt;\(0\)&lt;/span&gt;
+&lt;/center&gt;
+&lt;center&gt;
+   &lt;span class=&quot;math inline&quot;&gt;\(\delta_7(x)\)&lt;/span&gt; 
+   = if 
+   &lt;span class=&quot;math inline&quot;&gt;\(x == 7\)&lt;/span&gt;
+    then 
+   &lt;span class=&quot;math inline&quot;&gt;\(2\)&lt;/span&gt;
+   else 
+   &lt;span class=&quot;math inline&quot;&gt;\(0\)&lt;/span&gt;
+&lt;/center&gt;
+&lt;center&gt;
+   &lt;span class=&quot;math inline&quot;&gt;\(\delta_{12}(x)\)&lt;/span&gt; 
+   = if 
+   &lt;span class=&quot;math inline&quot;&gt;\(x == 12\)&lt;/span&gt;
+    then 
+   &lt;span class=&quot;math inline&quot;&gt;\(6\)&lt;/span&gt;
+   else 
+   &lt;span class=&quot;math inline&quot;&gt;\(0\)&lt;/span&gt;
+&lt;/center&gt;
+&lt;center&gt;
+   &lt;span class=&quot;math inline&quot;&gt;\(\delta_{30}(x)\)&lt;/span&gt; 
+   = if 
+   &lt;span class=&quot;math inline&quot;&gt;\(x == 30\)&lt;/span&gt;
+    then 
+   &lt;span class=&quot;math inline&quot;&gt;\(15\)&lt;/span&gt;
+   else 
+   &lt;span class=&quot;math inline&quot;&gt;\(0\)&lt;/span&gt;
+&lt;/center&gt;
+&lt;/p&gt;
+&lt;p&gt;Note that in the above we can simplify the result of &lt;span class=&quot;math inline&quot;&gt;\(delta_i(x)\)&lt;/span&gt; even
+further due to the common if-else expression. Let&apos;s do that by making
+them return 1 if the condition holds:&lt;/p&gt;
+&lt;p&gt;
+&lt;center&gt;
+   &lt;span class=&quot;math inline&quot;&gt;\(\delta_5(x)\)&lt;/span&gt; 
+   = if 
+   &lt;span class=&quot;math inline&quot;&gt;\(x == 5\)&lt;/span&gt;
+    then 
+   &lt;span class=&quot;math inline&quot;&gt;\(1\)&lt;/span&gt;
+   else 
+   &lt;span class=&quot;math inline&quot;&gt;\(0\)&lt;/span&gt;
+&lt;/center&gt;
+&lt;center&gt;
+   &lt;span class=&quot;math inline&quot;&gt;\(\delta_7(x)\)&lt;/span&gt; 
+   = if 
+   &lt;span class=&quot;math inline&quot;&gt;\(x == 7\)&lt;/span&gt;
+    then 
+   &lt;span class=&quot;math inline&quot;&gt;\(1\)&lt;/span&gt;
+   else 
+   &lt;span class=&quot;math inline&quot;&gt;\(0\)&lt;/span&gt;
+&lt;/center&gt;
+&lt;center&gt;
+   &lt;span class=&quot;math inline&quot;&gt;\(\delta_{12}(x)\)&lt;/span&gt; 
+   = if 
+   &lt;span class=&quot;math inline&quot;&gt;\(x == 12\)&lt;/span&gt;
+    then 
+   &lt;span class=&quot;math inline&quot;&gt;\(1\)&lt;/span&gt;
+   else 
+   &lt;span class=&quot;math inline&quot;&gt;\(0\)&lt;/span&gt;
+&lt;/center&gt;
+&lt;center&gt;
+   &lt;span class=&quot;math inline&quot;&gt;\(\delta_{30}(x)\)&lt;/span&gt; 
+   = if 
+   &lt;span class=&quot;math inline&quot;&gt;\(x == 30\)&lt;/span&gt;
+    then 
+   &lt;span class=&quot;math inline&quot;&gt;\(1\)&lt;/span&gt;
+   else 
+   &lt;span class=&quot;math inline&quot;&gt;\(0\)&lt;/span&gt;
+&lt;/center&gt;
+&lt;/p&gt;
+&lt;p&gt;Our function &lt;span class=&quot;math inline&quot;&gt;\(f\)&lt;/span&gt; now looks like:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[
+f = 3\delta_5(x) + 2\delta_7(x) + 6\delta_{12}(x) + 15\delta_{30}(x)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;After we simplified the above, notice that we can generalize our
+&lt;span class=&quot;math inline&quot;&gt;\(\delta\)&lt;/span&gt; function:&lt;/p&gt;
+&lt;p&gt;
+&lt;center&gt;
+   &lt;span class=&quot;math inline&quot;&gt;\(\delta_{i}(x)\)&lt;/span&gt; 
+   = if 
+   &lt;span class=&quot;math inline&quot;&gt;\(x == i\)&lt;/span&gt;
+    then 
+   &lt;span class=&quot;math inline&quot;&gt;\(1\)&lt;/span&gt;
+   else 
+   &lt;span class=&quot;math inline&quot;&gt;\(0\)&lt;/span&gt;
+&lt;/center&gt;
+&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;rewriting-in-polynomial-form&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Rewriting in polynomial form &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;But the function is not a polynomial &lt;strong&gt;yet&lt;/strong&gt;. Remember that our endgoal is
+to form a degree-3 polynomial to recover our secret.&lt;/p&gt;
+&lt;p&gt;Recall that given &lt;span class=&quot;math inline&quot;&gt;\(i = 5\)&lt;/span&gt;, it needs to be 0 for &lt;span class=&quot;math inline&quot;&gt;\(x = 7, 12, 30\)&lt;/span&gt;, and 1
+if &lt;span class=&quot;math inline&quot;&gt;\(x = i\)&lt;/span&gt;, as we&apos;ve defined in the if-else statements above. We can
+rewrite our &lt;span class=&quot;math inline&quot;&gt;\(delta\)&lt;/span&gt; function to express this. Let&apos;s take &lt;span class=&quot;math inline&quot;&gt;\(i = 5\)&lt;/span&gt; as
+an example:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[
+\delta_5(x) = (x - 7)(x - 12)(x - 30)
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;We&apos;ve fulfilled the first requirement, but it does not fulfill the
+requirement of evaluating to 1 when &lt;span class=&quot;math inline&quot;&gt;\(x == i\)&lt;/span&gt; as we&apos;ve defined in our
+if-else statements. We can simply divide the terms by &lt;span class=&quot;math inline&quot;&gt;\(x - i\)&lt;/span&gt; to
+achieve that:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[
+\delta_5(x) = \frac{(x - 7)}{(5 - 7)}\frac{(x - 12)}{(5 - 12)}\frac{(x - 30)}{(5 - 30)}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Note that when &lt;span class=&quot;math inline&quot;&gt;\(x == 5\)&lt;/span&gt;, the above equation evaluates to 1, but still
+evaluates to 0 for &lt;span class=&quot;math inline&quot;&gt;\(x \neq 5\)&lt;/span&gt;, and we&apos;ve fulfilled both requirements!&lt;/p&gt;
+&lt;p&gt;We can generalize this &lt;span class=&quot;math inline&quot;&gt;\(\delta\)&lt;/span&gt; function now:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[
+\delta_i(x) = \prod_{j \neq i}^{j \in C}\frac{(x - j)}{(i - j)}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;where &lt;span class=&quot;math inline&quot;&gt;\(C\)&lt;/span&gt; is the set of shares:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[
+C = \set{5, 7, 12, 30}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;And our &lt;span class=&quot;math inline&quot;&gt;\(f\)&lt;/span&gt; now looks like:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[
+f(x) = \sum_{}^{i \in C} {f(i)\delta_i(x)}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Notice that our &lt;span class=&quot;math inline&quot;&gt;\(\delta\)&lt;/span&gt; function is exactly in the &lt;strong&gt;Lagrange
+interpolation form&lt;/strong&gt;, and now it&apos;s obvious why we use it! Now we have
+all the ingredients we need to reconstruct our &lt;span class=&quot;math inline&quot;&gt;\(f\)&lt;/span&gt; and reconstruct our
+secret &lt;span class=&quot;math inline&quot;&gt;\(s\)&lt;/span&gt; from evaluating &lt;span class=&quot;math inline&quot;&gt;\(f\)&lt;/span&gt; at &lt;span class=&quot;math inline&quot;&gt;\(0\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;sharing-the-secret&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Sharing the secret &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Now that we&apos;ve shown that we can reconstruct our secret with a
+threshold of &lt;code&gt;t+1&lt;/code&gt; shares, it&apos;s simple to understand how we can share
+the secret now. We just need to choose a random polynomial of degree at
+most &lt;span class=&quot;math inline&quot;&gt;\(t\)&lt;/span&gt; (so that &lt;code&gt;t+1&lt;/code&gt; shares are necessary to reconstruct in the
+above manner), and send the evaluations (or shares) to the respective
+parties.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>Grug Brained Guide to KZG Polynomial Commitments</title>
+      <link>https://spiral-ladder.github.io/tech/2024/01/07/grug-brained-guide-to-kzg-polynomial-commitments.html</link>
+      <guid>https://spiral-ladder.github.io/tech/2024/01/07/grug-brained-guide-to-kzg-polynomial-commitments.html</guid>
+      <pubDate>Sun, 07 Jan 2024 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;Grug-Brained-Guide-to-KZG-Polynomial-Commitments&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;Grug Brained Guide to KZG Polynomial Commitments &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2024-01-07&quot;&gt;Jan 7, 2024&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;In this post, I&apos;m aiming to explain to myself what a KZG polynomial
+commitment is, and talk about my &lt;a href=&quot;https://github.com/bingcicle/kzigg&quot;&gt;Zig
+implementation&lt;/a&gt;. If you&apos;re only
+curious about the Zig usage, feel free to skip to the last section.&lt;/p&gt;
+&lt;section id=&quot;why-another-explainer&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Why another explainer? &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Most blog posts/explainers I found out there start off with the heavy
+math or the deep technical components of what a KZG polynomial
+commitment is right away. They also are often disconnected, going from
+one concept to the next without making it very clear how it all links
+together. The real kicker imo is that none really starts off with the
+motivation behind KZG in the context of Ethereum and a brief technical
+overview first. The closest I found was
+&lt;a href=&quot;https://twitter.com/protolambda&quot;&gt;@protolambda&lt;/a&gt;&apos;s &lt;a href=&quot;https://hackmd.io/@protolambda/eip-4844-implementer-notes&quot;&gt;implementor
+notes&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So this post is more of a post to myself prior to learning about KZG,
+and is meant to be a bridge to the more
+&lt;a href=&quot;https://dankradfeist.de/ethereum/2020/06/16/kate-polynomial-commitments.html&quot;&gt;technical&lt;/a&gt;
+&lt;a href=&quot;https://alinush.github.io/2020/05/06/kzg-polynomial-commitments.html&quot;&gt;and&lt;/a&gt;
+&lt;a href=&quot;https://www.zkdocs.com/docs/zkdocs/commitments/kzg_polynomial_commitment/&quot;&gt;instructional&lt;/a&gt;
+&lt;a href=&quot;https://scroll.io/blog/kzg&quot;&gt;articles&lt;/a&gt; (each word here is a link!) that
+already exists out there.&lt;/p&gt;
+&lt;p&gt;This post might be helpful if you think like me and require some
+motivating examples and a high level overview first to put the technical
+knowledge into practice. Otherwise, more technical readers should
+probably read the above links instead.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;why-kzg-commitments&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Why KZG commitments? &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Before we understand what a KZG commitment is, I&apos;d like to think that
+we should understand what they&apos;re used for first.&lt;/p&gt;
+&lt;p&gt;For a long while, Ethereum transaction fees have been way too expensive
+for regular users. Every transaction you made had to be processed by
+every participating validator in the network, and the fees that you pay
+is the cost of processing those transactions.&lt;/p&gt;
+&lt;p&gt;Rollups were meant to solve this problem by bundling transactions
+together but even rollup fees can get too expensive for many users since
+rollups still need to pay for the data posted onto mainnet, and this
+posting of data is a function of how large the data blobs are and the
+current L1 gas price.&lt;/p&gt;
+&lt;p&gt;Knowing the above, the solution is probably to&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+either post less data or not post the data at all, and/or
+&lt;/li&gt;
+&lt;li&gt;
+have some sort of gas-agnostic way to post the data
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The long term solution is to shard data which takes time to implement,
+so a stopgap solution is necessary to make fees cheaper for now. This
+stopgap is &lt;a href=&quot;https://eips.ethereum.org/EIPS/eip-4844&quot;&gt;EIP-4844&lt;/a&gt;. The crux
+of it is to introduce the &lt;em&gt;transaction format&lt;/em&gt; that will be used in
+sharding but not actually shard those transactions. This (kinda)
+addresses the 2 problems above. Notably, point 1 is where &lt;strong&gt;KZG
+commitments&lt;/strong&gt; come in.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&quot;&lt;em&gt;either post less data or not post the data at all&lt;/em&gt;&quot;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Currently, transaction data is stored within the calldata, which is
+visible to the EVM and is a permanent part of the blockchain. EIP-4844
+introduces blob-carrying transactions which makes Ethereum store data on
+the consensus layer rather than the execution layer (EVM). Rather, what
+the execution layer sees is the &lt;em&gt;commitment&lt;/em&gt; to those blobs. These
+commitments are smaller in size which saves on gas, and it is sufficient
+to verify these commitments without needing to access the actual blobs.&lt;/p&gt;
+&lt;p&gt;Note here also that the consensus layer also does not store the blobs in
+perpetuity - the role of the consensus layer is to provide a &lt;strong&gt;secure&lt;/strong&gt;
+real-time view of what is being published.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&quot;&lt;em&gt;have some sort of gas-agnostic way to post the data&lt;/em&gt;&quot;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;So 4844 solves this by introducing an entirely separate fee market for
+blobs (which is why I said &lt;em&gt;kinda&lt;/em&gt; above). This is out of scope of this
+post, since it has nothing to do with how KZG works. Instead, the
+&lt;a href=&quot;https://notes.ethereum.org/@vbuterin/proto_danksharding_faq#What-does-the-proto-danksharding-multidimensional-fee-market-look-like&quot;&gt;proto-danksharding
+FAQ&lt;/a&gt;
+has a section that goes in-depth into the fee market structure.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;kzg-commitments&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;KZG commitments &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Now we can get to how we achieve point 1 mentioned above. Commitment
+schemes allow one to publish a value which binds one to a message
+without revealing it. One can then open the commitment and reveal the
+committed message to a verifier to be checked. Of course this only makes
+sense if the cost of committing is less than the cost of sending the
+entire message.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.iacr.org/archive/asiacrypt2010/6477178/6477178.pdf&quot;&gt;KZG (Kate-Zaverucha-Goldberg)
+commitments&lt;/a&gt;
+are a class of the above scheme.&lt;/p&gt;
+&lt;p&gt;Some key characteristics that is useful for 4844:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+Constant size commitment/proof (48 bytes). This is especially useful
+for batching, since the proof size is always constant regardless of
+the size of the blob.
+&lt;/li&gt;
+&lt;li&gt;
+Verification is a single pairing check (constant time)
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id=&quot;how-it-works-eli5&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;How it works, ELI5 &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;The scheme itself is stupidly simple from an engineering POV and I
+didn&apos;t realize this myself prior to implementing it (The math is super
+complicated though). @protolambda explained it best in the notes linked
+at the top: you only need&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+a linear combination to compute a KZG commitment,
+&lt;/li&gt;
+&lt;li&gt;
+a single pairing verification to verify a KZG proof
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Obviously there are way more details behind how the above steps happen
+(serialization/deserialization of blobs, how pairings work,
+optimizations, etc.), but the above 2 steps is really all that is
+happening in the scheme.&lt;/p&gt;
+&lt;p&gt;Again, I would highly recommend the other articles for the math but
+nevertheless I will give a short overview here - note that this is in
+the context of blobs. I will also (try to) include the little details I
+noticed in the code that some articles I&apos;ve read seem to have missed
+out on.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;setup&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Setup &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Some commitment schemes use some secret value within its computation,
+and this secret value is often obtained via something called a &lt;a href=&quot;https://ceremony.ethereum.org&quot;&gt;&lt;strong&gt;trusted
+setup&lt;/strong&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Essentially this is a multiparty procedure where each party creates some
+secret and runs a computation to mix it with the previous contributions.
+Eventually, the final secret value will be used for the commitment
+scheme. This secret value will be used to compute &lt;strong&gt;all&lt;/strong&gt; group elements
+that are available to the prover and the verifier.&lt;/p&gt;
+&lt;p&gt;The cool thing about this trusted setup is that it has a &quot;1-of-N&quot;
+trust assumption, which means only a single participant is required to
+be honest for the procedure to be secure. That means, unless you don&apos;t
+trust yourself, trusted setups are generally OK to trust.&lt;/p&gt;
+&lt;p&gt;Some fun numbers: there were &lt;strong&gt;141,416&lt;/strong&gt; contributors to the &lt;a href=&quot;https://ceremony.ethereum.org/&quot;&gt;KZG
+ceremony&lt;/a&gt;, and the ongoing (as of
+writing this) &lt;a href=&quot;https://summoning.penumbra.zone/&quot;&gt;Penumbra summoning
+ceremony&lt;/a&gt; already has about &lt;strong&gt;11,799&lt;/strong&gt;
+contributors!&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;commit&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Commit &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;As mentioned earlier, a commitment is simply a linear combination. A
+blob of bytes has its data transformed into a polynomial and then a
+linear combination done on its points, producing a serialized G1 point
+(48 bytes in size) which serves as the commitment. This is further
+compressed into a versioned hash (32 bytes) for forward compatibility.&lt;/p&gt;
+&lt;p&gt;This process can be done naively (very slow) or via Pippenger&apos;s
+algorithm.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;prove&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Prove &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Now we want to show that we know the original data in the blob,
+otherwise the polynomial. In other words, we want to show that we know
+&lt;span class=&quot;math inline&quot;&gt;\(p(z) = y\)&lt;/span&gt;, where y is the evaluation of the polynomial at some point
+&lt;span class=&quot;math inline&quot;&gt;\(z\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;The simplest way to do that is if the prover sends the entire polynomial
+to the verifier, but that would defeat the point of the commitment
+scheme - we would ideally want cost savings when we go through the
+trouble of using such a scheme!&lt;/p&gt;
+&lt;p&gt;Now what is this is point &lt;span class=&quot;math inline&quot;&gt;\(z\)&lt;/span&gt;? This is usually called a &lt;strong&gt;challenge&lt;/strong&gt; -
+this is a random field element that the verifier sends to the prover,
+allowing the prover to evaluate the polynomial to prove its integrity.
+This requires the prover and verifier to communicate directly with each
+other, which isn&apos;t ideal. Instead, we rely on the Fiat-Shamir heuristic
+by letting the prover and verifier agree on a format prior to the
+protocol to simulate this interaction. Both the prover and verifier
+independently calculate the challenge, by hashing a &apos;transcript&apos; (the
+simulation) into a field element, which serves as our challenge.&lt;/p&gt;
+&lt;p&gt;Using this challenge to evaluate the polynomial, we get the &lt;strong&gt;evaluation&lt;/strong&gt;
+and the &lt;strong&gt;evaluation proof&lt;/strong&gt; that attests to the fact that the polynomial
+was correctly evaluated in the eyes of the prover.&lt;/p&gt;
+&lt;p&gt;The evaluation proof is actually the &lt;strong&gt;quotient polynomial&lt;/strong&gt; &lt;span class=&quot;math inline&quot;&gt;\(q(x)\)&lt;/span&gt; such
+that&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[
+q(x) = \frac{p(x) - y}{x - z}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;To derive this: we know that if &lt;span class=&quot;math inline&quot;&gt;\(z\)&lt;/span&gt; is a root of &lt;span class=&quot;math inline&quot;&gt;\(p(x)\)&lt;/span&gt;, then
+&lt;span class=&quot;math inline&quot;&gt;\(p(z) = 0\)&lt;/span&gt;, Using this property, we can actually take advantage of the
+fact that &lt;span class=&quot;math inline&quot;&gt;\(p(x) - y\)&lt;/span&gt; is zero at &lt;span class=&quot;math inline&quot;&gt;\(z\)&lt;/span&gt; to express a quotient polynomial
+&lt;span class=&quot;math inline&quot;&gt;\(q(x)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;verification&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Verification &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Verification is then done with a pairing check, which I treated as a
+black box for this post and implementation because I don&apos;t know enough
+to make sensible comments. Instead, I&apos;ve linked to Vitalik&apos;s &lt;a href=&quot;https://medium.com/@VitalikButerin/exploring-elliptic-curve-pairings-c73c1864e627&quot;&gt;blog
+post&lt;/a&gt;
+on the topic.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;batching&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Batching &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Interestingly enough, we can re-express the above quotient polynomial in
+order to batch prove across a set of points:&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;math display&quot;&gt;\[
+q(x) = \frac{p(x) - i(x)}{z(x)}
+\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Here, &lt;span class=&quot;math inline&quot;&gt;\(i(x)\)&lt;/span&gt; is a polynomial (in Lagrange form) of a set of points to
+prove, and &lt;span class=&quot;math inline&quot;&gt;\(z(x)\)&lt;/span&gt; is the &lt;strong&gt;zero&lt;/strong&gt; or &lt;strong&gt;vanishing polynomial&lt;/strong&gt; that is the
+set of linear factors that can divide &lt;span class=&quot;math inline&quot;&gt;\(p(x) - i(x)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Verification is then just using the same pairing check, except on linear
+combinations of group elements instead! You can see this in action
+within the code, where linear combinations (naively computed for
+security reasons) are done in the batch verification function, both in
+my port as well as the original version.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;zig-implementation&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Zig implementation &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;I ported &lt;a href=&quot;https://github.com/ethereum/c-kzg-4844&quot;&gt;c-kzg-4844&lt;/a&gt; to Zig
+just to learn what goes behind the scheme. I wrote previously about
+&lt;a href=&quot;https://bingcicle.github.io/posts/ziggifying-kilo.html&quot;&gt;porting another C
+project&lt;/a&gt; to Zig
+so for general impressions you can check that post out. I&apos;ll post
+thoughts specifically comparing my implementation with the C version.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;c-interop&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;C Interop &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;For the Zig implementation, like the C version, I relied on
+&lt;a href=&quot;https://github.com/supranational/blst&quot;&gt;&lt;code&gt;blst&lt;/code&gt;&lt;/a&gt; for the backend, which
+means I had a chance to finally try C interop after using Zig for some
+time. Zig natively supports &lt;a href=&quot;https://ziglearn.org/chapter-4/&quot;&gt;C ABIs&lt;/a&gt;,
+making it possible for new programs to be built leveraging C libraries.&lt;/p&gt;
+&lt;p&gt;Frankly, it surprised me with how easy it was to just build &lt;code&gt;blst&lt;/code&gt; and
+use it as a static library in Zig. Zig pointers also coerce nicely to C
+pointers, which was super convenient to not have to do weird casts when
+calling &lt;code&gt;blst&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Why bother with C? Well, when a C library is audited and battle-tested,
+it may be better to just use it rather than reinvent the wheel, which is
+exactly what Zig enables you to do easily.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;defer-is-great&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Defer is great &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;In the C implementation, there&apos;s heavy abuse of &lt;code&gt;goto&lt;/code&gt;s in order to
+free data whenever some computation finishes or when errors occur. This
+is where C gets a bad rap, because the need to do manual memory
+management along with copious amounts of indirection leads to bug-prone
+code.&lt;/p&gt;
+&lt;p&gt;Instead of doing all that, Zig encourages the &lt;code&gt;alloc-defer&lt;/code&gt; pair
+pattern:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-zig&quot;&gt;    const allocator = std.testing.allocator;
+    // This allocates
+    const cfg = try KZGTrustedSetupConfig.loadFromFile(
+        allocator,
+        &quot;./src/trusted_setup.txt&quot;,
+    );
+    // This frees when out of scope
+    defer cfg.deinit();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This means less cognitive load on thinking about where and when to free
+your memory.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;general-cleanliness&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;General cleanliness &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Generally, the Zig version felt slightly cleaner to me and came out to
+about ~1100LOC (including tests). The
+&lt;a href=&quot;https://github.com/ethereum/c-kzg-4844/blob/main/src/c_kzg_4844.c&quot;&gt;c_kzg_4844.c&lt;/a&gt;
+file alone came to about 1.5x of that.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;conclusion&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Conclusion &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Implementing the 4844 variant of KZG for myself was a good practice for
+me to uncover what goes behind the scenes during KZG, and its connection
+to EIP-4844. While this isn&apos;t really made to be used as a SNARK, it is
+still really cool to see commitment schemes used in practice.&lt;/p&gt;
+&lt;p&gt;Commitment schemes are like magic when applied in the right scenarios to
+save on space and the work to be done.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>The Curious Case Of Inclusive Ranges</title>
+      <link>https://spiral-ladder.github.io/tech/2023/09/16/curious-case-of-inclusive-ranges.html</link>
+      <guid>https://spiral-ladder.github.io/tech/2023/09/16/curious-case-of-inclusive-ranges.html</guid>
+      <pubDate>Sat, 16 Sep 2023 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;The-Curious-Case-Of-Inclusive-Ranges&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;The Curious Case Of Inclusive Ranges &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2023-09-16&quot;&gt;Sep 16, 2023&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;I stumbled upon this &lt;a href=&quot;https://old.reddit.com/r/rust/comments/15tvuio/why_isnt_the_for_loop_optimized_better_in_this/&quot;&gt;reddit
+post&lt;/a&gt;
+recently, which at first glance, was complaining about the performance
+discrepancy between a while and a for loop, but the true answer is
+within the replies. TL;DR: using inclusive ranges in Rust lead to
+suboptimal code!&lt;/p&gt;
+&lt;p&gt;Have a look at the docs of
+&lt;a href=&quot;https://doc.rust-lang.org/src/core/iter/range.rs.html#618&quot;&gt;&lt;code&gt;RangeIteratorImpl&lt;/code&gt;&lt;/a&gt;
+and
+&lt;a href=&quot;https://doc.rust-lang.org/src/core/iter/range.rs.html#1009&quot;&gt;&lt;code&gt;RangeInclusiveIteratorImpl&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;impl&amp;lt;A: Step&amp;gt; RangeIteratorImpl for ops::Range&lt;A&gt; { type
+Item = A;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#[inline]
+default fn spec_next(&amp;amp;mut self) -&amp;gt; Option&amp;lt;A&amp;gt; {
+    if self.start &amp;lt; self.end {
+        let n =
+            Step::forward_checked(self.start.clone(), 1).expect(&quot;`Step` invariants not upheld&quot;);
+        Some(mem::replace(&amp;amp;mut self.start, n))
+    } else {
+        None
+    }
+}
+
+...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+[`RangeInclusiveIteratorImpl`]:
+
+```rust
+impl&amp;lt;A: Step&amp;gt; RangeInclusiveIteratorImpl for ops::RangeInclusive&amp;lt;A&amp;gt; {
+    type Item = A;
+
+    #[inline]
+    default fn spec_next(&amp;amp;mut self) -&amp;gt; Option&amp;lt;A&amp;gt; {
+        if self.is_empty() {
+            return None;
+        }
+        let is_iterating = self.start &amp;lt; self.end;
+        Some(if is_iterating {
+            let n =
+                Step::forward_checked(self.start.clone(), 1).expect(&quot;`Step` invariants not upheld&quot;);
+            mem::replace(&amp;amp;mut self.start, n)
+        } else {
+            self.exhausted = true;
+            self.start.clone()
+        })
+    }
+
+    ...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Obviously, the bottom version is more complex. Does that produce worse
+code though?&lt;/p&gt;
+&lt;p&gt;I tested it out with this simple program (code
+&lt;a href=&quot;https://github.com/bingcicle/inclusive-exclusive-range/&quot;&gt;here&lt;/a&gt;):&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-rust&quot;&gt;use std::time;
+
+fn for_inclusive() {
+    let mut num: u16 = 0;
+    for i in 0..=(u16::MAX - 1) {
+        num += i;
+    }
+}
+
+fn for_exclusive() {
+    let mut num: u16 = 0;
+    for i in 0..u16::MAX {
+        num += i;
+    }
+}
+
+fn main() {
+    println!(&quot;Running for 5 iterations&quot;);
+    let start = time::Instant::now();
+    for _ in 0..5 {
+        // Uncomment the desired function to test
+        for_exclusive();
+        //for_inclusive();
+    }
+    let end = start.elapsed();
+    println!(&quot;Done: {:?}&quot;, end);
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And here are the results:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-console&quot;&gt;# for_inclusive()
+$ cargo run --release
+    Finished release [optimized] target(s) in 0.15s
+     Running `target/release/iter`
+Running for 5 iterations
+Done: 49.03µs
+
+# for_exclusive()
+$ cargo run --release
+    Finished release [optimized] target(s) in 0.00s
+     Running `target/release/iter`
+Running for 5 iterations
+Done: 74ns
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As it turns out, the loop using the inclusive range finished in some
+microseconds, while the loop using the inclusive range finshed in mere
+&lt;strong&gt;nanoseconds&lt;/strong&gt;, a few factors faster than the inclusive range!&lt;/p&gt;
+&lt;p&gt;But why?&lt;/p&gt;
+&lt;section id=&quot;playground&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Playground &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Plugging the above loops into the &lt;a href=&quot;https://play.rust-lang.org/?version=nightly&amp;amp;mode=debug&amp;amp;edition=2021&amp;amp;gist=1038380931ccf79609d63bbd5f86ceba&quot;&gt;Rust
+playground&lt;/a&gt;
+gives us a better idea of what&apos;s happening. You can see that the HIR
+and MIR generated by the inclusive range is worse than the HIR/MIR
+generated by the exclusive range.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;godbolt&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Godbolt &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;I plugged in the same functions into godbolt, on
+&lt;a href=&quot;https://rust.godbolt.org/z/zWfYW3dP5&quot;&gt;&lt;code&gt;-C opt-level=1&lt;/code&gt;&lt;/a&gt; and the results
+are telling. There&apos;s far more assembly generated by the inclusive range
+rather than the exclusive range.&lt;/p&gt;
+&lt;p&gt;If you look at the definition of the &lt;code&gt;RangeInclusiveIteratorImpl&lt;/code&gt; from
+above, you might notice that the &lt;code&gt;RangeInclusive&lt;/code&gt; struct contains an
+&lt;code&gt;exhausted&lt;/code&gt; boolean - which deals with the equality check at the end of
+the range - and this is perhaps the reason why there&apos;s so much extra
+code generated by the inclusive range.&lt;/p&gt;
+&lt;p&gt;With &lt;a href=&quot;https://rust.godbolt.org/z/TbTqbzv99&quot;&gt;&lt;code&gt;-C opt-level=3&lt;/code&gt;&lt;/a&gt;. The
+results are even more interesting - because the functions aren&apos;t doing
+anything, you&apos;d think that the functions could be optimized away
+completely - which is what happens for the exclusive range code - but
+not for the inclusive range code! The exclusive range code returns
+immediately and we are done, but the inclusive range code still
+generates assembly to deal with the equality check at the end of the
+range.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;takeaways&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Takeaways &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;There isn&apos;t any real takeaway here other than to prefer using &lt;code&gt;Range&lt;/code&gt;
+rather than &lt;code&gt;RangeInclusive&lt;/code&gt; as much as possible. Of course, perhaps
+where a loop ends can perhaps be more understandable with the inclusive
+range notation, but that tradeoff would be for you to decide.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>Zero Knowledge about ZK</title>
+      <link>https://spiral-ladder.github.io/tech/2023/07/24/zero-knowledge.html</link>
+      <guid>https://spiral-ladder.github.io/tech/2023/07/24/zero-knowledge.html</guid>
+      <pubDate>Mon, 24 Jul 2023 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;Zero-Knowledge-about-ZK&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;Zero Knowledge about ZK &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2023-07-24&quot;&gt;Jul 24, 2023&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;In the recent months, I&apos;ve been diving into ZK and cryptography. I will
+be using this space to write personal notes on protocols and algorithms
+I learn about, as a way to reinforce my own knowledge.&lt;/p&gt;
+&lt;p&gt;This will serve as my introductory post.&lt;/p&gt;
+&lt;section id=&quot;what-is-a-zero-knowledge-proof&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;What is a Zero Knowledge proof? &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Simply put, it is a receipt that proves that you (prover) know a certain
+statement, and this receipt is usually given to another person
+(verifier) to accept or reject.&lt;/p&gt;
+&lt;p&gt;Different people use different examples to illustrate this, but I
+personally found &lt;a href=&quot;https://twitter.com/cryptograthor&quot;&gt;@cryptographor&lt;/a&gt;&apos;s
+example the best: &lt;a href=&quot;https://youtu.be/rkFrGz-JGzo?t=163&quot;&gt;the color blindness
+test&lt;/a&gt;.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;color-blindness-test&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Color blindness test &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Imagine that Alice is color blind and Bob wants to prove to Alice that
+he can see color. Now imagine that Alice has a red ball and a blue ball.
+Since she is color blind, she is not convinced that the balls have
+color, and Bob wants to convince her of this fact.&lt;/p&gt;
+&lt;p&gt;A simple test that Bob can do to prove that he can see color would be to
+tell Alice to hold each ball in her hands behind her back and then
+either swap or not swap the balls in her hands before revealing them to
+Bob. Bob then needs to tell Alice whether he thinks Alice swapped the
+balls or not.&lt;/p&gt;
+&lt;p&gt;In the first iteration, Alice might think that Bob got lucky, since
+there was a 50% chance that Bob guessed correctly, but after enough
+iterations of the protocol above, Alice can be convinced that Bob is
+telling the truth if he is consistently correct over all the iterations.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;properties-of-zk&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Properties of ZK &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;The above example also illustrates the 3 properties of ZK:
+&lt;strong&gt;completeness&lt;/strong&gt;, &lt;strong&gt;soundness&lt;/strong&gt;, &lt;strong&gt;zero-knowledge&lt;/strong&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;strong&gt;Completeness&lt;/strong&gt; Alice is convinced by an honest prover that color
+exists and that Bob can tell the difference
+&lt;/li&gt;
+&lt;li&gt;
+&lt;strong&gt;Soundness&lt;/strong&gt; If Bob is lying about the existence of color, it should be
+near impossible to convince Alice of that falsehood.
+&lt;/li&gt;
+&lt;li&gt;
+&lt;strong&gt;Zero-Knowledge&lt;/strong&gt;: Alice learns nothing other than the statement is
+true (color exists).
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+&lt;section id=&quot;modelling-zk-statements&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Modelling ZK statements &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;Programs do not understand English statements like the above, so we want
+to convert our English statement to some sort of verifiable statement.
+This is usually done in the form of some mathematical computation, which
+comes in the form of &lt;strong&gt;circuits&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Circuits allow us to express boolean (&lt;code&gt;AND&lt;/code&gt;, &lt;code&gt;OR&lt;/code&gt;) and arithmetic (&lt;code&gt;+&lt;/code&gt;,
+&lt;code&gt;*&lt;/code&gt;) logic. We can then model our problem as a circuit of boolean and
+arithmetic gates which in turn allow us to express the &lt;strong&gt;constraints&lt;/strong&gt; of
+the program, which are pre-set restrictions placed on the circuit. The
+circuit also usually takes in witness values from the prover as private
+input.&lt;/p&gt;
+&lt;p&gt;Once the circuit is formed and the input is provided, the circuit can be
+evaluated and a proof can be obtained. The verifier can be convinced
+that the proof is valid if all constraints within the circuit are
+satisfied - in plain English, this means that the prover has shown the
+verifier that he knows a given statement.&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>Ziggifying Kilo</title>
+      <link>https://spiral-ladder.github.io/tech/2023/04/13/ziggifying-kilo.html</link>
+      <guid>https://spiral-ladder.github.io/tech/2023/04/13/ziggifying-kilo.html</guid>
+      <pubDate>Thu, 13 Apr 2023 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;Ziggifying-Kilo&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;Ziggifying Kilo &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2023-04-13&quot;&gt;Apr 13, 2023&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;Recently, I ported antirez&apos;s &lt;a href=&quot;https://github.com/antirez/kilo&quot;&gt;Kilo
+editor&lt;/a&gt; to Zig as a way to learn Zig
+with a mini project. It&apos;s called &lt;em&gt;gram&lt;/em&gt; (&lt;em&gt;because kilogram, duh&lt;/em&gt;) and I
+tried to keep it as faithful as possible to the original:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;Under 1000 LOC&lt;/em&gt;. &lt;code&gt;cloc&lt;/code&gt; on &lt;code&gt;main.zig&lt;/code&gt; alone yields only &lt;em&gt;735&lt;/em&gt; lines
+of Zig&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;Has almost the same features&lt;/em&gt; (except non-prints support)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Written as similarly as I could to the original but with Zig fixes to
+the C-&lt;em&gt;isms&lt;/em&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There are already some comparisons of Rust vs Zig in the wild (_I quite
+enjoyed &lt;a href=&quot;https://zackoverflow.dev/writing/unsafe-rust-vs-zig&quot;&gt;When Zig is safer and faster than
+Rust&lt;/a&gt; by
+&lt;a href=&quot;https://twitter.com/zack_overflow&quot;&gt;@zack_overflow&lt;/a&gt;_) - this post will
+be on Zig vs C from the eyes of someone rediscovering low-level
+programming beyond classes he took at college.&lt;/p&gt;
+&lt;section id=&quot;the-road-to-zig-10&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;The Road to Zig 1.0 &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;In &lt;a href=&quot;https://www.youtube.com/watch?v=Gv2I7qTux7g&quot;&gt;The Road to Zig 1.0&lt;/a&gt;,
+Andrew Kelley, the creator of Zig, describes Zig as &quot;C but with the
+problems fixed&quot;.&lt;/p&gt;
+&lt;p&gt;He lists 3 major problems with C:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;#include&lt;/code&gt; - causes slow compilations and prevents optimizations&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;other preprocessor macros like &lt;code&gt;#define&lt;/code&gt; - makes it harder to read
+and debug&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;undefined behaviour footguns everywhere&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The first point is irrelevant since I&apos;m writing a tiny text editor, but
+while porting over kilo to &lt;em&gt;gram&lt;/em&gt;, I often encountered the above
+problems while reading the kilo source code, and to my pleasant surprise
+the Zig version felt a lot cleaner to read by the end. I&apos;ll evaluate my
+experience based on how well I think Zig fixes problems 2) and 3).&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;preprocessors-begone&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;Preprocessors begone! &lt;/h2&gt;&lt;/div&gt;
+&lt;p&gt;The entire &lt;em&gt;gram&lt;/em&gt; editor is written in a single &lt;code&gt;main.zig&lt;/code&gt; file and
+&lt;code&gt;std&lt;/code&gt; is the only dependency.&lt;/p&gt;
+&lt;p&gt;No &lt;code&gt;#include&lt;/code&gt; and &lt;code&gt;#define&lt;/code&gt; shenanigans - in Zig, everything is just a
+&lt;code&gt;const&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-zig&quot;&gt;// C: #define KILO_QUIT_TIMES 3
+const GRAM_QUIT_TIMES = 3;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;While macros are simply functions:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-zig&quot;&gt;// In C:
+// #define FIND_RESTORE_HL do { \
+//     if (saved_hl) { \
+//         memcpy(E.row[saved_hl_line].hl,saved_hl, E.row[saved_hl_line].rsize); \
+//         free(saved_hl); \
+//         saved_hl = NULL; \
+//     } \
+// } while (0)
+
+// In Zig:
+fn findRestoreHighlight(
+    self: *Self,
+    saved_hl: *?[]Highlight,
+    saved_hl_ix: ?usize,
+) void {
+    if (saved_hl.*) |hl| {
+        mem.copy(Highlight, self.rows.items[saved_hl_ix.?].hl, hl);
+        saved_hl.* = null;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In &lt;em&gt;gram&lt;/em&gt;, highlight related definitions are simply a Zig &lt;code&gt;enum&lt;/code&gt; instead
+of a bunch of &lt;code&gt;#define&lt;/code&gt; directives, which allows the usage of the handy
+&lt;code&gt;@enumToInt&lt;/code&gt; to derive syntax color instead:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-zig&quot;&gt;const Highlight = enum(u8) {
+    number = 31,
+    match = 34,
+    string = 35,
+    comment = 36,
+    normal = 37,
+};
+
+        ...
+        var color = @enumToInt(hl);
+        ...
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The above are just some of the many examples where Zig has made the code
+far more human-readable without sacrificing the conciseness of C.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;ub-footguns&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;UB footguns? &lt;/h2&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The simple, lazy way to write code must perform robust error handling.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;UB is bad, but unnecessary UB is worse - this is something that I think
+Zig remedies with the way you are forced to write programs.&lt;/p&gt;
+&lt;p&gt;Consider the &lt;a href=&quot;https://github.com/bingcicle/gram/blob/0b79b81b539bcf349012f2ea1ff862854b707dd7/src/main.zig#L543&quot;&gt;rewritten save
+functionality&lt;/a&gt;
+in &lt;em&gt;gram&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-zig&quot;&gt;fn save(self: *Self) !void {
+    const buf = try self.rowsToString();
+    defer self.allocator.free(buf);
+
+    const file = try fs.cwd().createFile(
+        self.file_path,
+        .{
+            .read = true,
+        },
+    );
+    defer file.close();
+
+    file.writeAll(buf) catch |err| {
+        return err;
+    };
+
+    try self.setStatusMessage(&quot;{d} bytes written on disk&quot;, .{buf.len});
+    self.dirty = false;
+    return;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the original kilo&apos;s save functionality alone, there already exists a
+bunch of indirection with a &lt;code&gt;writeerr&lt;/code&gt; goto which is referenced a total
+of 3 times to handle the same error, and the failure case where an error
+message is written to the status message is also handled in the same
+function.&lt;/p&gt;
+&lt;p&gt;Of course in such a trivial example, the logic is still relatively easy
+to reason about, but when the codebase naturally becomes larger in a
+project, this indirection is simply an unnecessary part of the language
+that results in shooting yourself in the foot.&lt;/p&gt;
+&lt;p&gt;Contrast this with &lt;em&gt;gram&lt;/em&gt; above, where it&apos;s a pretty clear linear flow
+with coupled resource creation/cleanup and error handling. Setting the
+status message within this function only happens if this succeeds,
+otherwise we simply catch and return the error in order to set the
+status message higher up.&lt;/p&gt;
+&lt;p&gt;The best way to illustrate Zig&apos;s effect on my way of thinking is that
+it &lt;em&gt;quietly and gently nudges you to think about where data lives in
+terms of allocation, cleanup and error handling&lt;/em&gt;, without shoving it in
+your face. It&apos;s natural to think that allocation comes with a &lt;code&gt;defer&lt;/code&gt;
+or an &lt;code&gt;errdefer&lt;/code&gt;, and the &lt;code&gt;std&lt;/code&gt; exposes sane defaults for commmon
+operations like creating a file as seen above - no need to call &lt;code&gt;open()&lt;/code&gt;
+with a bunch of flags!&lt;/p&gt;
+&lt;p&gt;The simplicity and linearity of Zig seemed like a con to me at first
+coming from a Rust mindset, but the mental model that Zig forces me into
+is refreshing and so far I&apos;m enjoying the ride.&lt;/p&gt;
+&lt;p&gt;Feel free to reach out on &lt;a href=&quot;https://twitter.com/bingcicle&quot;&gt;my twitter&lt;/a&gt; to
+give me feedback :)&lt;/p&gt;
+&lt;/section&gt;
+&lt;/section&gt;
+</description>
+    </item>
+  </channel>
+</rss>
