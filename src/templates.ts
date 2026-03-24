@@ -153,6 +153,42 @@ export function post(post: Post, spellcheck: boolean): HtmlString {
   });
 }
 
+export function feed(posts: Post[]): string {
+  const items = posts.map((post) => {
+    const pubDate = post.date.toUTCString();
+    const link = `${site_url}${post.path}`;
+    return `    <item>
+      <title>${escapeXml(post.title ?? "")}</title>
+      <link>${link}</link>
+      <guid>${link}</guid>
+      <pubDate>${pubDate}</pubDate>
+      <description>${escapeXml(post.content?.value ?? "")}</description>
+    </item>`;
+  });
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bing</title>
+    <link>${site_url}</link>
+    <description>${blurb}</description>
+    <atom:link href="${site_url}/feed.xml" rel="self" type="application/rss+xml"/>
+    <language>en-us</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+${items.join("\n")}
+  </channel>
+</rss>`;
+}
+
+function escapeXml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 export function page(name: string, content: HtmlString) {
   return base({
     path: `/${name}`,

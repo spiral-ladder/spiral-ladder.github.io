@@ -31,6 +31,9 @@ async function build() {
     )
   }
 
+  const all_posts = [...tech_posts, ...ramblings].sort((a, b) => b.date - a.date);
+  await update_file("out/feed.xml", templates.feed(all_posts));
+
   const pages = ["about", "favourites"];
   for (const page of pages) {
     const file = Bun.file(`content/${page}.dj`);
