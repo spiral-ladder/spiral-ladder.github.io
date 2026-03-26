@@ -19,7 +19,7 @@ export const base = (
     extra_css?: string;
   },
 ): HtmlString =>
- html` 
+  html` 
 <!DOCTYPE html>
 <html lang='en-US'>
 <head>
@@ -93,6 +93,7 @@ export const base = (
     <nav>
       <a class="title" href="/">bing</a>
       <a href="/about.html">About</a>
+      <a href="/photos.html">Photos</a>
       <a href="/favourites.html">Favourites</a>
     </nav>
   </header>
@@ -103,14 +104,31 @@ export const base = (
 
   <footer>
   </footer>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="">
+  </div>
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.photo-grid img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+      });
+    });
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+  </script>
 </body>
 
 </html>
 `;
 
 export const post_list = (categories: string[], posts_: Post[][]): HtmlString => {
-  var lists = [] 
-  for (var i=0; i < posts_.length; i+=1) {
+  var lists = []
+  for (var i = 0; i < posts_.length; i += 1) {
     const list_items = posts_[i].map((post) =>
       html`
   <li>
@@ -121,7 +139,7 @@ export const post_list = (categories: string[], posts_: Post[][]): HtmlString =>
   }
 
   var posts_by_category = []
-  for (var i=0; i < categories.length; i+=1) {
+  for (var i = 0; i < categories.length; i += 1) {
     if (lists[i].length == 0) continue;
     const list = html`
 <h2>${categories[i]}</h2>
@@ -147,9 +165,8 @@ export function post(post: Post, spellcheck: boolean): HtmlString {
     title: post.title,
     description: post.summary,
     path: post.path,
-    content: html`<article ${
-      spellcheck ? 'contentEditable="true"' : ""
-    }>\n${post.content}</article>`,
+    content: html`<article ${spellcheck ? 'contentEditable="true"' : ""
+      }>\n${post.content}</article>`,
   });
 }
 
@@ -208,9 +225,8 @@ export function time(date: Date, cls?: string): HtmlString {
     timeZone: "UTC",
   });
   const machine = yyyy_mm_dd(date);
-  return html`<time ${
-    cls ? `class="${cls}"` : ""
-  } datetime="${machine}">${human}</time>`;
+  return html`<time ${cls ? `class="${cls}"` : ""
+    } datetime="${machine}">${human}</time>`;
 }
 
 function yyyy_mm_dd(date: Date): string {
