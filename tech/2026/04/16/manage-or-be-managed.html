@@ -1,0 +1,184 @@
+ 
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>manage your dependencies, or be managed</title>
+  <meta name="description" content="">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://spiral-ladder.github.io/tech/2026/04/16/manage-or-be-managed.html">
+  <link rel="alternate" type="application/rss+xml" title="bh" href="https://spiral-ladder.github.io/feed.xml">
+  <style>
+  @font-face {
+    font-family: 'Open Sans'; src: url('/css/OpenSans-300-Normal.woff2') format('woff2');
+    font-weight: 300; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Italic.woff2') format('woff2');
+    font-weight: 400; font-style: italic;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Italic.woff2') format('woff2');
+    font-weight: 700; font-style: italic;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; margin-block-start: 0; margin-block-end: 0; }
+
+  body {
+    max-width: 80ch;
+    padding: 2ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  header { margin-bottom: 2rem; }
+  header > nav { display: flex; column-gap: 2ch; align-items: baseline; flex-wrap: wrap; }
+  header a { font-style: normal; color: rgba(0, 0, 0, .7); text-decoration: none; }
+  header a:hover { font-style: normal; color: rgba(0, 0, 0, 1); text-decoration: none; }
+  header .title { font-size: 1.25em; flex-grow: 2; }
+
+  footer { margin-top: 2rem; }
+  footer > p { display: flex; column-gap: 2ch; justify-content: center; flex-wrap: wrap; }
+  footer a { color: rgba(0, 0, 0, .8); text-decoration: none; white-space: nowrap; }
+  footer i { vertical-align: middle; color: rgba(0, 0, 0, .8) }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/site.css">
+  
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a class="title" href="/">bing</a>
+      <a href="/about.html">About</a>
+      <a href="/photos.html">Photos</a>
+      <a href="/favourites.html">Favourites</a>
+    </nav>
+  </header>
+
+  <main>
+  <article >
+<section id="manage-your-dependencies-or-be-managed">
+
+<div class="title"><h1>manage your dependencies, or be managed </h1><time class="meta" datetime="2026-04-16">Apr 16, 2026</time></div>
+<p>my first ever ‘real’ open source project was a
+<a href="https://github.com/fuellabs/fuelup">toolchain manager</a>. Now a toolchain manager
+is not quite similar to a package manager, but I have a strong enough of an opinion to
+write something about this.</p>
+<section id="What-makes-package-managers-good">
+
+<div class="title"><h3>What makes package managers good? </h3></div>
+<p>I used to believe that <strong>convenience</strong> is what makes a package
+manager great, but I think today I’d say <strong>auditability</strong> first,
+and <strong>convenience</strong> as a nice-to-have.</p>
+</section>
+<section id="Designing-a-package-manager">
+
+<div class="title"><h3>Designing a package manager </h3></div>
+<p>A package manager’s functionality is simple: it should be able to download, install,
+upgrade and uninstall dependencies from a project. It can optionally upgrade itself.</p>
+<p>These features are often designed based on the philosophy that a good package manager
+optimizes for <strong>convenience</strong>. Users <em>should</em> be able to do all of the above functionality in
+an obvious way.</p>
+<p>Optimizing for convenience is also good for marketing -
+it’s satisfying to allow users to run a simple one-liner that installs a piece of a software.
+So is allowing developers to manage packages in concise commands, and that was what I did with <em>fuelup</em>.</p>
+<p>I took a huge amount of inspiration from both <a href="https://rustup.rs/">rustup</a> and
+<a href="https://nixos.org/">Nix</a> (h/t to my colleagues at the time who attempted to nix-pill me).
+The architecture is detailed in a <a href="https://install.fuel.network/master/concepts/how_fuelup_works.html">book</a>.</p>
+<p>TL;DR: the toolchain manager creates a dotfolder in your home directory and manages a ‘store’ within it.
+This store caches your downloaded binaries such that you only ever pull binaries once from the web.
+Subsequently, the toolchain manager itself acts like
+<a href="https://rust-lang.github.io/rustup/concepts/index.html#how-rustup-works">a proxy, much like rustup,</a>
+that invokes the correct binary when a binary that rustup manages is called.
+So when you do <code>cargo install</code>, you’re actually invoking <code>rustup</code>
+which in turn invokes the correct <code>cargo</code> with the right version. Pretty cool!</p>
+<p>However, think about how much went into trying to <em>hide details from the user</em> in the name of convenience.
+It all really acts like a black box when the input is a command and the output is some invocation of
+an unknown binary.</p>
+<p>This simple act of managing packages can be deceptively insidious. Do we know what software we’re pulling
+when we’re running <code>npm install</code>? (remember the <a href="https://en.wikipedia.org/wiki/Npm_left-pad_incident">left-pad incident</a>)
+Every time we download software to our local machine, we’re leaving ourselves vulnerable to supply
+chain attacks.</p>
+</section>
+<section id="Auditability">
+
+<div class="title"><h3>Auditability </h3></div>
+<p>Today, I would argue that the property that makes a package manager good is not <strong>convenience</strong>, but <strong>auditability</strong>, and
+to me that means that it should be easy to vet the software you are downloading off the internet. Which means, the
+software should either be <strong>open source and reproducible</strong> or at least <strong>verifiable</strong>. The former should be self-evident but
+in the latter case, in the scenario that we download software from a trusted entity (eg. government), the
+software should be verifiable. This can be as simple as publishing the SHA hash of the binary on
+an official webpage. Obviously the former is the better approach but we’re assuming here that the distributed software
+cannot be open source for some reason.</p>
+<p>Most languages have somewhat of a middle-ground approach where they manage dependencies for you and have an accompanying
+lockfile for pinning versions of dependencies. This allows some level of auditability, since we can visit some git link
+at a certain commit hash to view the code that our package manager pulled.</p>
+<p><a href="https://odin-lang.org">Odin</a> has the most extreme approach: 
+The creator chose not to have a package manager at all (Read: <a href="https://www.gingerbill.org/article/2025/09/08/package-managers-are-evil/">‘Package Managers are Evil’</a>).
+Instead, Odin developers have to vendor all dependencies they use, and in the vendoring process they would be likely
+to audit and find any suspicious code within the dependencies.</p>
+<p>The problem is <em>auditability</em> is not a sexy metric to judge a package manager by. Convenience is marketable, auditability
+is not. Another problem is that a big portion of developers do not care about auditing packages at all. 
+Even with source available code, most of us realistically do not check the source code, or say, the past X commits
+to audit what they downloaded.
+This requires a culture shift entirely; people need to start caring about where their software come from.</p>
+<p>A part of me feel that we’re too far gone at this point. Consider this:
+why do we allow companies to inject random dotfiles into our home directory? Rob Pike briefly 
+speaks of its origins in <a href="https://web.archive.org/web/20180827160401/https://plus.google.com/+RobPikeTheHuman/posts/R58WgWwN9jp">old post</a>
+from 2012. Just do an <code>ls</code> in your home directory right now to see how widely accepted this behaviour is,
+despite it being an extremely intrusive behaviour. This is likely to become an even bigger problem with AI
+writing more code - more (potentially junk) software dropped in your home directory.</p>
+<p>I’m hopeful that change eventually happens with ecosystems like Odin standing behind their extreme stances.
+Such experiments should be celebrated more - the lack of a package manager today is almost a dealbreaker for
+most developers to adopt a language. But it is these very dogmatic beliefs that attract people who care,
+and with time I think software supply chain awareness becomes part of fundamental programming knowledge.
+For now, perhaps the best package manager is the one that doesn’t exist.</p>
+</section>
+</section>
+</article>
+  </main>
+
+  <footer>
+  </footer>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="">
+  </div>
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.photo-grid img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+      });
+    });
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+  </script>
+</body>
+
+</html>
