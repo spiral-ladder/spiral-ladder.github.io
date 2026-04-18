@@ -1,0 +1,84 @@
+# manage your dependencies, or be managed
+
+my first ever 'real' open source project was a
+[toolchain manager](https://github.com/fuellabs/fuelup). Now a toolchain manager
+is not quite similar to a package manager, but I have a strong enough of an opinion to
+write something about this.
+
+### What makes package managers good?
+
+I used to believe that *convenience* is what makes a package
+manager great, but I think today I'd say *auditability* first,
+and *convenience* as a nice-to-have.
+
+### Designing a package manager
+
+A package manager's functionality is simple: it should be able to download, install,
+upgrade and uninstall dependencies from a project. It can optionally upgrade itself.
+
+These features are often designed based on the philosophy that a good package manager
+optimizes for *convenience*. Users _should_ be able to do all of the above functionality in
+an obvious way.
+
+Optimizing for convenience is also good for marketing -
+it's satisfying to allow users to run a simple one-liner that installs a piece of a software.
+So is allowing developers to manage packages in concise commands, and that was what I did with _fuelup_.
+
+I took a huge amount of inspiration from both [rustup](https://rustup.rs/) and
+[Nix](https://nixos.org/) (h/t to my colleagues at the time who attempted to nix-pill me).
+The architecture is detailed in a [book](https://install.fuel.network/master/concepts/how_fuelup_works.html).
+
+TL;DR: the toolchain manager creates a dotfolder in your home directory and manages a 'store' within it.
+This store caches your downloaded binaries such that you only ever pull binaries once from the web.
+Subsequently, the toolchain manager itself acts like
+[a proxy, much like rustup,](https://rust-lang.github.io/rustup/concepts/index.html#how-rustup-works)
+that invokes the correct binary when a binary that rustup manages is called.
+So when you do `cargo install`, you're actually invoking `rustup`
+which in turn invokes the correct `cargo` with the right version. Pretty cool!
+
+However, think about how much went into trying to _hide details from the user_ in the name of convenience.
+It all really acts like a black box when the input is a command and the output is some invocation of
+an unknown binary.
+
+This simple act of managing packages can be deceptively insidious. Do we know what software we're pulling
+when we're running `npm install`? (remember the [left-pad incident](https://en.wikipedia.org/wiki/Npm_left-pad_incident))
+Every time we download software to our local machine, we're leaving ourselves vulnerable to supply
+chain attacks.
+
+### Auditability
+
+Today, I would argue that the property that makes a package manager good is not *convenience*, but *auditability*, and
+to me that means that it should be easy to vet the software you are downloading off the internet. Which means, the
+software should either be *open source and reproducible* or at least *verifiable*. The former should be self-evident but
+in the latter case, in the scenario that we download software from a trusted entity (eg. government), the
+software should be verifiable. This can be as simple as publishing the SHA hash of the binary on
+an official webpage. Obviously the former is the better approach but we're assuming here that the distributed software
+cannot be open source for some reason.
+
+Most languages have somewhat of a middle-ground approach where they manage dependencies for you and have an accompanying
+lockfile for pinning versions of dependencies. This allows some level of auditability, since we can visit some git link
+at a certain commit hash to view the code that our package manager pulled.
+
+[Odin](https://odin-lang.org) has the most extreme approach: 
+The creator chose not to have a package manager at all (Read: ['Package Managers are Evil'](https://www.gingerbill.org/article/2025/09/08/package-managers-are-evil/)).
+Instead, Odin developers have to vendor all dependencies they use, and in the vendoring process they would be likely
+to audit and find any suspicious code within the dependencies.
+
+The problem is _auditability_ is not a sexy metric to judge a package manager by. Convenience is marketable, auditability
+is not. Another problem is that a big portion of developers do not care about auditing packages at all. 
+Even with source available code, most of us realistically do not check the source code, or say, the past X commits
+to audit what they downloaded.
+This requires a culture shift entirely; people need to start caring about where their software come from. 
+
+A part of me feel that we're too far gone at this point. Consider this:
+why do we allow companies to inject random dotfiles into our home directory? Rob Pike briefly 
+speaks of its origins in [old post](https://web.archive.org/web/20180827160401/https://plus.google.com/+RobPikeTheHuman/posts/R58WgWwN9jp)
+from 2012. Just do an `ls` in your home directory right now to see how widely accepted this behaviour is,
+despite it being an extremely intrusive behaviour. This is likely to become an even bigger problem with AI
+writing more code - more (potentially junk) software dropped in your home directory.
+
+I'm hopeful that change eventually happens with ecosystems like Odin standing behind their extreme stances.
+Such experiments should be celebrated more - the lack of a package manager today is almost a dealbreaker for
+most developers to adopt a language. But it is these very dogmatic beliefs that attract people who care,
+and with time I think software supply chain awareness becomes part of fundamental programming knowledge.
+For now, perhaps the best package manager is the one that doesn't exist.
