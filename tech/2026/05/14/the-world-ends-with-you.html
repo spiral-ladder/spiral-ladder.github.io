@@ -1,0 +1,151 @@
+ 
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The World (of AI) Ends With You</title>
+  <meta name="description" content="">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://spiral-ladder.github.io/tech/2026/05/14/the-world-ends-with-you.html">
+  <link rel="alternate" type="application/rss+xml" title="bh" href="https://spiral-ladder.github.io/feed.xml">
+  <style>
+  @font-face {
+    font-family: 'Open Sans'; src: url('/css/OpenSans-300-Normal.woff2') format('woff2');
+    font-weight: 300; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Italic.woff2') format('woff2');
+    font-weight: 400; font-style: italic;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Italic.woff2') format('woff2');
+    font-weight: 700; font-style: italic;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; margin-block-start: 0; margin-block-end: 0; }
+
+  body {
+    max-width: 80ch;
+    padding: 2ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  header { margin-bottom: 2rem; }
+  header > nav { display: flex; column-gap: 2ch; align-items: baseline; flex-wrap: wrap; }
+  header a { font-style: normal; color: rgba(0, 0, 0, .7); text-decoration: none; }
+  header a:hover { font-style: normal; color: rgba(0, 0, 0, 1); text-decoration: none; }
+  header .title { font-size: 1.25em; flex-grow: 2; }
+
+  footer { margin-top: 2rem; }
+  footer > p { display: flex; column-gap: 2ch; justify-content: center; flex-wrap: wrap; }
+  footer a { color: rgba(0, 0, 0, .8); text-decoration: none; white-space: nowrap; }
+  footer i { vertical-align: middle; color: rgba(0, 0, 0, .8) }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/site.css">
+  
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a class="title" href="/">bing</a>
+      <a href="/about.html">About</a>
+      <a href="/photos.html">Photos</a>
+      <a href="/favourites.html">Favourites</a>
+    </nav>
+  </header>
+
+  <main>
+  <article >
+<section id="The-World-of-AI-Ends-With-You">
+
+<div class="title"><h1>The World (of AI) Ends With You </h1><time class="meta" datetime="2026-05-14">May 14, 2026</time></div>
+<p>There’s been a lot of discourse surrounding AI usage for about a year at this point. Most people praise the fact
+that <a href="https://x.com/naval/status/2026058635718398029">‘vibecoding’ has empowered people</a>
+(even if they are non-technical) to build apps, while there’s still some
+<a href="https://x.com/rfleury/status/2053545357074964816">who are skeptical</a> of heavily depending on AI for coding.</p>
+<p>I think there’s a lot more nuance than having to pick one of the two sides. I’ve more or less accepted that
+AI will be a large part of my day-to-day. It’s been useful in generating tons of code
+which I’d otherwise have to handwrite and especially helpful when it comes to debugging issues, especially ones
+that I do not have an expertise in, but know enough to know if the model is BS-ing me or not. To deny its
+positive impact in my work would be lying.</p>
+<p>But people are overselling its benefits. AI still cannot make sound architectural decisions. It often comes
+to the wrong conclusions, and changes its mind at a whim if you convince the model that it is wrong, so all the
+hype around ‘AI will replace engineers’ is nothing but fearmongering. At the end of the day, <strong>you still
+need humans to understand, audit and verify the code that is written</strong> to make sure that it makes sense given
+the requirements of the system that is being maintained or built.</p>
+<p>When you see tweets about how great ‘vibecoding’ is, keep in mind that some
+of these people have a <strong>vested interest</strong> in you not wanting to code. The <a href="https://x.com/vivoplt/status/2054170168163774644">founder of Anthropic</a> obviously wants you
+to give in and use their models so that you eventually gain a reliance on their product.
+So do the other people making money off these models or wrappers around these models.</p>
+<p>Nihilists would　give in to this narrative and completely give up coding because they believe the age of AI is already here and
+that they would be replaced. This is something very sad to see (and I’ve witnessed it a few times), and is completely untrue.</p>
+<p>Optimists, on the other hand, see AI as a tool. The ‘10x dev to a 100x dev thanks to AI’ is a bit of a meme, but also
+somewhat true. You can, under supervision, <a href="https://x.com/mitchellh/status/2052397933522506079">build large scale projects at a much faster speed today</a> thanks to AI’s speed
+at churning out code. We get faster iteration and experimentation, all at 10x the previous speed.</p>
+<p>Correctness is still very much dependent on the implementors’ capabilities, as said in the linked tweet.
+One big reason why I’m skeptical of this vibe-coding craze is security. We’re already seeing a ton of
+breaches, malware and other security vulnerabilities surface, most likely due to agent-assisted blackhat 
+activity, and I suspect this will continue especially with carelessly ‘vibe coded’ applications.</p>
+<p>I do not believe in the future where coding will be done primarily by agents. If agents are doing most software work,
+they would pick a more efficient format anyway. Software engineering, from inception, has been a way for <strong>humans
+to communicate with other humans</strong>. That’s why there are design specifications for software, meetups, conferences
+and even a whole damn field on PLT. This whole narrative that software engineers will just disappear just seems
+absurd to me. What is software without humans to work on them and make them useful for other humans?</p>
+<p>If all that did not convince you to stop over-relying on AI and start treating it as a tool, remember that <strong>coding
+is fun</strong>. Humans were not made to sit in office chairs for 10 hours a day but we do it anyway for the love of the 
+game. You’re possibly an aspiring game dev or you would like to make your own programming language. Pursue those
+things again and write code by hand and enjoy the joy of programming. I’m personally learning Rocq using the <a href="https://softwarefoundations.cis.upenn.edu/">Software
+Foundations</a> textbook and <a href="https://github.com/idris-lang/Idris2">Idris2</a>
+at the moment and would like to do game dev soon.</p>
+<p>The title of the post refers to a <a href="https://en.wikipedia.org/wiki/The_World_Ends_with_You">game</a>, and I didn’t quite get
+the meaning until recently. The world can be as small or as big as you want it to be. If you think AI will take your job,
+that will be your world. But if you treat AI as a tool to assist you, the world is as big as you will it to be.</p>
+</section>
+</article>
+  </main>
+
+  <footer>
+  </footer>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="">
+  </div>
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.photo-grid img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+      });
+    });
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+  </script>
+</body>
+
+</html>

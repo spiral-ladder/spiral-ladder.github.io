@@ -6,7 +6,59 @@
     <description>spiral ladder</description>
     <atom:link href="https://spiral-ladder.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
-    <lastBuildDate>Sat, 18 Apr 2026 23:22:25 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 13 May 2026 17:37:22 GMT</lastBuildDate>
+    <item>
+      <title>The World (of AI) Ends With You</title>
+      <link>https://spiral-ladder.github.io/tech/2026/05/14/the-world-ends-with-you.html</link>
+      <guid>https://spiral-ladder.github.io/tech/2026/05/14/the-world-ends-with-you.html</guid>
+      <pubDate>Thu, 14 May 2026 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;The-World-of-AI-Ends-With-You&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;The World (of AI) Ends With You &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2026-05-14&quot;&gt;May 14, 2026&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;There’s been a lot of discourse surrounding AI usage for about a year at this point. Most people praise the fact
+that &lt;a href=&quot;https://x.com/naval/status/2026058635718398029&quot;&gt;‘vibecoding’ has empowered people&lt;/a&gt;
+(even if they are non-technical) to build apps, while there’s still some
+&lt;a href=&quot;https://x.com/rfleury/status/2053545357074964816&quot;&gt;who are skeptical&lt;/a&gt; of heavily depending on AI for coding.&lt;/p&gt;
+&lt;p&gt;I think there’s a lot more nuance than having to pick one of the two sides. I’ve more or less accepted that
+AI will be a large part of my day-to-day. It’s been useful in generating tons of code
+which I’d otherwise have to handwrite and especially helpful when it comes to debugging issues, especially ones
+that I do not have an expertise in, but know enough to know if the model is BS-ing me or not. To deny its
+positive impact in my work would be lying.&lt;/p&gt;
+&lt;p&gt;But people are overselling its benefits. AI still cannot make sound architectural decisions. It often comes
+to the wrong conclusions, and changes its mind at a whim if you convince the model that it is wrong, so all the
+hype around ‘AI will replace engineers’ is nothing but fearmongering. At the end of the day, &lt;strong&gt;you still
+need humans to understand, audit and verify the code that is written&lt;/strong&gt; to make sure that it makes sense given
+the requirements of the system that is being maintained or built.&lt;/p&gt;
+&lt;p&gt;When you see tweets about how great ‘vibecoding’ is, keep in mind that some
+of these people have a &lt;strong&gt;vested interest&lt;/strong&gt; in you not wanting to code. The &lt;a href=&quot;https://x.com/vivoplt/status/2054170168163774644&quot;&gt;founder of Anthropic&lt;/a&gt; obviously wants you
+to give in and use their models so that you eventually gain a reliance on their product.
+So do the other people making money off these models or wrappers around these models.&lt;/p&gt;
+&lt;p&gt;Nihilists would　give in to this narrative and completely give up coding because they believe the age of AI is already here and
+that they would be replaced. This is something very sad to see (and I’ve witnessed it a few times), and is completely untrue.&lt;/p&gt;
+&lt;p&gt;Optimists, on the other hand, see AI as a tool. The ‘10x dev to a 100x dev thanks to AI’ is a bit of a meme, but also
+somewhat true. You can, under supervision, &lt;a href=&quot;https://x.com/mitchellh/status/2052397933522506079&quot;&gt;build large scale projects at a much faster speed today&lt;/a&gt; thanks to AI’s speed
+at churning out code. We get faster iteration and experimentation, all at 10x the previous speed.&lt;/p&gt;
+&lt;p&gt;Correctness is still very much dependent on the implementors’ capabilities, as said in the linked tweet.
+One big reason why I’m skeptical of this vibe-coding craze is security. We’re already seeing a ton of
+breaches, malware and other security vulnerabilities surface, most likely due to agent-assisted blackhat 
+activity, and I suspect this will continue especially with carelessly ‘vibe coded’ applications.&lt;/p&gt;
+&lt;p&gt;I do not believe in the future where coding will be done primarily by agents. If agents are doing most software work,
+they would pick a more efficient format anyway. Software engineering, from inception, has been a way for &lt;strong&gt;humans
+to communicate with other humans&lt;/strong&gt;. That’s why there are design specifications for software, meetups, conferences
+and even a whole damn field on PLT. This whole narrative that software engineers will just disappear just seems
+absurd to me. What is software without humans to work on them and make them useful for other humans?&lt;/p&gt;
+&lt;p&gt;If all that did not convince you to stop over-relying on AI and start treating it as a tool, remember that &lt;strong&gt;coding
+is fun&lt;/strong&gt;. Humans were not made to sit in office chairs for 10 hours a day but we do it anyway for the love of the 
+game. You’re possibly an aspiring game dev or you would like to make your own programming language. Pursue those
+things again and write code by hand and enjoy the joy of programming. I’m personally learning Rocq using the &lt;a href=&quot;https://softwarefoundations.cis.upenn.edu/&quot;&gt;Software
+Foundations&lt;/a&gt; textbook and &lt;a href=&quot;https://github.com/idris-lang/Idris2&quot;&gt;Idris2&lt;/a&gt;
+at the moment and would like to do game dev soon.&lt;/p&gt;
+&lt;p&gt;The title of the post refers to a &lt;a href=&quot;https://en.wikipedia.org/wiki/The_World_Ends_with_You&quot;&gt;game&lt;/a&gt;, and I didn’t quite get
+the meaning until recently. The world can be as small or as big as you want it to be. If you think AI will take your job,
+that will be your world. But if you treat AI as a tool to assist you, the world is as big as you will it to be.&lt;/p&gt;
+&lt;/section&gt;
+</description>
+    </item>
     <item>
       <title>manage your dependencies, or be managed</title>
       <link>https://spiral-ladder.github.io/tech/2026/04/16/manage-or-be-managed.html</link>
