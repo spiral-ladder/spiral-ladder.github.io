@@ -6,7 +6,7 @@
     <description>spiral ladder</description>
     <atom:link href="https://spiral-ladder.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Jun 2026 23:05:37 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jun 2026 23:08:39 GMT</lastBuildDate>
     <item>
       <title>notes on software transactional memory</title>
       <link>https://spiral-ladder.github.io/tech/2026/06/16/software-transactional-memory.html</link>
@@ -15,9 +15,10 @@
       <description>&lt;section id=&quot;notes-on-software-transactional-memory&quot;&gt;
 
 &lt;div class=&quot;title&quot;&gt;&lt;h1&gt;notes on software transactional memory &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2026-06-16&quot;&gt;Jun 16, 2026&lt;/time&gt;&lt;/div&gt;
-&lt;p&gt;Recently I listened to a [podcast] with Simon Peyton Jones as a guest and learnt of
-[software transactional memory] (STM). Dug into it a bit and found an interesting [paper]
-which I implemented a toy version of (source [here]).&lt;/p&gt;
+&lt;p&gt;Recently I listened to a &lt;a href=&quot;https://www.youtube.com/watch?v=Ow55c-m-_Ak&quot;&gt;podcast&lt;/a&gt;
+with Simon Peyton Jones as a guest and learnt of
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Software_transactional_memory&quot;&gt;software transactional memory&lt;/a&gt; (STM). Dug into it a bit and found an interesting &lt;a href=&quot;https://dcl.epfl.ch/site/_media/education/4.pdf&quot;&gt;paper&lt;/a&gt;
+which I implemented a toy version of (source &lt;a href=&quot;https://github.com/spiral-ladder/tl2&quot;&gt;here&lt;/a&gt;).&lt;/p&gt;
 &lt;section id=&quot;core-concept&quot;&gt;
 
 &lt;div class=&quot;title&quot;&gt;&lt;h2&gt;core concept &lt;/h2&gt;&lt;/div&gt;
