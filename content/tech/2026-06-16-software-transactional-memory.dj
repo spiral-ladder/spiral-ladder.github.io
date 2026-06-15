@@ -1,0 +1,65 @@
+# notes on software transactional memory
+
+Recently I listened to a [podcast][podcast]
+with Simon Peyton Jones as a guest and learnt of
+[software transactional memory][software transactional memory] (STM). Dug into it a bit and found an interesting [paper][paper]
+which I implemented a toy version of (source [here][gh-link]).
+
+## core concept
+
+STM is an alternative to lock-based synchronization. Its argument: lock-based synchronization
+performs well but is hard to get right. Instead, treat reads/writes as 'transactions' - that is,
+all reads/writes are logged (as you would in a ledger) and buffered optimistically before being
+*commited* into memory.
+
+## algorithm
+
+The paper introduces an STM algorithm based on commit-time locking and a global version clock.
+It roughly works like this:
+
+1. Maintain a *global version clock* that is incremented once per transaction that writes to memory.
+2. Upon a new transaction, load and store this global version clock in a local variable _rv_.
+3. Prepare to run through speculative execution. For this, each transaction maintains a local
+_read set_ of *addresses* loaded and _write set_ of *address/value* pairs. The write set also maintains
+the *last read version* (explained later).
+
+4. This is where reads/writes differ (prepended *r* and *w* respectively):
+
+For reads:
+
+Maintain a single word bloom filter to check if the loaded address is already in the write set.
+If so, we return the last value written to the address. This avoids read-after-write hazards.
+5. We do post-validation on this read by ensuring 3 criteria: One, that the location's versioned
+write lock is free and that the lock has not changed, two, that the lock's version field does not
+exceed the local _rv_, and three, that the lock bit is clear.
+
+For writes:
+
+We simply store the addr/value pair into the write set.
+
+Once we eagerly execute all the loads and writes, step 5 onwards is where we start the *commit phase*.
+
+5. We lock the write set by acquiring all the locks. 
+6. Do an increment-and-fetch (by doing CAS) on the global version clock. Record the returned value
+in a local _write version number_ _wv_.
+7. Validate the read set. For each location in the read set, the version number should be lesser than or
+equal to _rv_. We also verify that these memory locations have not been locked by other threads.
+We re-validate the read set to guarantee that memory locations have not been modified while steps
+5 and 6 were being executed. If _rv_ + 1 == _wv_ then we skip validation, since that means no
+concurrently executing transaction could have modified it, which is the power of a global
+ version clock.
+ 8. Commit and release the locks. Now actually perform the writes in the write set, then release
+ all the locks and reset counters.
+
+ Note that at the end we need a way for a tranasction to 'cleanup'. This can be implemented
+ as an abort and reused during validation failures.
+
+## applications
+
+Haskell's GHC, afaik, has a [STM implementation](https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/stm.html).
+
+
+[podcast]: https://www.youtube.com/watch?v=Ow55c-m-_Ak
+[software transactional memory]: https://en.wikipedia.org/wiki/Software_transactional_memory
+[paper]: https://dcl.epfl.ch/site/_media/education/4.pdf
+[gh-link]: https://github.com/spiral-ladder/tl2
