@@ -6,9 +6,9 @@
     <description>spiral ladder</description>
     <atom:link href="https://spiral-ladder.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Jun 2026 23:03:57 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jun 2026 23:05:37 GMT</lastBuildDate>
     <item>
-      <title>applications</title>
+      <title>notes on software transactional memory</title>
       <link>https://spiral-ladder.github.io/tech/2026/06/16/software-transactional-memory.html</link>
       <guid>https://spiral-ladder.github.io/tech/2026/06/16/software-transactional-memory.html</guid>
       <pubDate>Tue, 16 Jun 2026 00:00:00 GMT</pubDate>
@@ -18,10 +18,9 @@
 &lt;p&gt;Recently I listened to a [podcast] with Simon Peyton Jones as a guest and learnt of
 [software transactional memory] (STM). Dug into it a bit and found an interesting [paper]
 which I implemented a toy version of (source [here]).&lt;/p&gt;
-&lt;/section&gt;
 &lt;section id=&quot;core-concept&quot;&gt;
 
-&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;core concept &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2026-06-16&quot;&gt;Jun 16, 2026&lt;/time&gt;&lt;/div&gt;
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;core concept &lt;/h2&gt;&lt;/div&gt;
 &lt;p&gt;STM is an alternative to lock-based synchronization. Its argument: lock-based synchronization
 performs well but is hard to get right. Instead, treat reads/writes as ‘transactions’ - that is,
 all reads/writes are logged (as you would in a ledger) and buffered optimistically before being
@@ -29,7 +28,7 @@ all reads/writes are logged (as you would in a ledger) and buffered optimistical
 &lt;/section&gt;
 &lt;section id=&quot;algorithm&quot;&gt;
 
-&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;algorithm &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2026-06-16&quot;&gt;Jun 16, 2026&lt;/time&gt;&lt;/div&gt;
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;algorithm &lt;/h2&gt;&lt;/div&gt;
 &lt;p&gt;The paper introduces an STM algorithm based on commit-time locking and a global version clock.
 It roughly works like this:&lt;/p&gt;
 &lt;ol&gt;
@@ -81,8 +80,9 @@ as an abort and reused during validation failures.&lt;/p&gt;
 &lt;/section&gt;
 &lt;section id=&quot;applications&quot;&gt;
 
-&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;applications &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2026-06-16&quot;&gt;Jun 16, 2026&lt;/time&gt;&lt;/div&gt;
+&lt;div class=&quot;title&quot;&gt;&lt;h2&gt;applications &lt;/h2&gt;&lt;/div&gt;
 &lt;p&gt;Haskell’s GHC, afaik, has a &lt;a href=&quot;https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/stm.html&quot;&gt;STM implementation&lt;/a&gt;.&lt;/p&gt;
+&lt;/section&gt;
 &lt;/section&gt;
 </description>
     </item>

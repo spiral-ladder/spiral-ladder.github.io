@@ -4,7 +4,7 @@
 <head>
   <meta charset='utf-8'>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>applications</title>
+  <title>notes on software transactional memory</title>
   <meta name="description" content="">
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <link rel="icon" href="/favicon.png" type="image/png">
@@ -85,10 +85,9 @@
 <p>Recently I listened to a [podcast] with Simon Peyton Jones as a guest and learnt of
 [software transactional memory] (STM). Dug into it a bit and found an interesting [paper]
 which I implemented a toy version of (source [here]).</p>
-</section>
 <section id="core-concept">
 
-<div class="title"><h1>core concept </h1><time class="meta" datetime="2026-06-16">Jun 16, 2026</time></div>
+<div class="title"><h2>core concept </h2></div>
 <p>STM is an alternative to lock-based synchronization. Its argument: lock-based synchronization
 performs well but is hard to get right. Instead, treat reads/writes as ‘transactions’ - that is,
 all reads/writes are logged (as you would in a ledger) and buffered optimistically before being
@@ -96,7 +95,7 @@ all reads/writes are logged (as you would in a ledger) and buffered optimistical
 </section>
 <section id="algorithm">
 
-<div class="title"><h1>algorithm </h1><time class="meta" datetime="2026-06-16">Jun 16, 2026</time></div>
+<div class="title"><h2>algorithm </h2></div>
 <p>The paper introduces an STM algorithm based on commit-time locking and a global version clock.
 It roughly works like this:</p>
 <ol>
@@ -148,8 +147,9 @@ as an abort and reused during validation failures.</p>
 </section>
 <section id="applications">
 
-<div class="title"><h1>applications </h1><time class="meta" datetime="2026-06-16">Jun 16, 2026</time></div>
+<div class="title"><h2>applications </h2></div>
 <p>Haskell’s GHC, afaik, has a <a href="https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/stm.html">STM implementation</a>.</p>
+</section>
 </section>
 </article>
   </main>
