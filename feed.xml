@@ -6,7 +6,86 @@
     <description>spiral ladder</description>
     <atom:link href="https://spiral-ladder.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
-    <lastBuildDate>Wed, 13 May 2026 17:37:22 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 15 Jun 2026 23:03:57 GMT</lastBuildDate>
+    <item>
+      <title>applications</title>
+      <link>https://spiral-ladder.github.io/tech/2026/06/16/software-transactional-memory.html</link>
+      <guid>https://spiral-ladder.github.io/tech/2026/06/16/software-transactional-memory.html</guid>
+      <pubDate>Tue, 16 Jun 2026 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;notes-on-software-transactional-memory&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;notes on software transactional memory &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2026-06-16&quot;&gt;Jun 16, 2026&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;Recently I listened to a [podcast] with Simon Peyton Jones as a guest and learnt of
+[software transactional memory] (STM). Dug into it a bit and found an interesting [paper]
+which I implemented a toy version of (source [here]).&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;core-concept&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;core concept &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2026-06-16&quot;&gt;Jun 16, 2026&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;STM is an alternative to lock-based synchronization. Its argument: lock-based synchronization
+performs well but is hard to get right. Instead, treat reads/writes as ‘transactions’ - that is,
+all reads/writes are logged (as you would in a ledger) and buffered optimistically before being
+&lt;strong&gt;commited&lt;/strong&gt; into memory.&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;algorithm&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;algorithm &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2026-06-16&quot;&gt;Jun 16, 2026&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;The paper introduces an STM algorithm based on commit-time locking and a global version clock.
+It roughly works like this:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Maintain a &lt;strong&gt;global version clock&lt;/strong&gt; that is incremented once per transaction that writes to memory.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Upon a new transaction, load and store this global version clock in a local variable &lt;em&gt;rv&lt;/em&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Prepare to run through speculative execution. For this, each transaction maintains a local
+&lt;em&gt;read set&lt;/em&gt; of &lt;strong&gt;addresses&lt;/strong&gt; loaded and &lt;em&gt;write set&lt;/em&gt; of &lt;strong&gt;address/value&lt;/strong&gt; pairs. The write set also maintains
+the &lt;strong&gt;last read version&lt;/strong&gt; (explained later).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;This is where reads/writes differ (prepended &lt;strong&gt;r&lt;/strong&gt; and &lt;strong&gt;w&lt;/strong&gt; respectively):&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;For reads:&lt;/p&gt;
+&lt;p&gt;Maintain a single word bloom filter to check if the loaded address is already in the write set.
+If so, we return the last value written to the address. This avoids read-after-write hazards.
+5. We do post-validation on this read by ensuring 3 criteria: One, that the location’s versioned
+write lock is free and that the lock has not changed, two, that the lock’s version field does not
+exceed the local &lt;em&gt;rv&lt;/em&gt;, and three, that the lock bit is clear.&lt;/p&gt;
+&lt;p&gt;For writes:&lt;/p&gt;
+&lt;p&gt;We simply store the addr/value pair into the write set.&lt;/p&gt;
+&lt;p&gt;Once we eagerly execute all the loads and writes, step 5 onwards is where we start the &lt;strong&gt;commit phase&lt;/strong&gt;.&lt;/p&gt;
+&lt;ol start=&quot;5&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;We lock the write set by acquiring all the locks.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Do an increment-and-fetch (by doing CAS) on the global version clock. Record the returned value
+in a local &lt;em&gt;write version number&lt;/em&gt; &lt;em&gt;wv&lt;/em&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Validate the read set. For each location in the read set, the version number should be lesser than or
+equal to &lt;em&gt;rv&lt;/em&gt;. We also verify that these memory locations have not been locked by other threads.
+We re-validate the read set to guarantee that memory locations have not been modified while steps
+5 and 6 were being executed. If &lt;em&gt;rv&lt;/em&gt; + 1 == &lt;em&gt;wv&lt;/em&gt; then we skip validation, since that means no
+concurrently executing transaction could have modified it, which is the power of a global
+version clock.
+8. Commit and release the locks. Now actually perform the writes in the write set, then release
+all the locks and reset counters.&lt;/p&gt;
+&lt;p&gt;Note that at the end we need a way for a tranasction to ‘cleanup’. This can be implemented
+as an abort and reused during validation failures.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/section&gt;
+&lt;section id=&quot;applications&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h1&gt;applications &lt;/h1&gt;&lt;time class=&quot;meta&quot; datetime=&quot;2026-06-16&quot;&gt;Jun 16, 2026&lt;/time&gt;&lt;/div&gt;
+&lt;p&gt;Haskell’s GHC, afaik, has a &lt;a href=&quot;https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/stm.html&quot;&gt;STM implementation&lt;/a&gt;.&lt;/p&gt;
+&lt;/section&gt;
+</description>
+    </item>
     <item>
       <title>The World (of AI) Ends With You</title>
       <link>https://spiral-ladder.github.io/tech/2026/05/14/the-world-ends-with-you.html</link>

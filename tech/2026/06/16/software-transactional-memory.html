@@ -1,0 +1,178 @@
+ 
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>applications</title>
+  <meta name="description" content="">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://spiral-ladder.github.io/tech/2026/06/16/software-transactional-memory.html">
+  <link rel="alternate" type="application/rss+xml" title="bh" href="https://spiral-ladder.github.io/feed.xml">
+  <style>
+  @font-face {
+    font-family: 'Open Sans'; src: url('/css/OpenSans-300-Normal.woff2') format('woff2');
+    font-weight: 300; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Italic.woff2') format('woff2');
+    font-weight: 400; font-style: italic;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Italic.woff2') format('woff2');
+    font-weight: 700; font-style: italic;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; margin-block-start: 0; margin-block-end: 0; }
+
+  body {
+    max-width: 80ch;
+    padding: 2ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  header { margin-bottom: 2rem; }
+  header > nav { display: flex; column-gap: 2ch; align-items: baseline; flex-wrap: wrap; }
+  header a { font-style: normal; color: rgba(0, 0, 0, .7); text-decoration: none; }
+  header a:hover { font-style: normal; color: rgba(0, 0, 0, 1); text-decoration: none; }
+  header .title { font-size: 1.25em; flex-grow: 2; }
+
+  footer { margin-top: 2rem; }
+  footer > p { display: flex; column-gap: 2ch; justify-content: center; flex-wrap: wrap; }
+  footer a { color: rgba(0, 0, 0, .8); text-decoration: none; white-space: nowrap; }
+  footer i { vertical-align: middle; color: rgba(0, 0, 0, .8) }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/site.css">
+  
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a class="title" href="/">bing</a>
+      <a href="/about.html">About</a>
+      <a href="/photos.html">Photos</a>
+      <a href="/favourites.html">Favourites</a>
+    </nav>
+  </header>
+
+  <main>
+  <article >
+<section id="notes-on-software-transactional-memory">
+
+<div class="title"><h1>notes on software transactional memory </h1><time class="meta" datetime="2026-06-16">Jun 16, 2026</time></div>
+<p>Recently I listened to a [podcast] with Simon Peyton Jones as a guest and learnt of
+[software transactional memory] (STM). Dug into it a bit and found an interesting [paper]
+which I implemented a toy version of (source [here]).</p>
+</section>
+<section id="core-concept">
+
+<div class="title"><h1>core concept </h1><time class="meta" datetime="2026-06-16">Jun 16, 2026</time></div>
+<p>STM is an alternative to lock-based synchronization. Its argument: lock-based synchronization
+performs well but is hard to get right. Instead, treat reads/writes as ‘transactions’ - that is,
+all reads/writes are logged (as you would in a ledger) and buffered optimistically before being
+<strong>commited</strong> into memory.</p>
+</section>
+<section id="algorithm">
+
+<div class="title"><h1>algorithm </h1><time class="meta" datetime="2026-06-16">Jun 16, 2026</time></div>
+<p>The paper introduces an STM algorithm based on commit-time locking and a global version clock.
+It roughly works like this:</p>
+<ol>
+<li>
+<p>Maintain a <strong>global version clock</strong> that is incremented once per transaction that writes to memory.</p>
+</li>
+<li>
+<p>Upon a new transaction, load and store this global version clock in a local variable <em>rv</em>.</p>
+</li>
+<li>
+<p>Prepare to run through speculative execution. For this, each transaction maintains a local
+<em>read set</em> of <strong>addresses</strong> loaded and <em>write set</em> of <strong>address/value</strong> pairs. The write set also maintains
+the <strong>last read version</strong> (explained later).</p>
+</li>
+<li>
+<p>This is where reads/writes differ (prepended <strong>r</strong> and <strong>w</strong> respectively):</p>
+</li>
+</ol>
+<p>For reads:</p>
+<p>Maintain a single word bloom filter to check if the loaded address is already in the write set.
+If so, we return the last value written to the address. This avoids read-after-write hazards.
+5. We do post-validation on this read by ensuring 3 criteria: One, that the location’s versioned
+write lock is free and that the lock has not changed, two, that the lock’s version field does not
+exceed the local <em>rv</em>, and three, that the lock bit is clear.</p>
+<p>For writes:</p>
+<p>We simply store the addr/value pair into the write set.</p>
+<p>Once we eagerly execute all the loads and writes, step 5 onwards is where we start the <strong>commit phase</strong>.</p>
+<ol start="5">
+<li>
+<p>We lock the write set by acquiring all the locks.</p>
+</li>
+<li>
+<p>Do an increment-and-fetch (by doing CAS) on the global version clock. Record the returned value
+in a local <em>write version number</em> <em>wv</em>.</p>
+</li>
+<li>
+<p>Validate the read set. For each location in the read set, the version number should be lesser than or
+equal to <em>rv</em>. We also verify that these memory locations have not been locked by other threads.
+We re-validate the read set to guarantee that memory locations have not been modified while steps
+5 and 6 were being executed. If <em>rv</em> + 1 == <em>wv</em> then we skip validation, since that means no
+concurrently executing transaction could have modified it, which is the power of a global
+version clock.
+8. Commit and release the locks. Now actually perform the writes in the write set, then release
+all the locks and reset counters.</p>
+<p>Note that at the end we need a way for a tranasction to ‘cleanup’. This can be implemented
+as an abort and reused during validation failures.</p>
+</li>
+</ol>
+</section>
+<section id="applications">
+
+<div class="title"><h1>applications </h1><time class="meta" datetime="2026-06-16">Jun 16, 2026</time></div>
+<p>Haskell’s GHC, afaik, has a <a href="https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/stm.html">STM implementation</a>.</p>
+</section>
+</article>
+  </main>
+
+  <footer>
+  </footer>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="">
+  </div>
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.photo-grid img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+      });
+    });
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+  </script>
+</body>
+
+</html>
