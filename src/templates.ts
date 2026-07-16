@@ -91,8 +91,9 @@ export const base = (
 <body>
   <header>
     <nav>
-      <a class="title" href="/">bing</a>
-      <a href="/about.html">About</a>
+      <a class="title" href="/about.html">fractalizedwords.</a>
+      <a href="/">Blog</a>
+      <a href="/curiosities.html">Curiosities</a>
       <a href="/photos.html">Photos</a>
       <a href="/favourites.html">Favourites</a>
     </nav>
@@ -150,7 +151,7 @@ export const post_list = (categories: string[], posts_: Post[][]): HtmlString =>
 
   return base({
     path: "",
-    title: "bing",
+    title: "fractalizedwords.",
     description: blurb,
     src: "/src/templates.ts",
     content: html`
@@ -186,7 +187,7 @@ export function feed(posts: Post[]): string {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>bing</title>
+    <title>fractalizedwords</title>
     <link>${site_url}</link>
     <description>${blurb}</description>
     <atom:link href="${site_url}/feed.xml" rel="self" type="application/rss+xml"/>
@@ -209,7 +210,7 @@ function escapeXml(s: string): string {
 export function page(name: string, content: HtmlString) {
   return base({
     path: `/${name}`,
-    title: "bing",
+    title: "fractalizedwords",
     description: blurb,
     src: `/content/${name}.dj`,
     extra_css: undefined,

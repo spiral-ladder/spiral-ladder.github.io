@@ -1,0 +1,13 @@
+I'm challenging myself to be more conscious about consumption. I collate a list of interesting
+things I have read/watched weekly here.
+
+#### 13-19 July, 2026
+
+- *[Godel's Proof](https://www.amazon.com/G%C3%B6dels-Proof-Ernest-Nagel/dp/0814758371) by  Ernest Nagel & James Newman.* Picked up this book in a bookstore in Prague.
+  Explains Godel's Incompleteness Theorem by building up the required background knowledge, and does
+  it concisely.
+
+- *[Roger Penrose explains Godel' s Incompleteness Theorem](https://www.youtube.com/watch?v=w11mI67R95I)*. A 3 minute watch.
+
+- *[Slow Software: The Case for High latency Systems Development](https://www.sigops.org/2026/slow-software-the-case-for-high-latency-systems-development/)*. A bit corny with the slow food analogy but somewhat aligns with my belief. Generating code is no longer the bottleneck, reading and understanding is. Slower and more deliberate cycles allow for more resilient and secure systems.
+
