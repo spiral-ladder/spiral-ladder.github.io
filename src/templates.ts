@@ -175,10 +175,11 @@ export function feed(posts: Post[]): string {
   const items = posts.map((post) => {
     const pubDate = post.date.toUTCString();
     const link = `${site_url}${post.path}`;
+    const guid = post.guid ? `${site_url}${post.guid}` : link;
     return `    <item>
       <title>${escapeXml(post.title ?? "")}</title>
       <link>${link}</link>
-      <guid>${link}</guid>
+      <guid>${guid}</guid>
       <pubDate>${pubDate}</pubDate>
       <description>${escapeXml(post.content?.value ?? "")}</description>
     </item>`;

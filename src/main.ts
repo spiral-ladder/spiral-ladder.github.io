@@ -31,7 +31,8 @@ async function build() {
     )
   }
 
-  const all_posts = [...tech_posts, ...ramblings].sort((a, b) => b.date - a.date);
+  const curiosities = await collect_curiosities();
+  const all_posts = [...tech_posts, ...ramblings, ...curiosities].sort((a, b) => b.date - a.date);
   await update_file("out/feed.xml", templates.feed(all_posts));
 
   const pages = ["about", "favourites", "photos", "curiosities"];
@@ -76,6 +77,7 @@ export type Post = {
   day: number;
   date: Date;
   path: string;
+  guid?: string;
   content: djot.HtmlString;
 };
 //export type Post = {
@@ -138,6 +140,46 @@ async function collect_posts(category: string): Promise<Post[]> {
   }
 
   return posts.sort((d1, d2) => d2.date - d1.date);
+}
+
+async function collect_curiosities(): Promise<Post[]> {
+  const text = await Bun.file("content/curiosities.dj").text();
+  return parse_curiosity_sections(text);
+}
+
+export function parse_curiosity_sections(text: string): Post[] {
+  const heading = /^####\s+((\d{1,2})(?:\s+[A-Za-z]+)?-(\d{1,2})\s+([A-Za-z]+),\s+(\d{4}))\s*$/gm;
+  const matches = [...text.matchAll(heading)];
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+  ];
+
+  return matches.map((match, index) => {
+    const label = match[1];
+    const end_day = parseInt(match[3], 10);
+    const month = months.indexOf(match[4]);
+    const year = parseInt(match[5], 10);
+    if (month === -1) throw new Error(`Unknown month in Curiosities heading: ${match[4]}`);
+
+    const start = match.index!;
+    const end = matches[index + 1]?.index ?? text.length;
+    const section_source = text.slice(start, end).trim();
+    const content = djot.render(djot.parse(section_source), {});
+    const anchor = label.replace(/,/g, "").replace(/\s+/g, "-");
+    const date = new Date(Date.UTC(year, month, end_day));
+
+    return {
+      year,
+      month: month + 1,
+      day: end_day,
+      date,
+      path: "/curiosities.html",
+      guid: `/curiosities.html#${anchor}`,
+      title: `curiosities: ${label}`,
+      content,
+    };
+  });
 }
 
 async function serve() {
