@@ -6,31 +6,7 @@
     <description>spiral ladder</description>
     <atom:link href="https://spiral-ladder.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
-    <lastBuildDate>Sun, 19 Jul 2026 21:52:52 GMT</lastBuildDate>
-    <item>
-      <title>curiosities: 13-19 July, 2026</title>
-      <link>https://spiral-ladder.github.io/curiosities.html</link>
-      <guid>https://spiral-ladder.github.io/curiosities.html#13-19-July-2026</guid>
-      <pubDate>Sun, 19 Jul 2026 00:00:00 GMT</pubDate>
-      <description>&lt;section id=&quot;13-19-July-2026&quot;&gt;
-
-&lt;div class=&quot;title&quot;&gt;&lt;h4&gt;13-19 July, 2026 &lt;/h4&gt;&lt;/div&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://www.amazon.com/G%C3%B6dels-Proof-Ernest-Nagel/dp/0814758371&quot;&gt;Godel’s Proof&lt;/a&gt; by  Ernest Nagel &amp;amp; James Newman.&lt;/strong&gt; Picked up this book in a bookstore in Prague.
-Explains Godel’s Incompleteness Theorem by building up the required background knowledge, and does
-it concisely.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=w11mI67R95I&quot;&gt;Roger Penrose explains Godel’ s Incompleteness Theorem&lt;/a&gt;&lt;/strong&gt;. A 3 minute watch.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://www.sigops.org/2026/slow-software-the-case-for-high-latency-systems-development/&quot;&gt;Slow Software: The Case for High latency Systems Development&lt;/a&gt;&lt;/strong&gt;. A bit corny with the slow food analogy but somewhat aligns with my belief. Generating code is no longer the bottleneck, reading and understanding is. Slower and more deliberate cycles allow for more resilient and secure systems.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/section&gt;
-</description>
-    </item>
+    <lastBuildDate>Sat, 01 Aug 2026 17:59:02 GMT</lastBuildDate>
     <item>
       <title>notes on software transactional memory</title>
       <link>https://spiral-ladder.github.io/tech/2026/06/16/software-transactional-memory.html</link>
