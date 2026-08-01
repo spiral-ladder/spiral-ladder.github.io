@@ -1,7 +1,15 @@
 I'm challenging myself to be more conscious about consumption. I collate a list of interesting
-things I have read/watched weekly here.
+things I have read/watched weekly here with a short description.
 
-#### 13-19 July, 2026
+#### 2 Aug, 2016
+
+- *[Fits on a Floppy](https://fitsonafloppy.com/)*. Shipping software that people use also means that you should be strict about what you put on people's computers. It's akin to being a guest in someone's house; you want to be polite to your host(s). Keeping binary sizes small is one of the ways to be a good guest.
+
+- *["Why not just use Lean?"](https://lawrencecpaulson.github.io/2026/04/23/Why_not_Lean.html)*. A post pushing back on using Lean as the default for formal verification everywhere. In some applications, having dependent types is overkill. Higher Order Logic (HOL) can do the job. Sequent's [article](https://x.com/Sequent_Inc/status/2082534309110378760) talks more in-depth on why HOL is good enough for deep verification.
+
+- *[A Font That is a Neural Network](https://elih.net/blog/neuraltype/)*. Cool experiment on how you can replace the lookup that renders an OpenType font with a computation.
+
+#### 19 July, 2026
 
 - *[Godel's Proof](https://www.amazon.com/G%C3%B6dels-Proof-Ernest-Nagel/dp/0814758371) by  Ernest Nagel & James Newman.* Picked up this book in a bookstore in Prague.
   Explains Godel's Incompleteness Theorem by building up the required background knowledge, and does
