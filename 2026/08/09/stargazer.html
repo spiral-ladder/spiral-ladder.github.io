@@ -1,0 +1,210 @@
+ 
+<!DOCTYPE html>
+<html lang='en-US'>
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>stargazer</title>
+  <meta name="description" content="">
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://spiral-ladder.github.io/2026/08/09/stargazer.html">
+  <link rel="alternate" type="application/rss+xml" title="bh" href="https://spiral-ladder.github.io/feed.xml">
+  <style>
+  @font-face {
+    font-family: 'Open Sans'; src: url('/css/OpenSans-300-Normal.woff2') format('woff2');
+    font-weight: 300; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'JetBrains Mono'; src: url('/css/JetBrainsMono-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Normal.woff2') format('woff2');
+    font-weight: 400; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-400-Italic.woff2') format('woff2');
+    font-weight: 400; font-style: italic;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Normal.woff2') format('woff2');
+    font-weight: 700; font-style: normal;
+  }
+  @font-face {
+    font-family: 'EB Garamond'; src: url('/css/EBGaramond-700-Italic.woff2') format('woff2');
+    font-weight: 700; font-style: italic;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; margin-block-start: 0; margin-block-end: 0; }
+
+  body {
+    max-width: 80ch;
+    padding: 2ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  header { margin-bottom: 2rem; }
+  header > nav { display: flex; column-gap: 2ch; align-items: baseline; flex-wrap: wrap; }
+  header a { font-style: normal; color: rgba(0, 0, 0, .7); text-decoration: none; }
+  header a:hover { font-style: normal; color: rgba(0, 0, 0, 1); text-decoration: none; }
+  header .title { font-size: 1.25em; flex-grow: 2; }
+
+  footer { margin-top: 2rem; }
+  footer > p { display: flex; column-gap: 2ch; justify-content: center; flex-wrap: wrap; }
+  footer a { color: rgba(0, 0, 0, .8); text-decoration: none; white-space: nowrap; }
+  footer i { vertical-align: middle; color: rgba(0, 0, 0, .8) }
+
+  </style>
+
+  <link rel="stylesheet" href="/css/site.css">
+  
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a class="title" href="/about.html">fractalizedwords.</a>
+      <a href="/">Blog</a>
+      <a href="/curiosities.html">Curiosities</a>
+      <a href="/photos.html">Photos</a>
+      <a href="/favourites.html">Favourites</a>
+    </nav>
+  </header>
+
+  <main>
+  <article >
+<section id="stargazer">
+
+<div class="title"><h1>stargazer </h1><time class="meta" datetime="2026-08-09">Aug 9, 2026</time></div>
+<p>I have started working on <a href="https://github.com/5t4rg4z3r">stargazer</a>, an autonomous agent meant for work on <a href="https://github.com/ChainSafe/lodestar-z">lodestar-z</a>.
+This page serves as a living document for how I am configuring the agent to work efficiently.</p>
+<p>The key principles I want for <em>stargazer</em> to uphold:</p>
+<ol>
+<li>
+<p><strong>Never generate more code than necessary.</strong> Writing code has never been the bottleneck in software
+development, reading code is. Now that it’s easier than ever before to generate code, a lot of it
+is going to be slop. I want <em>stargazer</em> to generate quality over quantity.</p>
+</li>
+<li>
+<p><strong>Write in a clear and concise manner.</strong> This includes comments in code, and replies to humans on
+GitHub/Discord. I hate that LLMs use vague and meaningless phrases like <em>honest answer</em>, <em>smoke test</em>,
+<em>this is not just X, but Y</em>. I want <em>stargazer</em> to write like how a human would write to another human,
+as much as possible. I’ve had decent success getting AI to reply in <a href="https://www.asd-ste100.org/">ASD-STE100</a>, as well as using <a href="https://sites.duke.edu/scientificwriting/orwells-6-rules/">George
+Orwell’s 6 rules of writing</a>.</p>
+</li>
+</ol>
+<section id="On-memory">
+
+<div class="title"><h2>On memory </h2></div>
+<p>My initial thought was to fork <a href="https://github.com/lodekeeper">lodekeeper</a>, the agent created and maintained by my teammate nico (<a href="https://github.com/nflaig">@nflaig</a>),
+but quickly decided against it because lodekeeper’s configuration was huge. I ended up asking <em>lodekeeper</em> himself
+on what configurations he would recommend I steal from him and started that way.</p>
+<p>The most important problem seems to be to solve <strong>memory</strong>. The common use of LLM-assisted software development is <em>stateless</em>
+- we spin up a new conversation for each issue that we work on. An autonomous agent has to have context across <em>time</em>.
+The agent has to be aware of:</p>
+<ul>
+<li>
+<p>what was done yesterday? last week? even last month?</p>
+</li>
+<li>
+<p>what are changes in a spec X weeks ago that require a change?</p>
+</li>
+</ul>
+<p>and other questions.</p>
+</section>
+<section id="Day-1---8-8-2026">
+
+<div class="title"><h2>Day 1 - 8/8/2026 </h2></div>
+<p>I got Fable to setup <em>stargazer</em> on a VPS, and after some quick configuration he opened his first <a href="https://github.com/ChainSafe/lodestar-z/pull/549">PR</a>. Immediately
+I got turned off because of the very poorly written PR description (go to the PR and click on its edit history to see the
+initial description).</p>
+<p>My main gripe was that the <a href="https://www.asd-ste100.org/">ASD-STE100</a> style is not suitable for PR descriptions at all. The writing feels very
+dislocated, like nothing is related when it actually is. My theory so far is that the ASD-STE100 style may perhaps only be
+suitable for when you have a very specific technical question you need answered, and enforcing that writing style gets
+LLMs to not yap nonsense as much.</p>
+<p>I updated its <code>AGENTS.md</code> to include this block:</p>
+<pre><code class="language-md">## Pull request descriptions
+
+The STE style above applies to chat messages. It does not apply to PR descriptions. A PR
+description is for a reviewer who will read the diff. Do not restate the diff. Do not restate
+the issue thread. Write normal engineering prose.
+
+Format (model: lodekeeper's PRs, e.g. ChainSafe/lodestar#9755):
+
+- **Motivation** — 2 to 4 sentences: the symptom, the concrete context (link a failing CI job or
+  incident when one exists), then `Closes #X`.
+- **Description** — at most 5 bullets stating what changed. Not how, not why each line is correct.
+- **Verification** — a bulleted list of the exact commands you ran.
+- One-line AI disclosure at the bottom.
+
+Target: under 25 lines total. If the description needs more, the PR is probably too big.
+</code></pre>
+<p>The updated PR description felt much better after.</p>
+</section>
+<section id="Day-2---9-8-2026">
+
+<div class="title"><h2>Day 2 - 9/8/2026 </h2></div>
+<p>My next experiment was to see how <em>stargazer</em> would respond in conversation on GitHub. So I <a href="mention">mentioned him</a> to
+fix something. He currently has these rules:</p>
+<pre><code class="language-md">Reply content rules:
+- Three short paragraphs at most.
+- Name the full commit SHA so the reviewer can jump to it.
+- Give real verification results, including the pre-existing warning count so a nonzero
+  number is not mistaken for new breakage.
+- Always end with the AI disclosure line.
+- Do not quote the reviewer's comment back at them and do not re-argue the original design.
+</code></pre>
+<p>Here’s what he said:</p>
+<p><img alt="reply" src="/assets/stargazer-reply.png"></p>
+<p>Things I don’t like:</p>
+<ul>
+<li>
+<p><strong>Verification section is redundant</strong>; we already know the outcome from CI run, and the assumption is for any
+contributor (human or not) to have already run tests locally. Sometimes tests don’t even need to pass if we’re addressing
+something not related to tests.</p>
+</li>
+<li>
+<p><strong>AI assistance disclosure</strong>; it’s just extra stuff the human reader has to read.</p>
+</li>
+</ul>
+<p>So I further trimmed <em>stargazer</em>’s writing style:</p>
+<pre><code class="language-md">Reply content rules:
+- Three short paragraphs at most.
+- Name the full commit SHA so the reviewer can jump to it.
+- Do not quote the reviewer's comment back at them and do not re-argue the original design.
+- If new tests are added, give real verification results.
+</code></pre>
+</section>
+</section>
+</article>
+  </main>
+
+  <footer>
+  </footer>
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="">
+  </div>
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.photo-grid img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
+        lightbox.classList.add('active');
+      });
+    });
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+  </script>
+</body>
+
+</html>
