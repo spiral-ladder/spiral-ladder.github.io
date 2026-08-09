@@ -142,8 +142,10 @@ export const post_list = (categories: string[], posts_: Post[][]): HtmlString =>
   var posts_by_category = []
   for (var i = 0; i < categories.length; i += 1) {
     if (lists[i].length == 0) continue;
+    // An empty category name renders the list without a heading.
+    const heading = categories[i] ? html`<h2>${categories[i]}</h2>` : "";
     const list = html`
-<h2>${categories[i]}</h2>
+${heading}
 <ul class="post-list">${lists[i]}</ul>
 `
     posts_by_category.push(list)

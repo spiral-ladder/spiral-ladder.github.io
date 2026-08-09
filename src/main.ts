@@ -17,9 +17,16 @@ async function build() {
     await update_path(path);
   }
 
+  // Posts in content/uncategorized/ are listed first, with no category heading.
+  const uncategorized = await collect_posts("uncategorized", "");
   const tech_posts = await collect_posts("tech");
   const ramblings = await collect_posts("ramblings");
-  await update_file("out/index.html", templates.post_list(["tech", "ramblings"], [tech_posts, ramblings]).value);
+  await update_file("out/index.html", templates.post_list(["", "tech", "ramblings"], [uncategorized, tech_posts, ramblings]).value);
+  for (const post of uncategorized) {
+    await update_file(`./out/${post.path}`,
+      templates.post(post, false).value,
+    )
+  }
   for (const post of tech_posts) {
     await update_file(`./out/${post.path}`,
       templates.post(post, false).value,
@@ -32,7 +39,7 @@ async function build() {
   }
 
   const curiosities = await collect_curiosities();
-  const all_posts = [...tech_posts, ...ramblings, ...curiosities].sort((a, b) => b.date - a.date);
+  const all_posts = [...uncategorized, ...tech_posts, ...ramblings, ...curiosities].sort((a, b) => b.date - a.date);
   await update_file("out/feed.xml", templates.feed(all_posts));
 
   const pages = ["about", "favourites", "photos", "curiosities"];
@@ -92,7 +99,7 @@ export type Post = {
 //  content: HtmlString;
 //};
 
-async function collect_posts(category: string): Promise<Post[]> {
+async function collect_posts(category: string, url_prefix: string = `/${category}`): Promise<Post[]> {
   const start = performance.now();
   const posts = [];
   if (!existsSync("./content/" + category)) return posts;
@@ -133,7 +140,7 @@ async function collect_posts(category: string): Promise<Post[]> {
       month,
       day,
       date,
-      path: `/${category}/${y}/${m}/${d}/${slug}.html`,
+      path: `${url_prefix}/${y}/${m}/${d}/${slug}.html`,
       title: render_ctx.title,
       content: html,
     });

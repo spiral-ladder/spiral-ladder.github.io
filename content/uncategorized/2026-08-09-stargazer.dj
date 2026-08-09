@@ -1,0 +1,112 @@
+# stargazer
+
+I have started working on [stargazer][], an autonomous agent meant for work on [lodestar-z][].
+This page serves as a living document for how I am configuring the agent to work efficiently.
+
+The key principles I want for _stargazer_ to uphold:
+
+1. *Never generate more code than necessary.* Writing code has never been the bottleneck in software
+development, reading code is. Now that it's easier than ever before to generate code, a lot of it
+is going to be slop. I want _stargazer_ to generate quality over quantity.
+
+2. *Write in a clear and concise manner.* This includes comments in code, and replies to humans on
+GitHub/Discord. I hate that LLMs use vague and meaningless phrases like _honest answer_, _smoke test_,
+_this is not just X, but Y_. I want _stargazer_ to write like how a human would write to another human,
+as much as possible. I've had decent success getting AI to reply in [ASD-STE100][], as well as using [George
+Orwell's 6 rules of writing][orwell].
+
+## On memory
+
+My initial thought was to fork [lodekeeper][], the agent created and maintained by my teammate nico ([@nflaig][]),
+but quickly decided against it because lodekeeper's configuration was huge. I ended up asking _lodekeeper_ himself
+on what configurations he would recommend I steal from him and started that way.
+
+The most important problem seems to be to solve *memory*. The common use of LLM-assisted software development is _stateless_
+- we spin up a new conversation for each issue that we work on. An autonomous agent has to have context across _time_.
+The agent has to be aware of:
+
+- what was done yesterday? last week? even last month?
+
+- what are changes in a spec X weeks ago that require a change?
+
+and other questions. 
+
+## Day 1 - 8/8/2026
+
+I got Fable to setup _stargazer_ on a VPS, and after some quick configuration he opened his first [PR][firstpr]. Immediately
+I got turned off because of the very poorly written PR description (go to the PR and click on its edit history to see the
+initial description).
+
+My main gripe was that the [ASD-STE100][] style is not suitable for PR descriptions at all. The writing feels very
+dislocated, like nothing is related when it actually is. My theory so far is that the ASD-STE100 style may perhaps only be
+suitable for when you have a very specific technical question you need answered, and enforcing that writing style gets
+LLMs to not yap nonsense as much.
+
+I updated its `AGENTS.md` to include this block:
+
+```md
+## Pull request descriptions
+
+The STE style above applies to chat messages. It does not apply to PR descriptions. A PR
+description is for a reviewer who will read the diff. Do not restate the diff. Do not restate
+the issue thread. Write normal engineering prose.
+
+Format (model: lodekeeper's PRs, e.g. ChainSafe/lodestar#9755):
+
+- **Motivation** — 2 to 4 sentences: the symptom, the concrete context (link a failing CI job or
+  incident when one exists), then `Closes #X`.
+- **Description** — at most 5 bullets stating what changed. Not how, not why each line is correct.
+- **Verification** — a bulleted list of the exact commands you ran.
+- One-line AI disclosure at the bottom.
+
+Target: under 25 lines total. If the description needs more, the PR is probably too big.
+```
+
+The updated PR description felt much better after.
+
+## Day 2 - 9/8/2026
+
+My next experiment was to see how _stargazer_ would respond in conversation on GitHub. So I [mentioned him](mention) to
+fix something. He currently has these rules:
+
+```md
+Reply content rules:
+- Three short paragraphs at most.
+- Name the full commit SHA so the reviewer can jump to it.
+- Give real verification results, including the pre-existing warning count so a nonzero
+  number is not mistaken for new breakage.
+- Always end with the AI disclosure line.
+- Do not quote the reviewer's comment back at them and do not re-argue the original design.
+```
+
+Here's what he said:
+
+![reply](/assets/stargazer-reply.png)
+
+
+Things I don't like:
+
+- *Verification section is redundant*; we already know the outcome from CI run, and the assumption is for any
+contributor (human or not) to have already run tests locally. Sometimes tests don't even need to pass if we're addressing
+something not related to tests.
+
+- *AI assistance disclosure*; it's just extra stuff the human reader has to read.
+
+So I further trimmed _stargazer_'s writing style:
+
+```md
+Reply content rules:
+- Three short paragraphs at most.
+- Name the full commit SHA so the reviewer can jump to it.
+- Do not quote the reviewer's comment back at them and do not re-argue the original design.
+- If new tests are added, give real verification results.
+```
+
+[stargazer]: https://github.com/5t4rg4z3r
+[lodestar-z]: https://github.com/ChainSafe/lodestar-z
+[ASD-STE100]: https://www.asd-ste100.org/
+[orwell]: https://sites.duke.edu/scientificwriting/orwells-6-rules/
+[lodekeeper]: https://github.com/lodekeeper
+[@nflaig]: https://github.com/nflaig
+[firstpr]: https://github.com/ChainSafe/lodestar-z/pull/549
+[mention]: https://github.com/ChainSafe/lodestar-z/pull/549#discussion_r3743674021
