@@ -6,7 +6,32 @@
     <description>spiral ladder</description>
     <atom:link href="https://spiral-ladder.github.io/feed.xml" rel="self" type="application/rss+xml"/>
     <language>en-us</language>
-    <lastBuildDate>Tue, 18 Aug 2026 18:16:45 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 18 Aug 2026 18:19:24 GMT</lastBuildDate>
+    <item>
+      <title>curiosities: 16 Aug, 2026</title>
+      <link>https://spiral-ladder.github.io/curiosities.html</link>
+      <guid>https://spiral-ladder.github.io/curiosities.html#16-Aug-2026</guid>
+      <pubDate>Sun, 16 Aug 2026 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;16-Aug-2026&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h4&gt;16 Aug, 2026 &lt;/h4&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=FGUzgcLXNuk&quot;&gt;Per Martin Löf: How did ‘judgement’ come to be a term of logic?&lt;/a&gt;&lt;/strong&gt;. Per Martin Löf used the term judgement
+without knowing its origins, so he dove into the rabbit hole.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://gruhn.me/blog/2026-08-03/&quot;&gt;Don’t be a meat proxy&lt;/a&gt;&lt;/strong&gt;. I’m becoming less tolerant of AI written PR descriptions and comments. I don’t want to
+read Codex’s or Claude’s interpretation of something, i want your interpretation.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://scottaaronson.blog/?p=9979&quot;&gt;Enough with all the world-historic milestones&lt;/a&gt;&lt;/strong&gt;. While many look outward at
+AI solving math and coding, it might be even more important to look inward over the next few years.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+</description>
+    </item>
     <item>
       <title>stargazer</title>
       <link>https://spiral-ladder.github.io/2026/08/09/stargazer.html</link>
@@ -114,6 +139,52 @@ something not related to tests.&lt;/p&gt;
 - If new tests are added, give real verification results.
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/section&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>curiosities: 2 Aug, 2026</title>
+      <link>https://spiral-ladder.github.io/curiosities.html</link>
+      <guid>https://spiral-ladder.github.io/curiosities.html#2-Aug-2026</guid>
+      <pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;2-Aug-2026&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h4&gt;2 Aug, 2026 &lt;/h4&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://fitsonafloppy.com/&quot;&gt;Fits on a Floppy&lt;/a&gt;&lt;/strong&gt;. Shipping software that people use also means that you should be strict about what you put on people’s computers. It’s akin to being a guest in someone’s house; you want to be polite to your host(s). Keeping binary sizes small is one of the ways to be a good guest.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://lawrencecpaulson.github.io/2026/04/23/Why_not_Lean.html&quot;&gt;“Why not just use Lean?”&lt;/a&gt;&lt;/strong&gt;. A post pushing back on using Lean as the default for formal verification everywhere. In some applications, having dependent types is overkill. Higher Order Logic (HOL) can do the job. Sequent’s &lt;a href=&quot;https://x.com/Sequent_Inc/status/2082534309110378760&quot;&gt;article&lt;/a&gt; talks more in-depth on why HOL is good enough for deep verification.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://elih.net/blog/neuraltype/&quot;&gt;A Font That is a Neural Network&lt;/a&gt;&lt;/strong&gt;. Cool experiment on how you can replace the lookup that renders an OpenType font with a computation.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+</description>
+    </item>
+    <item>
+      <title>curiosities: 19 July, 2026</title>
+      <link>https://spiral-ladder.github.io/curiosities.html</link>
+      <guid>https://spiral-ladder.github.io/curiosities.html#19-July-2026</guid>
+      <pubDate>Sun, 19 Jul 2026 00:00:00 GMT</pubDate>
+      <description>&lt;section id=&quot;19-July-2026&quot;&gt;
+
+&lt;div class=&quot;title&quot;&gt;&lt;h4&gt;19 July, 2026 &lt;/h4&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://www.amazon.com/G%C3%B6dels-Proof-Ernest-Nagel/dp/0814758371&quot;&gt;Godel’s Proof&lt;/a&gt; by  Ernest Nagel &amp;amp; James Newman.&lt;/strong&gt; Picked up this book in a bookstore in Prague.
+Explains Godel’s Incompleteness Theorem by building up the required background knowledge, and does
+it concisely.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=w11mI67R95I&quot;&gt;Roger Penrose explains Godel’ s Incompleteness Theorem&lt;/a&gt;&lt;/strong&gt;. A 3 minute watch.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://www.sigops.org/2026/slow-software-the-case-for-high-latency-systems-development/&quot;&gt;Slow Software: The Case for High latency Systems Development&lt;/a&gt;&lt;/strong&gt;. A bit corny with the slow food analogy but somewhat aligns with my belief. Generating code is no longer the bottleneck, reading and understanding is. Slower and more deliberate cycles allow for more resilient and secure systems.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/section&gt;
 </description>
     </item>
