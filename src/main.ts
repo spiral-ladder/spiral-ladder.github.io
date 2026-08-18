@@ -155,7 +155,7 @@ async function collect_curiosities(): Promise<Post[]> {
 }
 
 export function parse_curiosity_sections(text: string): Post[] {
-  const heading = /^####\s+((\d{1,2})(?:\s+[A-Za-z]+)?-(\d{1,2})\s+([A-Za-z]+),\s+(\d{4}))\s*$/gm;
+  const heading = /^####\s+((\d{1,2})(?:\s+[A-Za-z]+)?(?:-(\d{1,2}))?\s+([A-Za-z]+),\s+(\d{4}))\s*$/gm;
   const matches = [...text.matchAll(heading)];
   const months = [
     "January", "February", "March", "April", "May", "June",
@@ -164,8 +164,11 @@ export function parse_curiosity_sections(text: string): Post[] {
 
   return matches.map((match, index) => {
     const label = match[1];
-    const end_day = parseInt(match[3], 10);
-    const month = months.indexOf(match[4]);
+    const end_day = parseInt(match[3] ?? match[2], 10);
+    const month_name = match[4].toLowerCase();
+    const month = months.findIndex((candidate) =>
+      candidate.toLowerCase() === month_name || candidate.slice(0, 3).toLowerCase() === month_name
+    );
     const year = parseInt(match[5], 10);
     if (month === -1) throw new Error(`Unknown month in Curiosities heading: ${match[4]}`);
 
